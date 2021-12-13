@@ -25,6 +25,7 @@ protected:
 	void TurnAtRate(float Rate);
 	void LookUpAtRate(float Rate);
 	void FireWeapon();
+	void Punch();
 	
 
 
@@ -54,6 +55,8 @@ private:
 	class UParticleSystem* MuzzleFlash;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= Combat,meta =(AllowPrivateAccess = "true"))
 	class UAnimMontage* HipFireMontage;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= Combat,meta =(AllowPrivateAccess = "true"))
+	class UAnimMontage* PunchMontage;
 
 
 public:

@@ -85,6 +85,20 @@ void AShooterCharacter::FireWeapon()
 	}
 }
 
+void AShooterCharacter::Punch()
+{
+	
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+	if(AnimInstance && PunchMontage)
+	{
+		AnimInstance->Montage_Play(PunchMontage);
+		AnimInstance->Montage_JumpToSection(FName("Punch"));
+		
+	}
+	
+	
+}
+
 // Called every frame
 void AShooterCharacter::Tick(float DeltaTime)
 {
@@ -109,6 +123,7 @@ void AShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
 
 	PlayerInputComponent->BindAction("FireButton", IE_Pressed, this, &AShooterCharacter::FireWeapon);
+	PlayerInputComponent->BindAction("Attack1", IE_Pressed, this, &AShooterCharacter::Punch);
 
 
 	
