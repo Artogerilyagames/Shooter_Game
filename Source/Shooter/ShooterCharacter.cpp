@@ -3,11 +3,27 @@
 
 #include "ShooterCharacter.h"
 
+#include "Camera/CameraComponent.h"
+#include "GameFramework/SpringArmComponent.h"
+
+
 // Sets default values
 AShooterCharacter::AShooterCharacter()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+
+	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
+	CameraBoom->SetupAttachment(RootComponent);
+	CameraBoom->TargetArmLength = 300.f;
+	CameraBoom->bUsePawnControlRotation = true;
+
+	FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
+	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
+	FollowCamera->bUsePawnControlRotation = false;
+
+
+	
 
 }
 
@@ -15,24 +31,6 @@ AShooterCharacter::AShooterCharacter()
 void AShooterCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-
-	UE_LOG(LogTemp, Warning, TEXT("BeginPlay() Called"));
-
-	int myInt{42};
-	UE_LOG(LogTemp, Warning, TEXT("int my Int: %d"), myInt);
-
-	float myFloat {3.14195};
-	UE_LOG(LogTemp, Warning, TEXT("float myFloat: %f"), myFloat);
-	double myDouble{0.0000756};
-	UE_LOG(LogTemp, Warning, TEXT("float myFloat: %lf"), myDouble);
-	
-	char myChar{'J'};
-	UE_LOG(LogTemp, Warning, TEXT("char myChar: %c"), myChar);
-
-	wchar_t wideChar{'L'};
-	UE_LOG(LogTemp, Warning, TEXT("wchar_t wideChar: %lc"), wideChar);
-	bool myBool{true};
-	UE_LOG(LogTemp, Warning, TEXT("bool myBool: %d"), myBool);
 
 
 	
@@ -50,6 +48,36 @@ void AShooterCharacter::Tick(float DeltaTime)
 void AShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
+	check(PlayerInputComponent);
 
+	PlayerInputComponent->BindAxis("MoveForward", this, &AShooterCharacter::MoveForward);
+	PlayerInputComponent->BindAxis("MoveRight", this, &AShooterCharacter::MoveRight);
+	
+	
+
+}
+
+void AShooterCharacter::MoveForward(float Value)
+{
+	if ((Controller != nullptr) && (Value != 0.0f))
+	{
+		const FRotator Rotation{Controller->GetControlRotation()};
+		const FRotator YawRotation{0, Rotation.Yaw, 0};
+		const FVector Direction{FRotationMatrix{YawRotation}.GetUnitAxis(EAxis::X)};
+		AddMovementInput(Direction, Value);
+		
+	}
+}
+
+void AShooterCharacter::MoveRight(float Value)
+{
+	if ((Controller != nullptr) && (Value != 0.0f))
+	{
+		const FRotator Rotation{Controller->GetControlRotation()};
+		const FRotator YawRotation{0, Rotation.Yaw, 0};
+		const FVector Direction{FRotationMatrix{YawRotation}.GetUnitAxis(EAxis::Y)};
+		AddMovementInput(Direction, Value);
+		
+	}
 }
 

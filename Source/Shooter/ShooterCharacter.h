@@ -3,8 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Camera/CameraComponent.h"
 #include "GameFramework/Character.h"
+#include "GameFramework/SpringArmComponent.h"
 #include "ShooterCharacter.generated.h"
+
 
 UCLASS()
 class SHOOTER_API AShooterCharacter : public ACharacter
@@ -25,5 +28,19 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	void MoveForward (float Value);
+	void MoveRight(float Value);
+
+private:
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= Camera, meta =(AllowPrivateAccess = "true"))
+	class USpringArmComponent* CameraBoom;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= Camera, meta =(AllowPrivateAccess = "true"))
+	UCameraComponent* FollowCamera;
+
+public:
+	FORCEINLINE USpringArmComponent* GetCameraBoom() const {return CameraBoom;}
+	FORCEINLINE UCameraComponent* GetFollowCamera() const {return FollowCamera;}
 
 };
