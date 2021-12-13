@@ -87,7 +87,10 @@ void AShooterCharacter::FireWeapon()
 
 void AShooterCharacter::Punch()
 {
-	
+	if(PunchSound)
+	{
+		UGameplayStatics::PlaySound2D(this, PunchSound);
+	}
 	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
 	if(AnimInstance && PunchMontage)
 	{

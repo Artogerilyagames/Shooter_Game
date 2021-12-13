@@ -57,6 +57,9 @@ private:
 	class UAnimMontage* HipFireMontage;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= Combat,meta =(AllowPrivateAccess = "true"))
 	class UAnimMontage* PunchMontage;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= Combat,meta =(AllowPrivateAccess = "true"))
+	class USoundCue* PunchSound;
+
 
 
 public:
