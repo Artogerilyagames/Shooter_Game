@@ -110,14 +110,28 @@ void AShooterCharacter::FireWeapon()
 			if(ScreenTraceHit.bBlockingHit)
 			{
 				BeamEndPoint = ScreenTraceHit.Location;
-				if(ImpactParticles)
-				{
-					UGameplayStatics::SpawnEmitterAtLocation
-					(GetWorld(),
-						ImpactParticles,
-						ScreenTraceHit.Location);
-				}
+				
 			}
+			FHitResult WeaponTraceHit;
+			const FVector WeaponTraceStart{SocketTransform.GetLocation()};
+			const FVector WeaponTraceEnd{BeamEndPoint};
+			GetWorld()->LineTraceSingleByChannel(
+				WeaponTraceHit,
+				WeaponTraceStart,
+				WeaponTraceEnd,
+				ECollisionChannel::ECC_Visibility);
+			if(WeaponTraceHit.bBlockingHit)
+			{
+				BeamEndPoint = WeaponTraceHit.Location;
+			}
+			if(ImpactParticles)
+			{
+				UGameplayStatics::SpawnEmitterAtLocation
+				(GetWorld(),
+					ImpactParticles,
+					BeamEndPoint);
+			}
+			
 			if(BeamParticles)
 			{
 				UParticleSystemComponent* Beam = UGameplayStatics::SpawnEmitterAtLocation
