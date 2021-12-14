@@ -96,7 +96,6 @@ void AShooterCharacter::Punch()
 	{
 		AnimInstance->Montage_Play(PunchMontage);
 		AnimInstance->Montage_JumpToSection(FName("Punch"));
-		
 	}
 	
 	
