@@ -27,6 +27,8 @@ protected:
 	void FireWeapon();
 	void Punch();
 	bool GetBeamEndLocation(const FVector& MuzzleSocketLocation, FVector& OutBeamLocation);
+	void AimingButtonPressed();
+	void AimingButtonReleased();
 	
 
 
@@ -64,6 +66,11 @@ private:
 	UParticleSystem* ImpactParticles;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= Combat,meta =(AllowPrivateAccess = "true"))
 	UParticleSystem* BeamParticles;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= Combat,meta =(AllowPrivateAccess = "true"))
+	bool bAiming;
+    // Zoomed Field of View
+	float CameraDefaultFOV;
+	float CameraZoomedFOV;
 
 
 
