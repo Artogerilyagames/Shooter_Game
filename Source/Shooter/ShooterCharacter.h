@@ -34,6 +34,8 @@ protected:
 	void CameraInterpZoom(float DeltaTime);
 	void SetLookRates();
 	void CalculateCrosshairSpread(float DeltaTime);
+	void FinishCrosshairBulletFire();
+	void StartCrosshairBulletfire();
 	
 
 
@@ -110,6 +112,13 @@ private:
 	float CrosshairAimFactor;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= Crosshairs,meta =(AllowPrivateAccess = "true"))
 	float CrosshairShootingFactor;
+
+	float ShootTimeDuration;
+	bool bFiringBullet;
+	FTimerHandle CrosshairShootTimer;
+
+	float TurnScaleFactor;
+	float LookUpScaleFactor;
 
 
 
