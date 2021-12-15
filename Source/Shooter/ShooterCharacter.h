@@ -34,6 +34,14 @@ protected:
 	void CameraInterpZoom(float DeltaTime);
 	void SetLookRates();
 	void CalculateCrosshairSpread(float DeltaTime);
+	
+	void FireButtonPressed();
+	void FireButtonReleased();
+	void StartFireTimer();
+	UFUNCTION()
+	void AutoFireReset();
+
+	
 	void FinishCrosshairBulletFire();
 	void StartCrosshairBulletfire();
 	
@@ -119,6 +127,11 @@ private:
 
 	float TurnScaleFactor;
 	float LookUpScaleFactor;
+
+	bool bFireButtonPressed;
+	bool bShouldFire;
+	float AutomaticFireRate;
+	FTimerHandle AutoFireTimer;
 
 
 
