@@ -32,7 +32,12 @@ bAiming(false),
 CameraDefaultFOV(0.f),
 CameraZoomedFOV(35.f),
 CameraCurrentFOV(0.f),
-ZoomInterpSpeed(20.f)
+ZoomInterpSpeed(20.f),
+
+CrosshairSpreadMultiplier(0.f),
+CrosshairVelocityFactor(0.f),
+CrosshairAimFactor(0.f),
+CrosshairShootingFactor(0.f)
 
 
 
@@ -299,10 +304,27 @@ void AShooterCharacter::CalculateCrosshairSpread(float DeltaTime)
 		DeltaTime,
 		30.f);
 	}
+	if(bAiming)
+	{
+		CrosshairAimFactor = FMath::FInterpTo
+		(CrosshairAimFactor,
+			0.6f,
+			DeltaTime,
+			30.f);
+	}
+	else
+	{
+		CrosshairAimFactor = FMath::FInterpTo
+		(CrosshairAimFactor,
+			0.f,
+			DeltaTime,
+			30.f);
+	}
 	CrosshairSpreadMultiplier =
 		0.5f +
 			CrosshairVelocityFactor +
-				CrosshairInAirFactor;
+				CrosshairInAirFactor -
+					CrosshairAimFactor;
 }
 
 // Called every frame
