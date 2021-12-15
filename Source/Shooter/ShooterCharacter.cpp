@@ -282,7 +282,27 @@ void AShooterCharacter::CalculateCrosshairSpread(float DeltaTime)
 	(WalkSpeedRange,
 		VelocityMultiplierRange,
 		Velocity.Size());
-	CrosshairSpreadMultiplier = 0.5f + CrosshairVelocityFactor;
+	
+	if(GetCharacterMovement()->IsFalling())
+	{
+		CrosshairInAirFactor = FMath::FInterpTo
+		(CrosshairInAirFactor,
+			2.25f,
+			DeltaTime,
+			2.25f);
+	}
+	else
+	{
+		CrosshairInAirFactor = FMath::FInterpTo
+	(CrosshairInAirFactor,
+		0.f,
+		DeltaTime,
+		30.f);
+	}
+	CrosshairSpreadMultiplier =
+		0.5f +
+			CrosshairVelocityFactor +
+				CrosshairInAirFactor;
 }
 
 // Called every frame
