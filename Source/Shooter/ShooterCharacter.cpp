@@ -3,6 +3,7 @@
 
 #include "ShooterCharacter.h"
 
+
 #include "Camera/CameraComponent.h"
 #include "Engine/SkeletalMeshSocket.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -271,6 +272,19 @@ void AShooterCharacter::SetLookRates()
 	}
 }
 
+void AShooterCharacter::CalculateCrosshairSpread(float DeltaTime)
+{
+	FVector2D WalkSpeedRange{0.f, 600.f};
+	FVector2D VelocityMultiplierRange{0.f, 1.f};
+	FVector Velocity{GetVelocity()};
+	Velocity.Z = 0.f;
+	CrosshairVelocityFactor= FMath::GetMappedRangeValueClamped
+	(WalkSpeedRange,
+		VelocityMultiplierRange,
+		Velocity.Size());
+	CrosshairSpreadMultiplier = 0.5f + CrosshairVelocityFactor;
+}
+
 // Called every frame
 void AShooterCharacter::Tick(float DeltaTime)
 {
@@ -278,6 +292,7 @@ void AShooterCharacter::Tick(float DeltaTime)
 
 	CameraInterpZoom(DeltaTime);
 	SetLookRates();
+	CalculateCrosshairSpread(DeltaTime);
 
 	
 
@@ -336,5 +351,10 @@ void AShooterCharacter::MoveRight(float Value)
 		AddMovementInput(Direction, Value);
 		
 	}
+}
+
+float AShooterCharacter::GetCrosshairSpreadmultiplier() const
+{
+	return CrosshairSpreadMultiplier;
 }
 
