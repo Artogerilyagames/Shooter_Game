@@ -29,6 +29,7 @@ protected:
 	bool GetBeamEndLocation(const FVector& MuzzleSocketLocation, FVector& OutBeamLocation);
 	void AimingButtonPressed();
 	void AimingButtonReleased();
+	void CameraInterpZoom(float DeltaTime);
 	
 
 
@@ -71,6 +72,11 @@ private:
     // Zoomed Field of View
 	float CameraDefaultFOV;
 	float CameraZoomedFOV;
+	float CameraCurrentFOV;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= Combat,meta =(AllowPrivateAccess = "true"))
+	float ZoomInterpSpeed;
+
+
 
 
 
