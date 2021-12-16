@@ -4,7 +4,9 @@
 #include "ShooterCharacter.h"
 
 
+#include "Item.h"
 #include "Camera/CameraComponent.h"
+#include "Components/WidgetComponent.h"
 #include "Engine/SkeletalMeshSocket.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -191,7 +193,7 @@ void AShooterCharacter::Punch()
 }
 
 bool AShooterCharacter::GetBeamEndLocation
-(const FVector& MuzzleSocketLocation, FVector& OutBeamLocation)
+(const FVector& MuzzleSocketLocation, FVector& OutBeamLocation) const
 {
 	FVector2D ViewportSize;
 	if(GEngine && GEngine->GameViewport)
@@ -394,6 +396,35 @@ void AShooterCharacter::AutoFireReset()
 	}
 }
 
+bool AShooterCharacter::TraceUnderCrosshairs(FHitResult& OutHitResult)
+{
+	FVector2D ViewportSize;
+	if(GEngine && GEngine->GameViewport)
+	{
+		GEngine->GameViewport->GetViewportSize(ViewportSize);
+	}
+	FVector2D CrosshairLocation(ViewportSize.X / 2.f, ViewportSize.Y / 2.f);
+	FVector CrosshairWorldPosition;
+	FVector CrosshairWorldDirection;
+
+	bool bScreenToWorld = UGameplayStatics::DeprojectScreenToWorld(UGameplayStatics::GetPlayerController
+	(this, 0),
+	CrosshairLocation,
+	CrosshairWorldPosition,
+	CrosshairWorldDirection);
+	if(bScreenToWorld)
+	{
+		const FVector Start{CrosshairWorldPosition};
+		const FVector End{Start + CrosshairWorldDirection * 50'000.f};
+		GetWorld()->LineTraceSingleByChannel(OutHitResult, Start, End, ECollisionChannel::ECC_Visibility);
+		if(OutHitResult.bBlockingHit)
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
 void AShooterCharacter::StartCrosshairBulletfire()
 {
 	bFiringBullet =true;
@@ -417,8 +448,16 @@ void AShooterCharacter::Tick(float DeltaTime)
 	CameraInterpZoom(DeltaTime);
 	SetLookRates();
 	CalculateCrosshairSpread(DeltaTime);
-
-	
+	FHitResult ItemTraceResult;
+	TraceUnderCrosshairs(ItemTraceResult);
+	if(ItemTraceResult.bBlockingHit)
+	{
+		AItem* HitItem = Cast<AItem>(ItemTraceResult.Actor);
+		if(HitItem && HitItem->GetPickupWidget())
+		{
+			HitItem->GetPickupWidget()->SetVisibility(true);
+		}
+	}
 
 }
 

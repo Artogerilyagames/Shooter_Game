@@ -28,7 +28,7 @@ protected:
 	void LookUp(float Value);
 	void FireWeapon();
 	void Punch();
-	bool GetBeamEndLocation(const FVector& MuzzleSocketLocation, FVector& OutBeamLocation);
+	bool GetBeamEndLocation(const FVector& MuzzleSocketLocation, FVector& OutBeamLocation) const;
 	void AimingButtonPressed();
 	void AimingButtonReleased();
 	void CameraInterpZoom(float DeltaTime);
@@ -40,6 +40,8 @@ protected:
 	void StartFireTimer();
 	UFUNCTION()
 	void AutoFireReset();
+	/** Line Trace for Item under the crosshairs*/
+	bool TraceUnderCrosshairs(FHitResult& OutHitResult);
 
 	
 	void FinishCrosshairBulletFire();
