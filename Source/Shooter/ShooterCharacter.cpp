@@ -45,9 +45,13 @@ CrosshairShootingFactor(0.f),
 ShootTimeDuration(0.05f),
 bFiringBullet(false),
 //Automatic gun fire variables
+
 bFireButtonPressed(false),
 bShouldFire(true),
-AutomaticFireRate(0.1)
+AutomaticFireRate(0.1),
+bShouldTraceForItems(false)
+
+
 
 
 
@@ -411,6 +415,25 @@ bool AShooterCharacter::TraceUnderCrosshairs(FHitResult& OutHitResult, FVector& 
 	return false;
 }
 
+void AShooterCharacter::TraceForItems()
+{
+	if(bShouldTraceForItems)
+	{
+		FHitResult ItemTraceResult;
+		FVector HitLocation;
+		TraceUnderCrosshairs(ItemTraceResult, HitLocation);
+		if(ItemTraceResult.bBlockingHit)
+		{
+			AItem* HitItem = Cast<AItem>(ItemTraceResult.Actor);
+			if(HitItem && HitItem->GetPickupWidget())
+			{
+				HitItem->GetPickupWidget()->SetVisibility(true);
+			}
+		}
+		
+	}
+}
+
 void AShooterCharacter::StartCrosshairBulletfire()
 {
 	bFiringBullet =true;
@@ -434,18 +457,10 @@ void AShooterCharacter::Tick(float DeltaTime)
 	CameraInterpZoom(DeltaTime);
 	SetLookRates();
 	CalculateCrosshairSpread(DeltaTime);
+	TraceForItems();
 	
-	FHitResult ItemTraceResult;
-	FVector HitLocation;
-	TraceUnderCrosshairs(ItemTraceResult, HitLocation);
-	if(ItemTraceResult.bBlockingHit)
-	{
-		AItem* HitItem = Cast<AItem>(ItemTraceResult.Actor);
-		if(HitItem && HitItem->GetPickupWidget())
-		{
-			HitItem->GetPickupWidget()->SetVisibility(true);
-		}
-	}
+	
+	
 
 }
 
@@ -509,5 +524,19 @@ void AShooterCharacter::MoveRight(float Value)
 float AShooterCharacter::GetCrosshairSpreadmultiplier() const
 {
 	return CrosshairSpreadMultiplier;
+}
+
+void AShooterCharacter::IncrementOverlappedItemCount(int8 Amount)
+{
+	if(OverlappedItemCount + Amount <= 0 )
+	{
+		OverlappedItemCount = 0;
+		bShouldTraceForItems = false;
+	}
+	else
+	{
+		OverlappedItemCount += Amount;
+		bShouldTraceForItems = true;
+	}
 }
 

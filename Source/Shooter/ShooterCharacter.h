@@ -17,8 +17,8 @@ class SHOOTER_API AShooterCharacter : public ACharacter
 public:
 	// Sets default values for this character's properties
 	AShooterCharacter();
-// Shooter Game
-protected:
+	// Shooter Game
+	protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
@@ -42,10 +42,14 @@ protected:
 	void AutoFireReset();
 	/** Line Trace for Item under the crosshairs*/
 	bool TraceUnderCrosshairs(FHitResult& OutHitResult, FVector& OutHitLocation) const;
+	void TraceForItems();
 
 	
 	void FinishCrosshairBulletFire();
 	void StartCrosshairBulletfire();
+
+
+	
 	
 
 
@@ -65,9 +69,9 @@ private:
 	class USpringArmComponent* CameraBoom;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= Camera, meta =(AllowPrivateAccess = "true"))
 	UCameraComponent* FollowCamera;
-    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= Camera,meta =(AllowPrivateAccess = "true"))
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= Camera,meta =(AllowPrivateAccess = "true"))
 	float BaseTurnRate;
-    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= Camera,meta =(AllowPrivateAccess = "true"))
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= Camera,meta =(AllowPrivateAccess = "true"))
 	float BaseLookUpRate;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category= Camera,meta =(AllowPrivateAccess = "true"))
 	float HipTurnRate;
@@ -106,7 +110,7 @@ private:
 	UParticleSystem* BeamParticles;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= Combat,meta =(AllowPrivateAccess = "true"))
 	bool bAiming;
-    // Zoomed Field of View
+	// Zoomed Field of View
 	float CameraDefaultFOV;
 	float CameraZoomedFOV;
 	float CameraCurrentFOV;
@@ -134,6 +138,8 @@ private:
 	bool bShouldFire;
 	float AutomaticFireRate;
 	FTimerHandle AutoFireTimer;
+	bool bShouldTraceForItems;
+	int8 OverlappedItemCount;
 
 
 
@@ -145,6 +151,8 @@ public:
 	FORCEINLINE bool GetAiming() const {return bAiming;}
 	UFUNCTION(BlueprintCallable)
 	float GetCrosshairSpreadmultiplier() const;
+	FORCEINLINE int8 getOverlappedItemCount() const {return OverlappedItemCount;}
+	void IncrementOverlappedItemCount(int8 Amount);
 	
 
 };
