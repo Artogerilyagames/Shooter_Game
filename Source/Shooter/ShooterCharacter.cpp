@@ -429,8 +429,22 @@ void AShooterCharacter::TraceForItems()
 			{
 				HitItem->GetPickupWidget()->SetVisibility(true);
 			}
+			if(TraceHitItemLastFrame)
+			{
+				if(HitItem != TraceHitItemLastFrame)
+				{
+					TraceHitItemLastFrame->GetPickupWidget()->SetVisibility(false);
+				}
+			}
+			//Store a reference to HitItem for next frame
+			TraceHitItemLastFrame = HitItem;
+			
 		}
 		
+	}
+	else if (TraceHitItemLastFrame)
+	{
+		TraceHitItemLastFrame->GetPickupWidget()->SetVisibility(false);
 	}
 }
 
