@@ -41,7 +41,7 @@ protected:
 	UFUNCTION()
 	void AutoFireReset();
 	/** Line Trace for Item under the crosshairs*/
-	bool TraceUnderCrosshairs(FHitResult& OutHitResult);
+	bool TraceUnderCrosshairs(FHitResult& OutHitResult, FVector& OutHitLocation) const;
 
 	
 	void FinishCrosshairBulletFire();
