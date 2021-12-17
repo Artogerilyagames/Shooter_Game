@@ -44,6 +44,8 @@ public:
 	bool TraceUnderCrosshairs(FHitResult& OutHitResult, FVector& OutHitLocation) const;
 	void TraceForItems();
 
+	void SpawnDefaultWeapon();
+
 	
 	void FinishCrosshairBulletFire();
 	void StartCrosshairBulletfire();
@@ -143,6 +145,11 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= Items, meta =(AllowPrivateAccess = "true"));
 	// ReSharper disable once CppUE4ProbableMemoryIssuesWithUObject
 	class AItem* TraceHitItemLastFrame;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= Combat, meta =(AllowPrivateAccess = "true"));
+	// ReSharper disable once CppUE4ProbableMemoryIssuesWithUObject
+	class AWeapon* EquippedWeapon;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category=Combat, meta =(AllowPrivateAccess = "true"));
+	TSubclassOf<AWeapon> DefaultWeaponClass;
 
 
 

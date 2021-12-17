@@ -5,6 +5,7 @@
 
 
 #include "Item.h"
+#include "Weapon.h"
 #include "Camera/CameraComponent.h"
 #include "Components/WidgetComponent.h"
 #include "Engine/SkeletalMeshSocket.h"
@@ -97,6 +98,7 @@ void AShooterCharacter::BeginPlay()
 		CameraDefaultFOV = GetFollowCamera()->FieldOfView;
 		CameraCurrentFOV = CameraDefaultFOV;
 	}
+	SpawnDefaultWeapon();
 	
 	
 }
@@ -445,6 +447,34 @@ void AShooterCharacter::TraceForItems()
 	else if (TraceHitItemLastFrame)
 	{
 		TraceHitItemLastFrame->GetPickupWidget()->SetVisibility(false);
+	}
+}
+
+void AShooterCharacter::SpawnDefaultWeapon()
+{
+	if(DefaultWeaponClass)
+	{
+		AWeapon* DefaultWeapon = GetWorld()->SpawnActor<AWeapon>(DefaultWeaponClass);
+		const USkeletalMeshSocket* HandSocket = GetMesh()->GetSocketByName(FName("RightHandSocket"));
+		/*const USkeletalMeshSocket* spine_01 = GetMesh()->GetSocketByName(FName("UnequipSocket"));*/
+		if(HandSocket)
+		{
+			HandSocket->AttachActor(DefaultWeapon, GetMesh());
+			/*spine_01->AttachActor(DefaultWeapon, GetMesh()); */
+		}
+		EquippedWeapon = DefaultWeapon;
+	}
+	if(DefaultWeaponClass)
+	{
+		AWeapon* DefaultWeapon = GetWorld()->SpawnActor<AWeapon>(DefaultWeaponClass);
+		
+		const USkeletalMeshSocket* spine_01 = GetMesh()->GetSocketByName(FName("UnequipSocket"));
+		if(spine_01)
+		{
+			
+			spine_01->AttachActor(DefaultWeapon, GetMesh()); 
+		}
+		EquippedWeapon = DefaultWeapon;
 	}
 }
 
