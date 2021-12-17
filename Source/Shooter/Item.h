@@ -50,6 +50,8 @@ private:
 	class USphereComponent* AreaSphere;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category= "Item Properties", meta = (AllowPrivateAccess = "true"))
 	FString ItemName;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category= "Item Properties", meta = (AllowPrivateAccess = "true"))
+	int32 ItemCount;
 	
 	
 public:
