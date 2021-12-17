@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Weapon.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -44,7 +45,8 @@ public:
 	bool TraceUnderCrosshairs(FHitResult& OutHitResult, FVector& OutHitLocation) const;
 	void TraceForItems();
 
-	void SpawnDefaultWeapon();
+	AWeapon* SpawnDefaultWeapon();
+	void EquipWeapon(AWeapon* WeaponToEquip);
 
 	
 	void FinishCrosshairBulletFire();
@@ -147,9 +149,10 @@ private:
 	class AItem* TraceHitItemLastFrame;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= Combat, meta =(AllowPrivateAccess = "true"));
 	// ReSharper disable once CppUE4ProbableMemoryIssuesWithUObject
-	class AWeapon* EquippedWeapon;
+	AWeapon* EquippedWeapon;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category=Combat, meta =(AllowPrivateAccess = "true"));
 	TSubclassOf<AWeapon> DefaultWeaponClass;
+	
 
 
 
@@ -163,6 +166,7 @@ public:
 	float GetCrosshairSpreadmultiplier() const;
 	FORCEINLINE int8 getOverlappedItemCount() const {return OverlappedItemCount;}
 	void IncrementOverlappedItemCount(int8 Amount);
+	
 	
 
 };

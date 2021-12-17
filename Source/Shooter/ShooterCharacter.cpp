@@ -7,6 +7,8 @@
 #include "Item.h"
 #include "Weapon.h"
 #include "Camera/CameraComponent.h"
+#include "Components/BoxComponent.h"
+#include "Components/SphereComponent.h"
 #include "Components/WidgetComponent.h"
 #include "Engine/SkeletalMeshSocket.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -98,7 +100,8 @@ void AShooterCharacter::BeginPlay()
 		CameraDefaultFOV = GetFollowCamera()->FieldOfView;
 		CameraCurrentFOV = CameraDefaultFOV;
 	}
-	SpawnDefaultWeapon();
+	EquipWeapon(SpawnDefaultWeapon());
+
 	
 	
 }
@@ -450,19 +453,11 @@ void AShooterCharacter::TraceForItems()
 	}
 }
 
-void AShooterCharacter::SpawnDefaultWeapon()
+AWeapon* AShooterCharacter::SpawnDefaultWeapon()
 {
 	if(DefaultWeaponClass)
 	{
-		AWeapon* DefaultWeapon = GetWorld()->SpawnActor<AWeapon>(DefaultWeaponClass);
-		const USkeletalMeshSocket* HandSocket = GetMesh()->GetSocketByName(FName("RightHandSocket"));
-		/*const USkeletalMeshSocket* spine_01 = GetMesh()->GetSocketByName(FName("UnequipSocket"));*/
-		if(HandSocket)
-		{
-			HandSocket->AttachActor(DefaultWeapon, GetMesh());
-			/*spine_01->AttachActor(DefaultWeapon, GetMesh()); */
-		}
-		EquippedWeapon = DefaultWeapon;
+		return  GetWorld()->SpawnActor<AWeapon>(DefaultWeaponClass);
 	}
 	if(DefaultWeaponClass)
 	{
@@ -475,6 +470,24 @@ void AShooterCharacter::SpawnDefaultWeapon()
 			spine_01->AttachActor(DefaultWeapon, GetMesh()); 
 		}
 		EquippedWeapon = DefaultWeapon;
+	}
+
+	return nullptr;
+}
+
+void AShooterCharacter::EquipWeapon(AWeapon* WeaponToEquip)
+{
+	if(WeaponToEquip)
+	{
+		WeaponToEquip->GetAreaSphere()->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
+		WeaponToEquip->GetCollisionBox()->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
+		const USkeletalMeshSocket* HandSocket = GetMesh()->GetSocketByName
+		(FName("RightHandSocket"));
+		if(HandSocket)
+		{
+			HandSocket->AttachActor(WeaponToEquip, GetMesh());
+		}
+		EquippedWeapon = WeaponToEquip;
 	}
 }
 
