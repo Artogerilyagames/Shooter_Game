@@ -48,6 +48,9 @@ private:
 	class UWidgetComponent* PickupWidget;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category= "Item Properties", meta = (AllowPrivateAccess = "true"))
 	class USphereComponent* AreaSphere;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category= "Item Properties", meta = (AllowPrivateAccess = "true"))
+	FString ItemName;
+	
 	
 public:
 	FORCEINLINE UWidgetComponent* GetPickupWidget() const {return PickupWidget;}

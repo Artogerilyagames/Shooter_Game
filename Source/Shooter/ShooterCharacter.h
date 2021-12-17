@@ -141,6 +141,7 @@ private:
 	bool bShouldTraceForItems;
 	int8 OverlappedItemCount;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= Items, meta =(AllowPrivateAccess = "true"));
+	// ReSharper disable once CppUE4ProbableMemoryIssuesWithUObject
 	class AItem* TraceHitItemLastFrame;
 
 
