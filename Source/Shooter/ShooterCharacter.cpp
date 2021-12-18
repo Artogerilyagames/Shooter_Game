@@ -443,7 +443,6 @@ void AShooterCharacter::TraceForItems()
 			}
 			//Store a reference to HitItem for next frame
 			TraceHitItemLastFrame = HitItem;
-			
 		}
 		
 	}
@@ -457,21 +456,8 @@ AWeapon* AShooterCharacter::SpawnDefaultWeapon()
 {
 	if(DefaultWeaponClass)
 	{
-		return  GetWorld()->SpawnActor<AWeapon>(DefaultWeaponClass);
+	 return  GetWorld()->SpawnActor<AWeapon>(DefaultWeaponClass);
 	}
-	if(DefaultWeaponClass)
-	{
-		AWeapon* DefaultWeapon = GetWorld()->SpawnActor<AWeapon>(DefaultWeaponClass);
-		
-		const USkeletalMeshSocket* spine_01 = GetMesh()->GetSocketByName(FName("UnequipSocket"));
-		if(spine_01)
-		{
-			
-			spine_01->AttachActor(DefaultWeapon, GetMesh()); 
-		}
-		EquippedWeapon = DefaultWeapon;
-	}
-
 	return nullptr;
 }
 
@@ -487,7 +473,9 @@ void AShooterCharacter::EquipWeapon(AWeapon* WeaponToEquip)
 		{
 			HandSocket->AttachActor(WeaponToEquip, GetMesh());
 		}
+		
 		EquippedWeapon = WeaponToEquip;
+		EquippedWeapon->SetItemState(EItemState::EIS_Equipped);
 	}
 }
 
