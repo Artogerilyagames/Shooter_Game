@@ -74,6 +74,7 @@ public:
 	void MoveRight(float Value);
 	void SwapWeapon(AWeapon* WeaponToSwap);
 	void InitializeAmmoMap();
+	bool WeaponHasAmmo();
 
 private:
 
