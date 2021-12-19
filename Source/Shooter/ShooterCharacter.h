@@ -63,10 +63,6 @@ public:
 	void SelectButtonReleased();
 
 
-	
-	
-
-
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -106,9 +102,6 @@ private:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category= Camera,meta =(AllowPrivateAccess = "true"), meta = (ClampMin = "0.0", ClampMax = "1.0", UIMin = "0.0", UIMax = "1.0"))
 	float MouseAimingLookUpRate;
 	
-
-
-
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= Combat,meta =(AllowPrivateAccess = "true"))
 	class USoundCue* FireSound;
@@ -176,12 +169,6 @@ private:
 	int32 Starting9mmAmmo;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= Combat, meta =(AllowPrivateAccess = "true"));
 	int32 StartingARAmmo;
-	
-	
-
-
-
-
 
 public:
 	FORCEINLINE USpringArmComponent* GetCameraBoom() const {return CameraBoom;}
@@ -192,6 +179,4 @@ public:
 	FORCEINLINE int8 getOverlappedItemCount() const {return OverlappedItemCount;}
 	void IncrementOverlappedItemCount(int8 Amount);
 	
-	
-
 };
