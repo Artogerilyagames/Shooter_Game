@@ -15,8 +15,19 @@ enum class EAmmoType: uint8
 	EAT_9mm UMETA(DisplayName = "9mm"),
 	EAT_AR UMETA(DisplayName = "AssultRifle"),
 
-	EAT_MAX UMETA(DisplayName= "DefaultMAX"),
+	EAT_MAX UMETA(DisplayName= "DefaultMAX")
 };
+UENUM(BlueprintType)
+enum class ECombatState : uint8
+{
+	ECS_Unoccupied UMETA(DisplayName = "Unoccpied"),
+	ECS_FireTimerInProgress UMETA(DisplayName = "FireTimerInProgress"),
+	ECS_Reloading UMETA(DisplayName = "Reloading"),
+
+	ECS_MAX UMETA(DisplayName= "DefaultMAX")
+};
+
+
 UCLASS()
 class SHOOTER_API AShooterCharacter : public ACharacter
 {
@@ -61,6 +72,15 @@ public:
 	void DropWeapon();
 	void SelectButtonPressed();
 	void SelectButtonReleased();
+	
+	void MoveForward (float Value);
+	void MoveRight(float Value);
+	void SwapWeapon(AWeapon* WeaponToSwap);
+	void InitializeAmmoMap();
+	bool WeaponHasAmmo();
+	void PlayFireSound();
+	void SendBullet();
+	void PlayGunfireMontage();
 
 
 public:	
@@ -70,12 +90,7 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	void MoveForward (float Value);
-	void MoveRight(float Value);
-	void SwapWeapon(AWeapon* WeaponToSwap);
-	void InitializeAmmoMap();
-	bool WeaponHasAmmo();
-
+	
 private:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= Camera, meta =(AllowPrivateAccess = "true"))
@@ -170,6 +185,11 @@ private:
 	int32 Starting9mmAmmo;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= Combat, meta =(AllowPrivateAccess = "true"));
 	int32 StartingARAmmo;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= Combat, meta =(AllowPrivateAccess = "true"));
+	// ReSharper disable once UnrealHeaderToolParserError
+	ECombatState CombatState;
+
+
 
 public:
 	FORCEINLINE USpringArmComponent* GetCameraBoom() const {return CameraBoom;}
