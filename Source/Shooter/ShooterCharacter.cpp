@@ -492,6 +492,7 @@ void AShooterCharacter::DropWeapon()
 		FDetachmentTransformRules DetachementTransformRules(EDetachmentRule::KeepWorld, true);
 		EquippedWeapon->GetItemMesh()->DetachFromComponent(DetachementTransformRules);
 		EquippedWeapon->SetItemState(EItemState::EIS_Falling);
+		EquippedWeapon->ThrowWeapon();
 	}
 }
 
@@ -500,7 +501,7 @@ void AShooterCharacter::SelectButtonPressed()
 	DropWeapon();
 }
 
-void AShooterCharacter::SelectbuttonReleased()
+void AShooterCharacter::SelectButtonReleased()
 {
 	
 }
@@ -555,7 +556,7 @@ void AShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	PlayerInputComponent->BindAction("AimingButton", IE_Released, this, &AShooterCharacter::AimingButtonReleased);
 	
 	PlayerInputComponent->BindAction("Select", IE_Pressed, this, &AShooterCharacter::SelectButtonPressed);
-	PlayerInputComponent->BindAction("Select", IE_Released, this, &AShooterCharacter::SelectbuttonReleased);
+	PlayerInputComponent->BindAction("Select", IE_Released, this, &AShooterCharacter::SelectButtonReleased);
 
 
 
