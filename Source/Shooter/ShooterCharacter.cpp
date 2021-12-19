@@ -50,7 +50,10 @@ bFiringBullet(false),
 bFireButtonPressed(false),
 bShouldFire(true),
 AutomaticFireRate(0.1),
-bShouldTraceForItems(false)
+bShouldTraceForItems(false),
+
+Starting9mmAmmo(85),
+StartingARAmmo(120)
 
 
 
@@ -71,6 +74,9 @@ bShouldTraceForItems(false)
 	CameraBoom->TargetArmLength = 180.f;
 	CameraBoom->bUsePawnControlRotation = true;
 	CameraBoom->SocketOffset = FVector(0.f, 50.f, 70.f);
+	PickupWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("PickupWidget"));
+	PickupWidget->SetupAttachment(GetRootComponent());
+
 
 	FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
 	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
@@ -84,6 +90,7 @@ bShouldTraceForItems(false)
 	GetCharacterMovement()->RotationRate = FRotator(0.f, 540.f, 0.f);
 	GetCharacterMovement()->JumpZVelocity = 600.f;
 	GetCharacterMovement()->AirControl = 0.2f;
+	//cut
 
 	
 }
@@ -99,6 +106,7 @@ void AShooterCharacter::BeginPlay()
 		CameraCurrentFOV = CameraDefaultFOV;
 	}
 	EquipWeapon(SpawnDefaultWeapon());
+	InitializeAmmoMap();
 
 	
 	
@@ -598,6 +606,12 @@ void AShooterCharacter::SwapWeapon(AWeapon* WeaponToSwap)
 	EquipWeapon(WeaponToSwap);
 	TraceHitItem =nullptr;
 	TraceHitItemLastFrame = nullptr;
+}
+
+void AShooterCharacter::InitializeAmmoMap()
+{
+	AmmoMap.Add(EAmmoType::EAT_9mm, Starting9mmAmmo);
+	AmmoMap.Add(EAmmoType::EAT_AR, StartingARAmmo);
 }
 
 float AShooterCharacter::GetCrosshairSpreadmultiplier() const

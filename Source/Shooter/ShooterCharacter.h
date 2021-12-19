@@ -9,7 +9,14 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "ShooterCharacter.generated.h"
 
+UENUM(BlueprintType)
+enum class EAmmoType: uint8
+{
+	EAT_9mm UMETA(DisplayName = "9mm"),
+	EAT_AR UMETA(DisplayName = "AssultRifle"),
 
+	EAT_MAX UMETA(DisplayName= "DefaultMAX"),
+};
 UCLASS()
 class SHOOTER_API AShooterCharacter : public ACharacter
 {
@@ -70,6 +77,7 @@ public:
 	void MoveForward (float Value);
 	void MoveRight(float Value);
 	void SwapWeapon(AWeapon* WeaponToSwap);
+	void InitializeAmmoMap();
 
 private:
 
@@ -134,6 +142,9 @@ private:
 	float CrosshairAimFactor;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= Crosshairs,meta =(AllowPrivateAccess = "true"))
 	float CrosshairShootingFactor;
+	// Screen HUD
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category= "Item Properties", meta = (AllowPrivateAccess = "true"))
+	class UWidgetComponent* PickupWidget;
 
 	float ShootTimeDuration;
 	bool bFiringBullet;
@@ -159,6 +170,13 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= Combat, meta =(AllowPrivateAccess = "true"));
 	// ReSharper disable once CppUE4ProbableMemoryIssuesWithUObject
 	AItem* TraceHitItem;
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= Combat, meta =(AllowPrivateAccess = "true"));
+	TMap<EAmmoType, int32> AmmoMap;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= Combat, meta =(AllowPrivateAccess = "true"));
+	int32 Starting9mmAmmo;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= Combat, meta =(AllowPrivateAccess = "true"));
+	int32 StartingARAmmo;
+	
 	
 
 
