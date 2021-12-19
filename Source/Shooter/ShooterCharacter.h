@@ -50,7 +50,10 @@ public:
 
 	
 	void FinishCrosshairBulletFire();
-	void StartCrosshairBulletfire();
+	void StartCrosshairBulletFire();
+	void DropWeapon();
+	void SelectButtonPressed();
+	void SelectbuttonReleased();
 
 
 	

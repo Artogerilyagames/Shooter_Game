@@ -7,8 +7,6 @@
 #include "Item.h"
 #include "Weapon.h"
 #include "Camera/CameraComponent.h"
-#include "Components/BoxComponent.h"
-#include "Components/SphereComponent.h"
 #include "Components/WidgetComponent.h"
 #include "Engine/SkeletalMeshSocket.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -183,7 +181,7 @@ void AShooterCharacter::FireWeapon()
 		AnimInstance->Montage_JumpToSection(FName("StartFire"));
 	}
 	// Start bullet fire for crosshairs
-	StartCrosshairBulletfire();
+	StartCrosshairBulletFire();
 }
 
 void AShooterCharacter::Punch()
@@ -477,7 +475,7 @@ void AShooterCharacter::EquipWeapon(AWeapon* WeaponToEquip)
 	}
 }
 
-void AShooterCharacter::StartCrosshairBulletfire()
+void AShooterCharacter::StartCrosshairBulletFire()
 {
 	bFiringBullet =true;
 	GetWorldTimerManager().SetTimer
@@ -486,6 +484,26 @@ void AShooterCharacter::StartCrosshairBulletfire()
 		&AShooterCharacter::FinishCrosshairBulletFire,
 		ShootTimeDuration);
 }
+
+void AShooterCharacter::DropWeapon()
+{
+	if(EquippedWeapon)
+	{
+		FDetachmentTransformRules DetachementTransformRules(EDetachmentRule::KeepWorld, true);
+		EquippedWeapon->GetItemMesh()->DetachFromComponent(DetachementTransformRules);
+	}
+}
+
+void AShooterCharacter::SelectButtonPressed()
+{
+	DropWeapon();
+}
+
+void AShooterCharacter::SelectbuttonReleased()
+{
+	
+}
+
 void AShooterCharacter::FinishCrosshairBulletFire()
 {
 	bFiringBullet =false;
@@ -534,6 +552,9 @@ void AShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 
 	PlayerInputComponent->BindAction("AimingButton", IE_Pressed, this, &AShooterCharacter::AimingButtonPressed);
 	PlayerInputComponent->BindAction("AimingButton", IE_Released, this, &AShooterCharacter::AimingButtonReleased);
+	
+	PlayerInputComponent->BindAction("Select", IE_Pressed, this, &AShooterCharacter::SelectButtonPressed);
+	PlayerInputComponent->BindAction("Select", IE_Released, this, &AShooterCharacter::SelectbuttonReleased);
 
 
 
