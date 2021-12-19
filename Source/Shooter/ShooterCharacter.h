@@ -78,9 +78,12 @@ public:
 	void SwapWeapon(AWeapon* WeaponToSwap);
 	void InitializeAmmoMap();
 	bool WeaponHasAmmo();
+	/**FireWeapon function*/
 	void PlayFireSound();
 	void SendBullet();
 	void PlayGunfireMontage();
+	void ReloadButtonPressed();
+	void ReloadWeapon();
 
 
 public:	
@@ -188,6 +191,12 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= Combat, meta =(AllowPrivateAccess = "true"));
 	// ReSharper disable once UnrealHeaderToolParserError
 	ECombatState CombatState;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= Combat, meta = (AllowPrivateAccess = "true"));
+	UAnimMontage* ReloadMontage;
+	
+	UFUNCTION(BlueprintCallable)
+	void FinishReloading();
+	
 
 
 
