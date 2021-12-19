@@ -53,7 +53,7 @@ public:
 	void StartCrosshairBulletFire();
 	void DropWeapon();
 	void SelectButtonPressed();
-	void SelectbuttonReleased();
+	void SelectButtonReleased();
 
 
 	
@@ -69,6 +69,7 @@ public:
 
 	void MoveForward (float Value);
 	void MoveRight(float Value);
+	void SwapWeapon(AWeapon* WeaponToSwap);
 
 private:
 
@@ -155,6 +156,9 @@ private:
 	AWeapon* EquippedWeapon;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category=Combat, meta =(AllowPrivateAccess = "true"));
 	TSubclassOf<AWeapon> DefaultWeaponClass;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= Combat, meta =(AllowPrivateAccess = "true"));
+	// ReSharper disable once CppUE4ProbableMemoryIssuesWithUObject
+	AItem* TraceHitItem;
 	
 
 

@@ -28,7 +28,7 @@ void AWeapon::ThrowWeapon()
 	const FVector MeshForward{GetItemMesh()->GetForwardVector()};
 	const FVector MeshRight{GetItemMesh()->GetRightVector()};
 	FVector ImpulseDirection = MeshRight.RotateAngleAxis(-20.f, MeshForward);
-	float RandomRotation{30.f};
+	const float RandomRotation{30.f};
 	ImpulseDirection = ImpulseDirection.RotateAngleAxis(RandomRotation, FVector(0.f, 0.f, 1.f));
 	ImpulseDirection *= 2'000.f;
 	GetItemMesh()->AddImpulse(ImpulseDirection);
