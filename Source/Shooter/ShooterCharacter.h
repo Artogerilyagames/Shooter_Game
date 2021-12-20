@@ -78,6 +78,11 @@ public:
 	void ReloadButtonPressed();
 	void ReloadWeapon();
 	bool CarryingAmmo();
+	
+	UFUNCTION(BlueprintCallable)
+	void GrabClip();
+	UFUNCTION(BlueprintCallable)
+	void ReleasedClip();
 
 
 public:	
@@ -186,10 +191,16 @@ private:
 	// ReSharper disable once UnrealHeaderToolParserError
 	ECombatState CombatState;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= Combat, meta = (AllowPrivateAccess = "true"));
+	// ReSharper disable once CppUE4ProbableMemoryIssuesWithUObject
 	UAnimMontage* ReloadMontage;
 	
 	UFUNCTION(BlueprintCallable)
 	void FinishReloading();
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= Combat, meta = (AllowPrivateAccess = "true"));
+	FTransform ClipTransform;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= Combat, meta = (AllowPrivateAccess = "true"));
+	// ReSharper disable once CppUE4ProbableMemoryIssuesWithUObject
+	USceneComponent* HandSceneComponent;
 	
 
 

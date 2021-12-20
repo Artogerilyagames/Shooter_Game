@@ -691,6 +691,23 @@ bool AShooterCharacter::CarryingAmmo()
 	return false;
 }
 
+void AShooterCharacter::GrabClip() 
+{
+	if(EquippedWeapon == nullptr) return;
+	const int32 ClipBoneIndex{EquippedWeapon->GetItemMesh()->GetBoneIndex(EquippedWeapon->GetClipBoneName())};
+	ClipTransform = EquippedWeapon->GetItemMesh()->GetBoneTransform(ClipBoneIndex);
+	const FAttachmentTransformRules AttachmentRules(EAttachmentRule::KeepRelative, true);
+	HandSceneComponent->AttachToComponent(GetMesh(), AttachmentRules,FName(TEXT("hand_l")));
+	HandSceneComponent->SetWorldTransform((ClipTransform));
+
+	EquippedWeapon->SetMovingClip(true);
+}
+
+void AShooterCharacter::ReleasedClip()
+{
+	EquippedWeapon->SetMovingClip(false);
+}
+
 void AShooterCharacter::FinishReloading()
 {
 	
