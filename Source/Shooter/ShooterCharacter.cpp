@@ -492,10 +492,14 @@ void AShooterCharacter::SelectButtonPressed()
 {
 	if(TraceHitItem)
 	{
+		
+		if (TraceHitItem->GetPickupSound())
+		{
+			UGameplayStatics::PlaySound2D(this, TraceHitItem->GetPickupSound());
+		}
 		const auto TraceHitItWeapon = Cast<AWeapon>(TraceHitItem);
 		SwapWeapon(TraceHitItWeapon);
 	}
-	
 }
 
 void AShooterCharacter::SelectButtonReleased()
