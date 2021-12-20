@@ -693,8 +693,29 @@ bool AShooterCharacter::CarryingAmmo()
 
 void AShooterCharacter::FinishReloading()
 {
-	//To do
+	
 	CombatState = ECombatState::ECS_Unoccupied;
+	if(EquippedWeapon == nullptr) return;
+	const auto AmmoType{EquippedWeapon->GetAmmoType()};
+	if(AmmoMap.Contains(EquippedWeapon->GetAmmoType()))
+	{
+		int32 CarriedAmmo = AmmoMap[EquippedWeapon->GetAmmoType()];
+		const int32 MagEmptySpace =
+			EquippedWeapon->GetMagazineCapacity()
+		- EquippedWeapon->GetAmmo();
+		if(MagEmptySpace > CarriedAmmo)
+		{
+			EquippedWeapon->ReloadAmmo(CarriedAmmo);
+			CarriedAmmo = 0;
+			AmmoMap.Add(AmmoType, CarriedAmmo);
+		}
+		else
+		{
+			EquippedWeapon->ReloadAmmo(MagEmptySpace);
+			CarriedAmmo -= MagEmptySpace;
+			AmmoMap.Add(AmmoType, CarriedAmmo);
+		}
+	}
 }
 
 float AShooterCharacter::GetCrosshairSpreadmultiplier() const
