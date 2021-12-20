@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Item.h"
+#include "AmmoType.h"
 #include "Weapon.generated.h"
 
 UENUM(BlueprintType)
@@ -38,12 +39,18 @@ private:
 	int32 Ammo;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Weapon Properties", meta = (AllowPrivateAccess = "true"));
 	EWeaponType WeaponType;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Weapon Properties", meta = (AllowPrivateAccess = "true"));
+	EAmmoType AmmoType;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Weapon Properties", meta = (AllowPrivateAccess = "true"));
+	FName ReloadMontageSection;
 	
 public:
 	void ThrowWeapon();
 	FORCEINLINE int32 GetAmmo() const {return Ammo;}
 	void DecrementAmmo();
 	FORCEINLINE EWeaponType GetWeaponType() const {return WeaponType;}
+	FORCEINLINE EAmmoType GetAmmoType() const {return AmmoType;}
+	FORCEINLINE FName GetReloadMontageSection() const {return ReloadMontageSection;}
 
 
 	
