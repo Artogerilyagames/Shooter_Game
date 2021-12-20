@@ -57,6 +57,8 @@ StartingARAmmo(120),
 // Combat Variables
 CombatState(ECombatState::ECS_Unoccupied)
 
+
+
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -82,7 +84,8 @@ CombatState(ECombatState::ECS_Unoccupied)
 	GetCharacterMovement()->RotationRate = FRotator(0.f, 540.f, 0.f);
 	GetCharacterMovement()->JumpZVelocity = 600.f;
 	GetCharacterMovement()->AirControl = 0.2f;
-	//cut
+	//Create Hand Scene Component
+	HandSceneComponent = CreateDefaultSubobject<USceneComponent>(TEXT("HandSceneComp"));
 
 	
 }
@@ -694,6 +697,7 @@ bool AShooterCharacter::CarryingAmmo()
 void AShooterCharacter::GrabClip() 
 {
 	if(EquippedWeapon == nullptr) return;
+	if(HandSceneComponent == nullptr) return;
 	const int32 ClipBoneIndex{EquippedWeapon->GetItemMesh()->GetBoneIndex(EquippedWeapon->GetClipBoneName())};
 	ClipTransform = EquippedWeapon->GetItemMesh()->GetBoneTransform(ClipBoneIndex);
 	const FAttachmentTransformRules AttachmentRules(EAttachmentRule::KeepRelative, true);
