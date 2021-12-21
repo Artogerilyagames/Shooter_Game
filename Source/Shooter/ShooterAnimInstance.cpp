@@ -79,20 +79,37 @@ void UShooterAnimInstance::TurnInPlace()
 	if(Speed > 0)
 	{
 		// Dont want to Turn in Place; Character is moving
+		RootYawOffset = 0.f;
+		CharacterYaw =  ShooterCharacter->GetActorRotation().Yaw;
+		CharacterYawLastFrame = CharacterYaw;
+		RotationCurveLastFrame = 0.f;
+		RotationCurve = 0.f;
 	}
 	else
 	{
 		CharacterYawLastFrame = CharacterYaw;
 		CharacterYaw = ShooterCharacter->GetActorRotation().Yaw;
 		const float YawDelta{CharacterYaw - CharacterYawLastFrame };
-		RootYawOffset -= YawDelta;
-		if(GEngine) GEngine->AddOnScreenDebugMessage
-		(1, -1,
-			FColor::Blue,
-			FString::Printf(TEXT("CharacterYaw: %f"),CharacterYaw));
-		if(GEngine) GEngine->AddOnScreenDebugMessage
-		(2, -1,
-			FColor::Red,
-			FString::Printf(TEXT("RootYawOffset: %f"),RootYawOffset));
+		// Root Yaw Offset, Update and clamped to [-180,180]
+		RootYawOffset = UKismetMathLibrary::NormalizeAxis(RootYawOffset - YawDelta);
+
+		const float Turning{GetCurveValue(TEXT("Turning"))};
+		if(Turning > 0)
+		{
+			RotationCurveLastFrame = RotationCurve;
+			RotationCurve = GetCurveValue(TEXT("CurveRotation"));
+			// ReSharper disable once CppDeclaratorNeverUsed
+			const float DeltaRotation{RotationCurve - RotationCurveLastFrame};
+
+			RootYawOffset > 0 ?  RootYawOffset -= DeltaRotation : RootYawOffset += DeltaRotation;
+			const float ABSRootYawOffset{FMath::Abs(RootYawOffset)};
+			if(ABSRootYawOffset > 90.f)
+			{
+				const float YawExcess{ABSRootYawOffset - 90.f};
+				RootYawOffset > 0? RootYawOffset -= YawExcess : RootYawOffset += YawExcess;
+			}
+		}
+		if(GEngine) GEngine->AddOnScreenDebugMessage(1, -1, FColor::Cyan, FString::Printf(TEXT("")));
+		
 	}
 }
