@@ -48,5 +48,9 @@ private:
 	float RotationCurve;
 	
 	float RotationCurveLastFrame;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= Movement, meta =(AllowPrivateAccess = "true"))
+	float Pitch;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= Movement, meta =(AllowPrivateAccess = "true"))
+	bool bReloading;
 	
 };

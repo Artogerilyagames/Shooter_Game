@@ -211,7 +211,9 @@ public:
 	FORCEINLINE bool GetAiming() const {return bAiming;}
 	UFUNCTION(BlueprintCallable)
 	float GetCrosshairSpreadmultiplier() const;
-	FORCEINLINE int8 getOverlappedItemCount() const {return OverlappedItemCount;}
+	FORCEINLINE int8 GetOverlappedItemCount() const {return OverlappedItemCount;}
 	void IncrementOverlappedItemCount(int8 Amount);
+
+	FORCEINLINE ECombatState GetCombatState() const {return CombatState;}
 	
 };
