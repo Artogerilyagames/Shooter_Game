@@ -85,6 +85,7 @@ public:
 	void GrabClip();
 	UFUNCTION(BlueprintCallable)
 	void ReleasedClip();
+	void CrouchButtonPressed();
 
 
 public:	
@@ -205,6 +206,8 @@ private:
 	USceneComponent* HandSceneComponent;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= Combat,meta =(AllowPrivateAccess = "true"))
 	bool bCrosshairsTriger;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category= Movement, meta =(AllowPrivateAccess = "true"))
+	bool bCrouching;
 	
 
 
@@ -219,5 +222,6 @@ public:
 	void IncrementOverlappedItemCount(int8 Amount);
 
 	FORCEINLINE ECombatState GetCombatState() const {return CombatState;}
+	FORCEINLINE bool GetCrouching() const {return bCrouching;}
 	
 };

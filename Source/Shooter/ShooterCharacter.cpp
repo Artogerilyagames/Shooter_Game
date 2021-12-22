@@ -58,7 +58,8 @@ Starting9mmAmmo(85),
 StartingARAmmo(120),
 CombatState(ECombatState::ECS_Unoccupied),
 // Combat Variables
-bCrosshairsTriger(false)
+bCrosshairsTriger(false),
+bCrouching(false)
 
 
 
@@ -568,6 +569,9 @@ void AShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	
 	PlayerInputComponent->BindAction("ReloadButton", IE_Pressed, this, &AShooterCharacter::ReloadButtonPressed);
 
+	PlayerInputComponent->BindAction("Crouch", IE_Pressed, this, &AShooterCharacter::CrouchButtonPressed);
+
+
 
 	
 }
@@ -732,6 +736,14 @@ void AShooterCharacter::GrabClip()
 void AShooterCharacter::ReleasedClip()
 {
 	EquippedWeapon->SetMovingClip(false);
+}
+
+void AShooterCharacter::CrouchButtonPressed()
+{
+	if(!GetCharacterMovement()->IsFalling())
+	{
+		bCrouching = !bCrouching;
+	}
 }
 
 void AShooterCharacter::FinishReloading()
