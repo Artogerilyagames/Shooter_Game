@@ -78,6 +78,8 @@ public:
 	void ReloadButtonPressed();
 	void ReloadWeapon();
 	bool CarryingAmmo();
+	void ShowCrosshairs();
+	void HideCrosshairs();
 	
 	UFUNCTION(BlueprintCallable)
 	void GrabClip();
@@ -201,6 +203,8 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= Combat, meta = (AllowPrivateAccess = "true"));
 	// ReSharper disable once CppUE4ProbableMemoryIssuesWithUObject
 	USceneComponent* HandSceneComponent;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= Combat,meta =(AllowPrivateAccess = "true"))
+	bool bCrosshairsTriger;
 	
 
 

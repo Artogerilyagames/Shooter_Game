@@ -51,11 +51,14 @@ bFireButtonPressed(false),
 bShouldFire(true),
 AutomaticFireRate(0.1),
 bShouldTraceForItems(false),
-
 Starting9mmAmmo(85),
+
+
+
 StartingARAmmo(120),
+CombatState(ECombatState::ECS_Unoccupied),
 // Combat Variables
-CombatState(ECombatState::ECS_Unoccupied)
+bCrosshairsTriger(false)
 
 
 
@@ -152,6 +155,7 @@ void AShooterCharacter::FireWeapon()
 	
 	if(WeaponHasAmmo())
 	{
+		
 		PlayFireSound();
 		SendBullet();
 		PlayGunfireMontage();
@@ -216,11 +220,13 @@ bool AShooterCharacter::GetBeamEndLocation
 void AShooterCharacter::AimingButtonPressed()
 {
 	bAiming = true;
+	bCrosshairsTriger = true;
 }
 
 void AShooterCharacter::AimingButtonReleased()
 {
 	bAiming = false;
+	bCrosshairsTriger = false;
 }
 
 void AShooterCharacter::CameraInterpZoom(float DeltaTime)
@@ -335,6 +341,7 @@ void AShooterCharacter::FireButtonPressed()
 {
 	bFireButtonPressed = true;
 	FireWeapon();
+	ShowCrosshairs();
 	
 	
 }
@@ -342,6 +349,7 @@ void AShooterCharacter::FireButtonPressed()
 void AShooterCharacter::FireButtonReleased()
 {
 	bFireButtonPressed = false;
+	HideCrosshairs();
 }
 
 void AShooterCharacter::StartFireTimer()
@@ -695,6 +703,17 @@ bool AShooterCharacter::CarryingAmmo()
 		return AmmoMap[AmmoType] > 0;
 	}
 	return false;
+}
+
+void AShooterCharacter::ShowCrosshairs()
+{
+   bCrosshairsTriger = true;
+
+}
+
+void AShooterCharacter::HideCrosshairs()
+{
+	bCrosshairsTriger = false;
 }
 
 void AShooterCharacter::GrabClip() 
