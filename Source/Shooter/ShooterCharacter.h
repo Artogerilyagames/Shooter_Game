@@ -135,7 +135,7 @@ private:
 	UParticleSystem* ImpactParticles;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= Combat,meta =(AllowPrivateAccess = "true"))
 	UParticleSystem* BeamParticles;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= Combat,meta =(AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= Combat,meta =(AllowPrivateAccess = "true"))
 	bool bAiming;
 	// Zoomed Field of View
 	float CameraDefaultFOV;
