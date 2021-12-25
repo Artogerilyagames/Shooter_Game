@@ -87,6 +87,8 @@ public:
 	void ReleasedClip();
 	void CrouchButtonPressed();
 
+	virtual void Jump() override;
+
 
 public:	
 	// Called every frame
@@ -208,6 +210,10 @@ private:
 	bool bCrosshairsTriger;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category= Movement, meta =(AllowPrivateAccess = "true"))
 	bool bCrouching;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= Combat, meta = (AllowPrivateAccess = "true"));
+	float BaseMovementSpeed;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= Combat, meta = (AllowPrivateAccess = "true"));
+	float CrouchMovementSpeed;
 	
 
 
