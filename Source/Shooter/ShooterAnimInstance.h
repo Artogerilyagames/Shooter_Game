@@ -73,5 +73,9 @@ private:
 	float YawDelta;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category= Crouching, meta = (AllowPrivateAccess = "true"))
 	bool bCrouching;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category= Combat, meta = (AllowPrivateAccess = "true"))
+	float RecoilWeight;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category= Combat, meta = (AllowPrivateAccess = "true"))
+	bool bTurningInPlace;
 	
 };

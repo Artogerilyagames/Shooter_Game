@@ -25,7 +25,9 @@ bReloading(false),
 OffsetState(EOffsetState::EOS_Hip),
 CharacterRotation(FRotator(0.f)),
 CharacterRotationLastFrame(FRotator(0.f)),
-YawDelta(0.f)
+YawDelta(0.f),
+RecoilWeight(1.0),
+bTurningInPlace(false)
 {
 	
 }
@@ -116,6 +118,7 @@ void UShooterAnimInstance::TurnInPlace()
 		const float Turning{GetCurveValue(TEXT("Turning"))};
 		if(Turning > 0)
 		{
+			bTurningInPlace = false;
 			RotationCurveLastFrame = RotationCurve;
 			RotationCurve = GetCurveValue(TEXT("CurveRotation"));
 			// ReSharper disable once CppDeclaratorNeverUsed
@@ -129,9 +132,54 @@ void UShooterAnimInstance::TurnInPlace()
 				RootYawOffset > 0? RootYawOffset -= YawExcess : RootYawOffset += YawExcess;
 			}
 		}
-		if(GEngine) GEngine->AddOnScreenDebugMessage(1, -1, FColor::Cyan, FString::Printf(TEXT("")));
 		
+		//if(GEngine) GEngine->AddOnScreenDebugMessage(1, -1, FColor::Cyan, FString::Printf(TEXT("")));
+		else
+		{
+			bTurningInPlace = true;
+		}
 	}
+	//Set the Recoil Weight
+	if(bTurningInPlace)
+	{
+		if(bReloading)
+		{
+			RecoilWeight = 1.f;
+		}
+		else
+		{
+			RecoilWeight = 0.1f;
+		}
+	}
+	else //not Turning in Place
+	{
+		if(bCrouching)
+		{
+			if(bReloading)
+			{
+				RecoilWeight = 1.f;
+			}
+			else
+			{
+				RecoilWeight = 0.f;
+			}
+		}
+		else
+		{
+			if(bAiming || bReloading)
+			{
+				RecoilWeight = 1.f;
+			}
+			else
+			{
+				RecoilWeight = 0.5f;
+			}
+		}
+	}	
+	
+	
+		
+	
 }
 
 void UShooterAnimInstance::Lean(float DeltaTime)
