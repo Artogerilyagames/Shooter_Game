@@ -40,6 +40,7 @@ void UShooterAnimInstance::UpdateAnimationProperties(float DeltaTime)
 	}
 	if(ShooterCharacter)
 	{
+		bProne = ShooterCharacter->GetProne();
 		bCrouching = ShooterCharacter->GetCrouching();
 		bReloading = ShooterCharacter->GetCombatState() == ECombatState::ECS_Reloading;
 		FVector Velocity{ShooterCharacter->GetVelocity()};

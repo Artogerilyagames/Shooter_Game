@@ -86,6 +86,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void ReleasedClip();
 	void CrouchButtonPressed();
+	void ProneButtonPressed();
 
 	virtual void Jump() override;
 
@@ -210,6 +211,8 @@ private:
 	bool bCrosshairsTriger;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category= Movement, meta =(AllowPrivateAccess = "true"))
 	bool bCrouching;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category= Movement, meta =(AllowPrivateAccess = "true"))
+	bool bProne;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= Combat, meta = (AllowPrivateAccess = "true"));
 	float BaseMovementSpeed;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= Combat, meta = (AllowPrivateAccess = "true"));
@@ -229,5 +232,6 @@ public:
 
 	FORCEINLINE ECombatState GetCombatState() const {return CombatState;}
 	FORCEINLINE bool GetCrouching() const {return bCrouching;}
+	FORCEINLINE bool GetProne() const {return bProne;}
 	
 };

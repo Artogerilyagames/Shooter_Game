@@ -61,7 +61,8 @@ CombatState(ECombatState::ECS_Unoccupied),
 bCrosshairsTriger(false),
 bCrouching(false),
 BaseMovementSpeed(650.f),
-CrouchMovementSpeed(300.f)
+CrouchMovementSpeed(300.f),
+bProne(false)
 
 
 
@@ -573,6 +574,8 @@ void AShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	PlayerInputComponent->BindAction("ReloadButton", IE_Pressed, this, &AShooterCharacter::ReloadButtonPressed);
 
 	PlayerInputComponent->BindAction("Crouch", IE_Pressed, this, &AShooterCharacter::CrouchButtonPressed);
+	PlayerInputComponent->BindAction("Prone", IE_Pressed, this, &AShooterCharacter::ProneButtonPressed);
+
 
 
 
@@ -754,6 +757,14 @@ void AShooterCharacter::CrouchButtonPressed()
 	else
 	{
 		GetCharacterMovement()->MaxWalkSpeed = BaseMovementSpeed;
+	}
+}
+
+void AShooterCharacter::ProneButtonPressed()
+{
+	if(!GetCharacterMovement()->IsFalling())
+	{
+		bProne = !bProne;
 	}
 }
 
