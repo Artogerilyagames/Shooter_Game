@@ -69,7 +69,8 @@ StandingCapsuleHalfHeight(88.f),
 CrouchingCapsuleHalfHeight(44.f),
 ProneCapsuleHalfHeight(20),
 BaseGroundFriction(2.f),
-CrouchingGroundFriction(100.f)
+CrouchingGroundFriction(100.f),
+bAimingButtonPressed(false)
 
 
 
@@ -234,14 +235,17 @@ bool AShooterCharacter::GetBeamEndLocation
 
 void AShooterCharacter::AimingButtonPressed()
 {
-	bAiming = true;
-	bCrosshairsTriger = true;
+	bAimingButtonPressed = true;
+	if(CombatState != ECombatState::ECS_Reloading)
+	{
+		Aim();
+	}
 }
 
 void AShooterCharacter::AimingButtonReleased()
 {
-	bAiming = false;
-	bCrosshairsTriger = false;
+	bAimingButtonPressed = false;
+	StopAiming();
 }
 
 void AShooterCharacter::CameraInterpZoom(float DeltaTime)
@@ -699,10 +703,15 @@ void AShooterCharacter::ReloadButtonPressed()
 void AShooterCharacter::ReloadWeapon()
 {
 	if(CombatState != ECombatState::ECS_Unoccupied) return;
+	
 	if(EquippedWeapon == nullptr) return;
 	
 	if(CarryingAmmo() && !EquippedWeapon->ClipIsFull())
 	{
+		if (bAiming)
+		{
+			StopAiming();
+		}
 
 		CombatState = ECombatState::ECS_Reloading;
 		UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
@@ -825,10 +834,33 @@ void AShooterCharacter::Jump()
 	}
 }
 
+void AShooterCharacter::Aim()
+{
+	bAiming = true;
+	GetCharacterMovement()->MaxWalkSpeed = CrouchMovementSpeed;
+	bCrosshairsTriger = true;
+}
+
+void AShooterCharacter::StopAiming()
+{
+	bAiming = false;
+	bCrosshairsTriger = false;
+	if(!bCrouching)
+	{
+		GetCharacterMovement()->MaxWalkSpeed = BaseMovementSpeed;
+	}
+	
+	
+}
+
 void AShooterCharacter::FinishReloading()
 {
 	
 	CombatState = ECombatState::ECS_Unoccupied;
+	if(bAimingButtonPressed)
+	{
+		Aim();
+	}
 	if(EquippedWeapon == nullptr) return;
 	const auto AmmoType{EquippedWeapon->GetAmmoType()};
 	if(AmmoMap.Contains(EquippedWeapon->GetAmmoType()))

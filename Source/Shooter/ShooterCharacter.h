@@ -91,6 +91,9 @@ public:
 
 	virtual void Jump() override;
 
+	void Aim();
+	void StopAiming();
+
 
 public:	
 	// Called every frame
@@ -234,6 +237,8 @@ private:
 	float BaseGroundFriction;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= Movement, meta = (AllowPrivateAccess = "true"));
 	float CrouchingGroundFriction;
+
+	bool bAimingButtonPressed;
 	
 
 
