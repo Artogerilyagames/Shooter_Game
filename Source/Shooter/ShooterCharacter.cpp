@@ -7,6 +7,7 @@
 #include "Item.h"
 #include "Weapon.h"
 #include "Camera/CameraComponent.h"
+#include "Components/CapsuleComponent.h"
 #include "Components/WidgetComponent.h"
 #include "Engine/SkeletalMeshSocket.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -63,7 +64,14 @@ bCrouching(false),
 bProne(false),
 BaseMovementSpeed(650.f),
 CrouchMovementSpeed(300.f),
-ProneMovementSpeed(100)
+ProneMovementSpeed(100),
+StandingCapsuleHalfHeight(88.f),
+CrouchingCapsuleHalfHeight(44.f),
+ProneCapsuleHalfHeight(20),
+BaseGroundFriction(2.f),
+CrouchingGroundFriction(100.f)
+
+
 
 
 
@@ -536,6 +544,7 @@ void AShooterCharacter::Tick(float DeltaTime)
 	SetLookRates();
 	CalculateCrosshairSpread(DeltaTime);
 	TraceForItems();
+	InterpCapsuleHalfHeight(DeltaTime);
 	
 	
 	
@@ -755,10 +764,13 @@ void AShooterCharacter::CrouchButtonPressed()
 	if(bCrouching)
 	{
 		GetCharacterMovement()->MaxWalkSpeed = CrouchMovementSpeed;
+		GetCharacterMovement()->GroundFriction = CrouchingGroundFriction;
+		
 	}
 	else
 	{
 		GetCharacterMovement()->MaxWalkSpeed = BaseMovementSpeed;
+		GetCharacterMovement()->GroundFriction = BaseGroundFriction;
 	}
 }
 
@@ -777,6 +789,26 @@ void AShooterCharacter::ProneButtonPressed()
 		GetCharacterMovement()->MaxWalkSpeed = BaseMovementSpeed;
 	}
 }
+
+void AShooterCharacter::InterpCapsuleHalfHeight(float DeltaTime) const
+{
+	
+	float TargetCapsuleHalfHeight;
+	if(bCrouching || bProne)
+	{
+		TargetCapsuleHalfHeight = CrouchingCapsuleHalfHeight;
+	}
+	else
+	{
+		TargetCapsuleHalfHeight = StandingCapsuleHalfHeight;
+	}
+	const float InterpHalfHeight{FMath::FInterpTo(GetCapsuleComponent()->GetScaledCapsuleHalfHeight(),TargetCapsuleHalfHeight,DeltaTime,20.f)};
+	const float DeltaCapsuleHalfHeight{InterpHalfHeight - GetCapsuleComponent()->GetScaledCapsuleHalfHeight()};
+	const FVector MeshOffset{0.f, 0.f, - DeltaCapsuleHalfHeight};
+	GetMesh()->AddLocalOffset(MeshOffset);
+	GetCapsuleComponent()->SetCapsuleHalfHeight(InterpHalfHeight);
+}
+
 
 void AShooterCharacter::Jump()
 {
