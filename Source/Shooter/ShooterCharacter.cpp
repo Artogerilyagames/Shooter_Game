@@ -60,9 +60,11 @@ CombatState(ECombatState::ECS_Unoccupied),
 // Combat Variables
 bCrosshairsTriger(false),
 bCrouching(false),
+bProne(false),
 BaseMovementSpeed(650.f),
 CrouchMovementSpeed(300.f),
-bProne(false)
+ProneMovementSpeed(100)
+
 
 
 
@@ -766,13 +768,23 @@ void AShooterCharacter::ProneButtonPressed()
 	{
 		bProne = !bProne;
 	}
+	if (bProne)
+	{
+		GetCharacterMovement()->MaxWalkSpeed = ProneMovementSpeed;
+	}
+	else
+	{
+		GetCharacterMovement()->MaxWalkSpeed = BaseMovementSpeed;
+	}
 }
 
 void AShooterCharacter::Jump()
 {
-	if(bCrouching)
+	if(bCrouching || bProne)
 	{
 		bCrouching = false;
+		bProne = false;
+		
 		GetCharacterMovement()->MaxWalkSpeed = BaseMovementSpeed;
 	}
 	else

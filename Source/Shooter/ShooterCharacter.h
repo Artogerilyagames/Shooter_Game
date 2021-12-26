@@ -217,6 +217,8 @@ private:
 	float BaseMovementSpeed;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= Combat, meta = (AllowPrivateAccess = "true"));
 	float CrouchMovementSpeed;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= Combat, meta = (AllowPrivateAccess = "true"));
+	float ProneMovementSpeed;
 	
 
 
