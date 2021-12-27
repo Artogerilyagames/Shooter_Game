@@ -236,8 +236,10 @@ bool AShooterCharacter::GetBeamEndLocation
 void AShooterCharacter::AimingButtonPressed()
 {
 	bAimingButtonPressed = true;
+
 	if(CombatState != ECombatState::ECS_Reloading)
 	{
+		ShowCrosshairs();
 		Aim();
 	}
 }
@@ -245,6 +247,7 @@ void AShooterCharacter::AimingButtonPressed()
 void AShooterCharacter::AimingButtonReleased()
 {
 	bAimingButtonPressed = false;
+	HideCrosshairs();
 	StopAiming();
 }
 
@@ -837,17 +840,19 @@ void AShooterCharacter::Jump()
 void AShooterCharacter::Aim()
 {
 	bAiming = true;
+    ShowCrosshairs();
 	GetCharacterMovement()->MaxWalkSpeed = CrouchMovementSpeed;
-	bCrosshairsTriger = true;
+	
 }
 
 void AShooterCharacter::StopAiming()
 {
 	bAiming = false;
-	bCrosshairsTriger = false;
+	
 	if(!bCrouching)
 	{
 		GetCharacterMovement()->MaxWalkSpeed = BaseMovementSpeed;
+		HideCrosshairs();
 	}
 	
 	
