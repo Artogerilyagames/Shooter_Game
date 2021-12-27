@@ -247,8 +247,8 @@ void AShooterCharacter::AimingButtonPressed()
 void AShooterCharacter::AimingButtonReleased()
 {
 	bAimingButtonPressed = false;
-	HideCrosshairs();
 	StopAiming();
+	HideCrosshairs();
 }
 
 void AShooterCharacter::CameraInterpZoom(float DeltaTime)
@@ -371,6 +371,15 @@ void AShooterCharacter::FireButtonPressed()
 void AShooterCharacter::FireButtonReleased()
 {
 	bFireButtonPressed = false;
+	if(bAiming)
+	{
+		ShowCrosshairs();
+	}
+	else
+	{
+		HideCrosshairs();
+	}
+	
 	
 }
 
