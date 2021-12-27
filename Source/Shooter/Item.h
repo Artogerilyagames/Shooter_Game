@@ -91,7 +91,7 @@ private:
 	TArray<bool> ActiveStars;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= "Item Properties", meta = (AllowPrivateAccess = "true"))
 	EItemState ItemState;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= "Item Properties", meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Item Properties", meta = (AllowPrivateAccess = "true"))
 	class UCurveFloat* ItemZCurve;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= "Item Properties", meta = (AllowPrivateAccess = "true")) 
 	FVector ItemInterpStartLocation;
@@ -103,7 +103,7 @@ private:
 	FTimerHandle ItemInterpTimer;
 	class AShooterCharacter* Character;
 	
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category= "Item Properties", meta = (AllowPrivateAccess = "true")) 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category= "Item Properties", meta = (AllowPrivateAccess = "true"))
 	float ZCurveTime;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Item Properties", meta = (AllowPrivateAccess = "true"))
@@ -119,6 +119,7 @@ public:
 	FORCEINLINE void SetItemState(EItemState State);
 	FORCEINLINE USkeletalMeshComponent* GetItemMesh() const {return ItemMesh;}
 	void StartItemCurve(AShooterCharacter* Char);
+	
 
 	
 	FORCEINLINE USoundCue* GetPickupSound() const {return PickupSound;}
