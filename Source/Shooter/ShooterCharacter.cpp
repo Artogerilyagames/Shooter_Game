@@ -15,6 +15,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Particles/ParticleSystemComponent.h"
 #include "Sound/SoundCue.h"
+#include "Ammo.h"
 
 
 // Sets default values
@@ -868,6 +869,25 @@ void AShooterCharacter::StopAiming()
 	
 }
 
+void AShooterCharacter::PickupAmmo(AAmmo* Ammo)
+{
+	if(AmmoMap.Find(Ammo->GetAmmoType()))
+	{
+		int32 AmmoCount{AmmoMap[Ammo->GetAmmoType()]};
+		AmmoCount += Ammo->GetItemCount();
+		AmmoMap[Ammo->GetAmmoType()] = AmmoCount;
+	}
+	if(EquippedWeapon->GetAmmoType() == Ammo->GetAmmoType())
+	{
+		if(EquippedWeapon->GetAmmo() == 0)
+		{
+			ReloadWeapon();
+		}
+	}
+	Ammo->Destroy();
+}
+
+
 void AShooterCharacter::FinishReloading()
 {
 	
@@ -929,10 +949,19 @@ FVector AShooterCharacter::GetCameraInterpLocation()
 
 void AShooterCharacter::GetPickupItem(AItem* Item)
 {
+	if(Item->GetEquipSound())
+	{
+		UGameplayStatics::PlaySound2D(this, Item->GetEquipSound());
+	}
 	auto Weapon = Cast<AWeapon>(Item);
 	if(Weapon)
 	{
 		SwapWeapon(Weapon);
+	}
+	auto Ammo = Cast<AAmmo>(Item);
+	if(Ammo)
+	{
+		PickupAmmo(Ammo);
 	}
 }
 

@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Ammo.h"
 #include "Weapon.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/Character.h"
@@ -93,6 +94,7 @@ public:
 
 	void Aim();
 	void StopAiming();
+	void PickupAmmo(class AAmmo* Ammo);
 	
 
 
