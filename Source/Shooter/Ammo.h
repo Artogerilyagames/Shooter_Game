@@ -20,16 +20,32 @@ public:
 
 	virtual void Tick(float DeltaTime) override;
 
+	
+
 protected:
 	virtual void BeginPlay() override;
 
 	virtual void SetItemProperties(EItemState State) override;
+
+	UFUNCTION()
+   void AmmoSphereOverlap
+	(UPrimitiveComponent* OverlappedComponent,
+	   AActor* OtherActor,
+	   UPrimitiveComponent* OtherComponent,
+	   int32 OtherBodyIndex,
+	   bool bFromSweep,
+	   const FHitResult& SweepResult);
+
 
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= Ammo, meta = (AllowPrivateAccess = "true"))
 	UStaticMeshComponent* AmmoMesh;
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= Ammo, meta = (AllowPrivateAccess = "true"))
 	EAmmoType AmmoType;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= Ammo, meta = (AllowPrivateAccess = "true"))
+	UTexture2D* AmmoIconTexture;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category= Ammo,meta = (AllowPrivateAccess = "true"))
+	class USphereComponent* AmmoCollisionSphere;
 	
 	
 	
