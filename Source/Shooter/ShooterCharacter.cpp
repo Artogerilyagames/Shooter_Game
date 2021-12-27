@@ -371,7 +371,7 @@ void AShooterCharacter::FireButtonPressed()
 void AShooterCharacter::FireButtonReleased()
 {
 	bFireButtonPressed = false;
-	HideCrosshairs();
+	
 }
 
 void AShooterCharacter::StartFireTimer()
