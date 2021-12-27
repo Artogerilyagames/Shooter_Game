@@ -58,6 +58,8 @@ protected:
 	void SetActiveStars();
 	virtual void SetItemProperties(EItemState State);
 
+	void FinishInterping();
+
 	
 	
 
@@ -87,6 +89,21 @@ private:
 	TArray<bool> ActiveStars;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= "Item Properties", meta = (AllowPrivateAccess = "true"))
 	EItemState ItemState;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= "Item Properties", meta = (AllowPrivateAccess = "true"))
+	class UCurveFloat* ItemZCurve;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= "Item Properties", meta = (AllowPrivateAccess = "true")) 
+	FVector ItemInterpStartLocation;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= "Item Properties", meta = (AllowPrivateAccess = "true")) 
+	FVector CameraTargetLocation;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= "Item Properties", meta = (AllowPrivateAccess = "true")) 
+	bool bInterping;
+	
+	FTimerHandle ItemInterpTimer;
+	class AShooterCharacter* Character;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category= "Item Properties", meta = (AllowPrivateAccess = "true")) 
+	float ZCurveTime;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Item Properties", meta = (AllowPrivateAccess = "true"))
 	class USoundCue* PickupSound;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Item Properties", meta = (AllowPrivateAccess = "true"))
@@ -99,8 +116,12 @@ public:
 	FORCEINLINE EItemState GetItemState() const { return ItemState;}
 	FORCEINLINE void SetItemState(EItemState State);
 	FORCEINLINE USkeletalMeshComponent* GetItemMesh() const {return ItemMesh;}
+	void StartItemCurve(AShooterCharacter* Char);
+
+	
 	FORCEINLINE USoundCue* GetPickupSound() const {return PickupSound;}
 	FORCEINLINE USoundCue* GetEquipSound() const {return EquipSound;}
+	FORCEINLINE int32 GetItemCount() const {return ItemCount;}
 	
 
 };

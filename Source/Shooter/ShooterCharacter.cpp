@@ -917,3 +917,21 @@ void AShooterCharacter::IncrementOverlappedItemCount(int8 Amount)
 	}
 }
 
+FVector AShooterCharacter::GetCameraInterpLocation()
+{
+	// ReSharper disable once CppDeclaratorNeverUsed
+	const FVector CameraWorldLocation{FollowCamera->GetComponentLocation()};
+	// ReSharper disable once CppDeclaratorNeverUsed
+	const FVector CameraForward{FollowCamera->GetForwardVector()};
+	return {};
+}
+
+void AShooterCharacter::GetPickupItem(AItem* Item)
+{
+	auto Weapon = Cast<AWeapon>(Item);
+	if(Weapon)
+	{
+		SwapWeapon(Weapon);
+	}
+}
+

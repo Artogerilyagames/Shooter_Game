@@ -93,6 +93,7 @@ public:
 
 	void Aim();
 	void StopAiming();
+	
 
 
 public:	
@@ -193,6 +194,13 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= Combat, meta =(AllowPrivateAccess = "true"));
 	// ReSharper disable once CppUE4ProbableMemoryIssuesWithUObject
 	AItem* TraceHitItem;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category= Item, meta =(AllowPrivateAccess = "true"));
+	float CameraInterpDistance;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category= Item, meta =(AllowPrivateAccess = "true"));
+	float CameraInterpElevation;
+
+
+	
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= Combat, meta =(AllowPrivateAccess = "true"));
 	TMap<EAmmoType, int32> AmmoMap;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= Combat, meta =(AllowPrivateAccess = "true"));
@@ -251,9 +259,13 @@ public:
 	float GetCrosshairSpreadmultiplier() const;
 	FORCEINLINE int8 GetOverlappedItemCount() const {return OverlappedItemCount;}
 	void IncrementOverlappedItemCount(int8 Amount);
+	FVector GetCameraInterpLocation();
 
 	FORCEINLINE ECombatState GetCombatState() const {return CombatState;}
 	FORCEINLINE bool GetCrouching() const {return bCrouching;}
 	FORCEINLINE bool GetProne() const {return bProne;}
+
+	void GetPickupItem(AItem* Item);
+	
 	
 };
