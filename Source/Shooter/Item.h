@@ -60,6 +60,8 @@ protected:
 
 	void FinishInterping();
 
+	void ItemInterp(float DeltaTime);
+
 	
 	
 

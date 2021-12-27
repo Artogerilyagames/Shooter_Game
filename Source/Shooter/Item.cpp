@@ -14,10 +14,10 @@ ItemName(FString("Default")),
 ItemCount(0),
 ItemRarity(EItemRarity::EIR_Common),
 ItemState(EItemState::EIS_Pickup),
-ZCurveTime(0.7f),
 ItemInterpStartLocation(FVector(0.f)),
 CameraTargetLocation(FVector(0.f)),
-bInterping(false)
+bInterping(false),
+ZCurveTime(0.7f)
 
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
@@ -156,6 +156,19 @@ void AItem::SetItemProperties(EItemState State)
 		ItemMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 		ItemMesh->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
 		ItemMesh->SetCollisionResponseToChannel(ECollisionChannel::ECC_WorldStatic, ECollisionResponse::ECR_Block);
+		AreaSphere->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
+		AreaSphere->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		break;
+	case EItemState::EIS_EquipInterping:
+		PickupWidget->SetVisibility(false);
+		ItemMesh->SetSimulatePhysics(false);
+		ItemMesh->SetEnableGravity(false);
+		ItemMesh->SetVisibility(true);
+		ItemMesh->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
+		ItemMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		AreaSphere->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
+		AreaSphere->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		
 		break;
 	case EItemState::EIS_PickUp:
 		ItemMesh->SetSimulatePhysics(false);
@@ -167,10 +180,28 @@ void AItem::SetItemProperties(EItemState State)
 
 void AItem::FinishInterping()
 {
+	bInterping = false;
 	if(Character)
 	{
 		Character->GetPickupItem(this);
 	}
+}
+
+void AItem::ItemInterp(float DeltaTime)
+{
+	if(!bInterping) return;
+	if(Character &&  ItemZCurve)
+	{
+		const float ElapsedTime = GetWorldTimerManager().GetTimerElapsed(ItemInterpTimer);
+		const float CurveValue = ItemZCurve->GetFloatValue(ElapsedTime);
+		FVector ItemLocation = ItemInterpStartLocation;
+		const FVector CameraInterpLocation{Character->GetCameraInterpLocation()};
+		const FVector ItemToCamera{FVector(0.f, 0.f,(CameraInterpLocation - ItemLocation).Z)};
+		const float DeltaZ = ItemToCamera.Size();
+		ItemLocation.Z += CurveValue * DeltaZ;
+		SetActorLocation(ItemLocation, true, nullptr, ETeleportType::TeleportPhysics);
+	}
+	
 }
 
 
@@ -178,6 +209,7 @@ void AItem::FinishInterping()
 void AItem::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	ItemInterp(DeltaTime);
 }
 void AItem::SetItemState(EItemState State)
 {
