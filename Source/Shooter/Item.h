@@ -56,7 +56,7 @@ protected:
 		int32 OtherBodyIndex);
 
 	void SetActiveStars();
-	void SetItemProperties(EItemState State);
+	virtual void SetItemProperties(EItemState State);
 
 	
 	
