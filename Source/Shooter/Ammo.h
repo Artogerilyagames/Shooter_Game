@@ -26,7 +26,7 @@ protected:
 	virtual void BeginPlay() override;
 
 	virtual void SetItemProperties(EItemState State) override;
-
+	// Ammo Pickup Overlap code
 	UFUNCTION()
    void AmmoSphereOverlap
 	(UPrimitiveComponent* OverlappedComponent,
@@ -35,6 +35,7 @@ protected:
 	   int32 OtherBodyIndex,
 	   bool bFromSweep,
 	   const FHitResult& SweepResult);
+
 
 
 private:

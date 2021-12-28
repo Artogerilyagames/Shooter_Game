@@ -56,6 +56,8 @@ public:
 	/** Line Trace for Item under the crosshairs*/
 	bool TraceUnderCrosshairs(FHitResult& OutHitResult, FVector& OutHitLocation) const;
 	void TraceForItems();
+	void ReloadingIcon();
+	void UnreloadingIcon();
 
 	AWeapon* SpawnDefaultWeapon();
 	void EquipWeapon(AWeapon* WeaponToEquip);
@@ -94,7 +96,11 @@ public:
 
 	void Aim();
 	void StopAiming();
+	
 	void PickupAmmo(class AAmmo* Ammo);
+
+	void ResetPickupSoundTimer();
+	void ResetEquipSoundTimer();
 	
 
 
@@ -249,6 +255,18 @@ private:
 	float CrouchingGroundFriction;
 
 	bool bAimingButtonPressed;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= Combat,meta =(AllowPrivateAccess = "true"))
+	bool bReloadingIcon;
+
+	FTimerHandle PickupSoundTimer;
+	FTimerHandle EquipSoundTimer;
+	bool bShouldPlayPickupSound;
+	bool bShouldPlayEquipSound;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly,Category= Items, meta = (AllowPrivateAccess = "true"))
+	float PickupSoundResetTime;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly,Category= Items, meta = (AllowPrivateAccess = "true"))
+	float EquipSoundResetTime;
+	
 	
 
 
@@ -266,7 +284,11 @@ public:
 	FORCEINLINE ECombatState GetCombatState() const {return CombatState;}
 	FORCEINLINE bool GetCrouching() const {return bCrouching;}
 	FORCEINLINE bool GetProne() const {return bProne;}
-
+	FORCEINLINE bool ShouldPlayPickupSound() const {return bShouldPlayPickupSound;}
+	FORCEINLINE bool ShouldPlayEquipSound() const {return bShouldPlayEquipSound;}
+	void StartPickupSoundTimer();
+	void StartEquipSoundTimer();
+	
 	void GetPickupItem(AItem* Item);
 	
 	

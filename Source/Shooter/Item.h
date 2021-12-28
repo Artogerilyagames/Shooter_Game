@@ -61,6 +61,8 @@ protected:
 	void FinishInterping();
 
 	void ItemInterp(float DeltaTime);
+	void PlayPickupSound();
+
 
 	
 	
@@ -68,6 +70,8 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	void PlayEquipSound();
 
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Item Properties", meta = (AllowPrivateAccess = "true"))
@@ -110,6 +114,8 @@ private:
 	class USoundCue* PickupSound;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Item Properties", meta = (AllowPrivateAccess = "true"))
 	USoundCue* EquipSound;
+
+	
 	
 public:
 	FORCEINLINE UWidgetComponent* GetPickupWidget() const {return PickupWidget;}

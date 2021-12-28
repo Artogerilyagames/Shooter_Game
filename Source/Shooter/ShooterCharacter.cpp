@@ -71,7 +71,12 @@ CrouchingCapsuleHalfHeight(44.f),
 ProneCapsuleHalfHeight(20),
 BaseGroundFriction(2.f),
 CrouchingGroundFriction(100.f),
-bAimingButtonPressed(false)
+bAimingButtonPressed(false),
+bReloadingIcon(false),
+bShouldPlayPickupSound(true),
+bShouldPlayEquipSound(true),
+PickupSoundResetTime(0.2f),
+EquipSoundResetTime(0.2f)
 
 
 
@@ -122,6 +127,7 @@ void AShooterCharacter::BeginPlay()
 	EquipWeapon(SpawnDefaultWeapon());
 	InitializeAmmoMap();
 	GetCharacterMovement()->MaxWalkSpeed = BaseMovementSpeed;
+	
 
 	
 	
@@ -157,6 +163,7 @@ void AShooterCharacter::LookUp(float Value)
 	if(bAiming)
 	{
 		LookUpScaleFactor = MouseAimingLookUpRate;
+		bReloadingIcon = true;
 	}
 	else
 	{
@@ -365,6 +372,7 @@ void AShooterCharacter::FireButtonPressed()
 	bFireButtonPressed = true;
 	FireWeapon();
 	ShowCrosshairs();
+
 	
 	
 }
@@ -482,6 +490,16 @@ void AShooterCharacter::TraceForItems()
 	}
 }
 
+void AShooterCharacter::ReloadingIcon()
+{
+	bReloadingIcon = true;
+}
+
+void AShooterCharacter::UnreloadingIcon()
+{
+	bReloadingIcon = false;
+}
+
 AWeapon* AShooterCharacter::SpawnDefaultWeapon()
 {
 	if(DefaultWeaponClass)
@@ -508,6 +526,7 @@ void AShooterCharacter::EquipWeapon(AWeapon* WeaponToEquip)
 
 void AShooterCharacter::StartCrosshairBulletFire()
 {
+	
 	bFiringBullet =true;
 	GetWorldTimerManager().SetTimer
 	(CrosshairShootTimer,
@@ -532,6 +551,11 @@ void AShooterCharacter::SelectButtonPressed()
 	if(TraceHitItem)
 	{
 		TraceHitItem->StartItemCurve(this);
+		if(TraceHitItem->GetPickupSound())
+		{
+			UGameplayStatics::PlaySound2D(this,TraceHitItem->GetPickupSound());
+		}
+		
 		
 		/*const auto TraceHitItWeapon = Cast<AWeapon>(TraceHitItem);
 		SwapWeapon(TraceHitItWeapon);*/
@@ -540,7 +564,7 @@ void AShooterCharacter::SelectButtonPressed()
 
 void AShooterCharacter::SelectButtonReleased()
 {
-	
+
 }
 
 void AShooterCharacter::FinishCrosshairBulletFire()
@@ -708,10 +732,12 @@ void AShooterCharacter::PlayGunfireMontage()
 void AShooterCharacter::ReloadButtonPressed()
 {
 	ReloadWeapon();
+	
 }
 
 void AShooterCharacter::ReloadWeapon()
 {
+	
 	if(CombatState != ECombatState::ECS_Unoccupied) return;
 	
 	if(EquippedWeapon == nullptr) return;
@@ -721,6 +747,7 @@ void AShooterCharacter::ReloadWeapon()
 		if (bAiming)
 		{
 			StopAiming();
+			
 		}
 
 		CombatState = ECombatState::ECS_Reloading;
@@ -867,6 +894,8 @@ void AShooterCharacter::StopAiming()
 
 void AShooterCharacter::PickupAmmo(AAmmo* Ammo)
 {
+
+	
 	if(AmmoMap.Find(Ammo->GetAmmoType()))
 	{
 		int32 AmmoCount{AmmoMap[Ammo->GetAmmoType()]};
@@ -881,6 +910,16 @@ void AShooterCharacter::PickupAmmo(AAmmo* Ammo)
 		}
 	}
 	Ammo->Destroy();
+}
+
+void AShooterCharacter::ResetPickupSoundTimer()
+{
+	bShouldPlayPickupSound = true;
+}
+
+void AShooterCharacter::ResetEquipSoundTimer()
+{
+	bShouldPlayEquipSound = true;
 }
 
 
@@ -943,12 +982,33 @@ FVector AShooterCharacter::GetCameraInterpLocation()
 	return {};
 }
 
+void AShooterCharacter::StartPickupSoundTimer()
+{
+	bShouldPlayPickupSound = false;
+	GetWorldTimerManager().SetTimer
+	(PickupSoundTimer,
+		this,
+		&AShooterCharacter::ResetPickupSoundTimer,
+		PickupSoundResetTime);
+}
+
+void AShooterCharacter::StartEquipSoundTimer()
+{
+	bShouldPlayEquipSound = false;
+	GetWorldTimerManager().SetTimer
+	(PickupSoundTimer,
+		this,
+		&AShooterCharacter::ResetEquipSoundTimer,
+		EquipSoundResetTime);
+}
+
 void AShooterCharacter::GetPickupItem(AItem* Item)
 {
-	if(Item->GetEquipSound())
+	Item->PlayEquipSound();
+	/*if(Item->GetEquipSound())
 	{
 		UGameplayStatics::PlaySound2D(this, Item->GetEquipSound());
-	}
+	}*/
 	auto Weapon = Cast<AWeapon>(Item);
 	if(Weapon)
 	{

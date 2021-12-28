@@ -208,6 +208,36 @@ void AItem::ItemInterp(float DeltaTime)
 	
 }
 
+void AItem::PlayPickupSound()
+{
+	if(Character)
+	{
+		if(Character->ShouldPlayPickupSound())
+		{
+			Character->StartPickupSoundTimer();
+			if(PickupSound)
+			{
+				UGameplayStatics::PlaySound2D(this, PickupSound);
+			}
+		}
+	}
+}
+
+
+void AItem::PlayEquipSound()
+{
+	if(Character)
+	{
+		if(Character->ShouldPlayEquipSound())
+		{
+			Character->StartEquipSoundTimer();
+			if(EquipSound)
+			{
+				UGameplayStatics::PlaySound2D(this, EquipSound);
+			}
+		}
+	}
+}
 
 // Called every frame
 void AItem::Tick(float DeltaTime)
@@ -224,10 +254,7 @@ void AItem::SetItemState(EItemState State)
 void AItem::StartItemCurve(AShooterCharacter* Char)
 {
 	Character = Char;
-	if(PickupSound)
-	{
-		UGameplayStatics::PlaySound2D(this, PickupSound);
-	}
+    PlayPickupSound();
 	ItemInterpStartLocation = GetActorLocation();
 	bInterping = true;
 	SetItemState(EItemState::EIS_EquipInterping);
