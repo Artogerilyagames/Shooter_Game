@@ -2,11 +2,13 @@
 
 
 #include "Ammo.h"
+
 #include "Components/BoxComponent.h"
 #include "Components/SphereComponent.h"
 #include "Components/WidgetComponent.h"
 #include "ShooterCharacter.h"
 #include "Kismet/GameplayStatics.h"
+
 
 
 AAmmo::AAmmo()
@@ -81,12 +83,27 @@ void AAmmo::AmmoSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* 
 {
 	if(OtherActor)
 	{
-		auto OverlapCharacter = Cast<AShooterCharacter>(OtherActor);
+		 auto OverlapCharacter = Cast<AShooterCharacter>(OtherActor);
 		if(OverlapCharacter)
 		{
+			
 		
 			StartItemCurve(OverlapCharacter);
 			AmmoCollisionSphere->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 		}
 	}
 }
+
+void AAmmo::EnableCustomDepth()
+{
+	Super::EnableCustomDepth();
+	AmmoMesh->SetRenderCustomDepth(true);
+}
+
+void AAmmo::DisableCustomDepth()
+{
+	Super::DisableCustomDepth();
+	AmmoMesh->SetRenderCustomDepth(false);
+}
+
+

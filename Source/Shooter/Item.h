@@ -62,6 +62,7 @@ protected:
 
 	void ItemInterp(float DeltaTime);
 	void PlayPickupSound();
+	virtual void InitializeCustomDepth();
 
 
 	
@@ -131,6 +132,10 @@ public:
 	FORCEINLINE USoundCue* GetPickupSound() const {return PickupSound;}
 	FORCEINLINE USoundCue* GetEquipSound() const {return EquipSound;}
 	FORCEINLINE int32 GetItemCount() const {return ItemCount;}
+
+	virtual void EnableCustomDepth();
+	virtual void DisableCustomDepth();
+
 	
 
 };
