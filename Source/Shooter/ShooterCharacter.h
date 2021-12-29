@@ -266,8 +266,10 @@ private:
 	float PickupSoundResetTime;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly,Category= Items, meta = (AllowPrivateAccess = "true"))
 	float EquipSoundResetTime;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= Inventory, meta = (AllowPrivateAccess = "true"))
+	TArray<AItem*> Inventory;
 	
-	
+	const int32 INVENTORY_CAPACITY{6};
 
 
 

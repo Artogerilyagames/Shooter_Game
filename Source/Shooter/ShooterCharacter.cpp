@@ -125,6 +125,7 @@ void AShooterCharacter::BeginPlay()
 		CameraCurrentFOV = CameraDefaultFOV;
 	}
 	EquipWeapon(SpawnDefaultWeapon());
+	Inventory.Add(EquippedWeapon);
 	InitializeAmmoMap();
 	GetCharacterMovement()->MaxWalkSpeed = BaseMovementSpeed;
 	
@@ -1008,19 +1009,24 @@ void AShooterCharacter::StartEquipSoundTimer()
 void AShooterCharacter::GetPickupItem(AItem* Item)
 {
 	Item->PlayEquipSound();
-	/*if(Item->GetEquipSound())
-	{
-		UGameplayStatics::PlaySound2D(this, Item->GetEquipSound());
-	}*/
 	auto Weapon = Cast<AWeapon>(Item);
 	if(Weapon)
 	{
-		SwapWeapon(Weapon);
+		if(Inventory.Num() < INVENTORY_CAPACITY)
+		{
+			Inventory.Add(Weapon);
+		}
+		else // Inventory is full! Swap with Equipped Weapon
+		{
+			SwapWeapon(Weapon);
+		}
 	}
+	
 	auto Ammo = Cast<AAmmo>(Item);
 	if(Ammo)
 	{
 		PickupAmmo(Ammo);
+		
 	}
 }
 

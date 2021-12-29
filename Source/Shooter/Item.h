@@ -115,6 +115,13 @@ private:
 	class USoundCue* PickupSound;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Item Properties", meta = (AllowPrivateAccess = "true"))
 	USoundCue* EquipSound;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category= Inventory, meta = (AllowPrivateAccess = "true"))
+	UTexture2D* IconBackground;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category= Inventory, meta = (AllowPrivateAccess = "true"))
+	UTexture2D* IconItem;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category= Inventory, meta = (AllowPrivateAccess = "true"))
+	UTexture2D* AmmoItem;
+
 
 	
 	
