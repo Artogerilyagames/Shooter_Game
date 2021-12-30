@@ -75,6 +75,10 @@ private:
 	bool bCrouching;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category= Prone, meta = (AllowPrivateAccess = "true"))
 	bool bProne;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category= Crouching, meta = (AllowPrivateAccess = "true"))
+	bool bEquipping;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category= Combat, meta = (AllowPrivateAccess = "true"))
 	float RecoilWeight;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category= Combat, meta = (AllowPrivateAccess = "true"))

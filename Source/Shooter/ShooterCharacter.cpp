@@ -566,18 +566,13 @@ void AShooterCharacter::DropWeapon()
 
 void AShooterCharacter::SelectButtonPressed()
 {
+	if(CombatState != ECombatState::ECS_Unoccupied) return;
 	if(TraceHitItem)
+		
 	{
 		TraceHitItem->StartItemCurve(this);
 		TraceHitItem = nullptr;
-		/*if(TraceHitItem->GetPickupSound())
-		{
-			UGameplayStatics::PlaySound2D(this,TraceHitItem->GetPickupSound());
-		}*/
 		
-		
-		/*const auto TraceHitItWeapon = Cast<AWeapon>(TraceHitItem);
-		SwapWeapon(TraceHitItWeapon);*/
 	}
 }
 
@@ -999,13 +994,20 @@ void AShooterCharacter::FiveKeyPressed()
 
 void AShooterCharacter::ExchangeInventoryItems(int32 CurrentItemIndex, int32 NewItemIndex)
 {
-	if((CurrentItemIndex == NewItemIndex) || (NewItemIndex >= Inventory.Num())) return;
+	if((CurrentItemIndex == NewItemIndex) || (NewItemIndex >= Inventory.Num()|| CombatState != ECombatState::ECS_Unoccupied)) return;
 	const auto OldEquippedWeapon = EquippedWeapon;
 	auto NewWeapon = Cast<AWeapon>(Inventory[NewItemIndex]);
 	EquipWeapon(NewWeapon);
 
 	OldEquippedWeapon->SetItemState(EItemState::EIS_PickUp);
 	NewWeapon->SetItemState(EItemState::EIS_Equipped);
+	CombatState = ECombatState::ECS_Equipping;
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+	if(AnimInstance && EquipMontage)
+	{
+		AnimInstance->Montage_Play(EquipMontage, 1.0f);
+		AnimInstance->Montage_JumpToSection(FName("Equip"));
+	}
 }
 
 
@@ -1041,6 +1043,11 @@ void AShooterCharacter::FinishReloading()
 			AmmoMap.Add(AmmoType, CarriedAmmo);
 		}
 	}
+}
+
+void AShooterCharacter::FinishEquipping()
+{
+	CombatState = ECombatState::ECS_Unoccupied;
 }
 
 float AShooterCharacter::GetCrosshairSpreadmultiplier() const
