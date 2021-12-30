@@ -470,6 +470,10 @@ void AShooterCharacter::TraceForItems()
 		if(ItemTraceResult.bBlockingHit)
 		{
 			TraceHitItem = Cast<AItem>(ItemTraceResult.Actor);
+			if(TraceHitItem && TraceHitItem->GetItemState()== EItemState::EIS_EquipInterping)
+			{
+				TraceHitItem = nullptr;
+			}
 			if(TraceHitItem && TraceHitItem->GetPickupWidget())
 			{
 				TraceHitItem->GetPickupWidget()->SetVisibility(true);
@@ -524,6 +528,15 @@ void AShooterCharacter::EquipWeapon(AWeapon* WeaponToEquip)
 		{
 			HandSocket->AttachActor(WeaponToEquip, GetMesh());
 		}
+		if(EquippedWeapon == nullptr)
+		{
+			// -1 == no EquippedWeapon yet. no need to reverse the icon animation
+			EquipItemDelegate.Broadcast(-1,WeaponToEquip->GetSlotIndex());
+		}
+		else
+		{
+			EquipItemDelegate.Broadcast(EquippedWeapon->GetSlotIndex(), WeaponToEquip->GetSlotIndex());
+		}
 		EquippedWeapon = WeaponToEquip;
 		EquippedWeapon->SetItemState(EItemState::EIS_Equipped);
 	}
@@ -556,10 +569,11 @@ void AShooterCharacter::SelectButtonPressed()
 	if(TraceHitItem)
 	{
 		TraceHitItem->StartItemCurve(this);
-		if(TraceHitItem->GetPickupSound())
+		TraceHitItem = nullptr;
+		/*if(TraceHitItem->GetPickupSound())
 		{
 			UGameplayStatics::PlaySound2D(this,TraceHitItem->GetPickupSound());
-		}
+		}*/
 		
 		
 		/*const auto TraceHitItWeapon = Cast<AWeapon>(TraceHitItem);
@@ -576,6 +590,8 @@ void AShooterCharacter::FinishCrosshairBulletFire()
 {
 	bFiringBullet =false;
 }
+
+
 
 
 // Called every frame
@@ -630,6 +646,12 @@ void AShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	PlayerInputComponent->BindAction("Crouch", IE_Pressed, this, &AShooterCharacter::CrouchButtonPressed);
 	PlayerInputComponent->BindAction("Prone", IE_Pressed, this, &AShooterCharacter::ProneButtonPressed);
 
+	PlayerInputComponent->BindAction("FKey", IE_Pressed, this, &AShooterCharacter::FKeyPressed);
+	PlayerInputComponent->BindAction("OneKey", IE_Pressed, this, &AShooterCharacter::OneKeyPressed);
+	PlayerInputComponent->BindAction("TwoKey", IE_Pressed, this, &AShooterCharacter::TwoKeyPressed);
+
+
+
 
 
 
@@ -662,6 +684,11 @@ void AShooterCharacter::MoveRight(float Value)
 
 void AShooterCharacter::SwapWeapon(AWeapon* WeaponToSwap)
 {
+	if(Inventory.Num() - 1 >= EquippedWeapon->GetSlotIndex())
+	{
+		Inventory[EquippedWeapon->GetSlotIndex()] = WeaponToSwap;
+		WeaponToSwap->SetSlotIndex(EquippedWeapon->GetSlotIndex());
+	}
 	DropWeapon();
 	EquipWeapon(WeaponToSwap);
 	TraceHitItem =nullptr;
@@ -926,6 +953,39 @@ void AShooterCharacter::ResetEquipSoundTimer()
 {
 	bShouldPlayEquipSound = true;
 }
+
+void AShooterCharacter::FKeyPressed()
+{
+	if(EquippedWeapon->GetSlotIndex()== 0) return;
+	ExchangeInventoryItems(EquippedWeapon->GetSlotIndex(), 0);
+}
+
+void AShooterCharacter::OneKeyPressed()
+{
+	if(EquippedWeapon->GetSlotIndex()== 1) return;
+	ExchangeInventoryItems(EquippedWeapon->GetSlotIndex(), 0);
+}
+
+void AShooterCharacter::TwoKeyPressed()
+{
+	if(EquippedWeapon->GetSlotIndex()== 2) return;
+	ExchangeInventoryItems(EquippedWeapon->GetSlotIndex(), 2);
+}
+
+
+void AShooterCharacter::ExchangeInventoryItems(int32 CurrentItemIndex, int32 NewItemIndex)
+{
+	if((CurrentItemIndex == NewItemIndex) && (NewItemIndex >= Inventory.Num())) return;
+	auto OldEquippedWeapon = EquippedWeapon;
+	auto NewWeapon = Cast<AWeapon>(Inventory[NewItemIndex]);
+	EquipWeapon(NewWeapon);
+
+	OldEquippedWeapon->SetItemState(EItemState::EIS_PickUp);
+	NewWeapon->SetItemState(EItemState::EIS_Equipped);
+}
+
+
+
 
 
 void AShooterCharacter::FinishReloading()

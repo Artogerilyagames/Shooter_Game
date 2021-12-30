@@ -161,6 +161,7 @@ void AItem::SetItemProperties(EItemState State)
 	
 		ItemMesh->SetSimulatePhysics(true);
 		ItemMesh->SetEnableGravity(true);
+		ItemMesh->SetVisibility(true),
 		ItemMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 		ItemMesh->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
 		ItemMesh->SetCollisionResponseToChannel(ECollisionChannel::ECC_WorldStatic, ECollisionResponse::ECR_Block);
@@ -200,6 +201,7 @@ void AItem::FinishInterping()
 	if(Character)
 	{
 		Character->GetPickupItem(this);
+		
 	}
 }
 

@@ -21,6 +21,8 @@ enum class ECombatState : uint8
 	ECS_MAX UMETA(DisplayName= "DefaultMAX")
 };
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FEquipItemDelegate,int32, CurrentSlotIndex, int32, NewSlotindex);
+
 
 UCLASS()
 class SHOOTER_API AShooterCharacter : public ACharacter
@@ -101,6 +103,12 @@ public:
 
 	void ResetPickupSoundTimer();
 	void ResetEquipSoundTimer();
+
+	void FKeyPressed();
+	void OneKeyPressed();
+	void TwoKeyPressed();
+
+	void ExchangeInventoryItems(int32 CurrentItemIndex, int32 NewItemIndex );
 	
 
 
@@ -270,6 +278,9 @@ private:
 	TArray<AItem*> Inventory;
 	
 	const int32 INVENTORY_CAPACITY{6};
+	
+    UPROPERTY(BlueprintAssignable, Category= Delegates,meta = (AllowPrivateAccess = "true"))
+	FEquipItemDelegate EquipItemDelegate;
 
 
 
