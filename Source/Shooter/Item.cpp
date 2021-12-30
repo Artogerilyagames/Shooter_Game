@@ -20,7 +20,8 @@ ItemState(EItemState::EIS_Pickup),
 ItemInterpStartLocation(FVector(0.f)),
 CameraTargetLocation(FVector(0.f)),
 bInterping(false),
-ZCurveTime(0.7f)
+ZCurveTime(0.7f),
+SlotIndex(0)
 
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
@@ -178,7 +179,15 @@ void AItem::SetItemProperties(EItemState State)
 		
 		break;
 	case EItemState::EIS_PickUp:
+		PickupWidget->SetVisibility(false);
 		ItemMesh->SetSimulatePhysics(false);
+		ItemMesh->SetEnableGravity(false);
+		ItemMesh->SetVisibility(false);
+		ItemMesh->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
+		ItemMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		AreaSphere->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
+		AreaSphere->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		
 		
 	
 	default: ;

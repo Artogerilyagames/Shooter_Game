@@ -126,6 +126,7 @@ void AShooterCharacter::BeginPlay()
 	}
 	EquipWeapon(SpawnDefaultWeapon());
 	Inventory.Add(EquippedWeapon);
+	EquippedWeapon->SetSlotIndex(0);
 	InitializeAmmoMap();
 	GetCharacterMovement()->MaxWalkSpeed = BaseMovementSpeed;
 	
@@ -1014,7 +1015,9 @@ void AShooterCharacter::GetPickupItem(AItem* Item)
 	{
 		if(Inventory.Num() < INVENTORY_CAPACITY)
 		{
+			Weapon->SetSlotIndex(Inventory.Num());
 			Inventory.Add(Weapon);
+			Weapon->SetItemState(EItemState::EIS_PickUp);
 		}
 		else // Inventory is full! Swap with Equipped Weapon
 		{
