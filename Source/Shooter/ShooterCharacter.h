@@ -107,6 +107,9 @@ public:
 	void FKeyPressed();
 	void OneKeyPressed();
 	void TwoKeyPressed();
+	void ThreeKetPressed();
+	void FourKeyPressed();
+	void FiveKeyPressed();
 
 	void ExchangeInventoryItems(int32 CurrentItemIndex, int32 NewItemIndex );
 	
@@ -199,6 +202,7 @@ private:
 	FTimerHandle AutoFireTimer;
 	bool bShouldTraceForItems;
 	int8 OverlappedItemCount;
+	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= Items, meta =(AllowPrivateAccess = "true"));
 	// ReSharper disable once CppUE4ProbableMemoryIssuesWithUObject
 	class AItem* TraceHitItemLastFrame;

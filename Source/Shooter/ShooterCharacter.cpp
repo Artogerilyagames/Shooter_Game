@@ -647,8 +647,11 @@ void AShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	PlayerInputComponent->BindAction("Prone", IE_Pressed, this, &AShooterCharacter::ProneButtonPressed);
 
 	PlayerInputComponent->BindAction("FKey", IE_Pressed, this, &AShooterCharacter::FKeyPressed);
-	PlayerInputComponent->BindAction("OneKey", IE_Pressed, this, &AShooterCharacter::OneKeyPressed);
-	PlayerInputComponent->BindAction("TwoKey", IE_Pressed, this, &AShooterCharacter::TwoKeyPressed);
+	PlayerInputComponent->BindAction("1Key", IE_Pressed, this, &AShooterCharacter::OneKeyPressed);
+	PlayerInputComponent->BindAction("2Key", IE_Pressed, this, &AShooterCharacter::TwoKeyPressed);
+	PlayerInputComponent->BindAction("3Key", IE_Pressed, this, &AShooterCharacter::ThreeKetPressed);
+	PlayerInputComponent->BindAction("4Key", IE_Pressed, this, &AShooterCharacter::FourKeyPressed);
+	PlayerInputComponent->BindAction("5Key", IE_Pressed, this, &AShooterCharacter::FiveKeyPressed);
 
 
 
@@ -954,6 +957,8 @@ void AShooterCharacter::ResetEquipSoundTimer()
 	bShouldPlayEquipSound = true;
 }
 
+
+
 void AShooterCharacter::FKeyPressed()
 {
 	if(EquippedWeapon->GetSlotIndex()== 0) return;
@@ -963,7 +968,7 @@ void AShooterCharacter::FKeyPressed()
 void AShooterCharacter::OneKeyPressed()
 {
 	if(EquippedWeapon->GetSlotIndex()== 1) return;
-	ExchangeInventoryItems(EquippedWeapon->GetSlotIndex(), 0);
+	ExchangeInventoryItems(EquippedWeapon->GetSlotIndex(), 1);
 }
 
 void AShooterCharacter::TwoKeyPressed()
@@ -972,11 +977,30 @@ void AShooterCharacter::TwoKeyPressed()
 	ExchangeInventoryItems(EquippedWeapon->GetSlotIndex(), 2);
 }
 
+void AShooterCharacter::ThreeKetPressed()
+{
+	if(EquippedWeapon->GetSlotIndex()== 3) return;
+	ExchangeInventoryItems(EquippedWeapon->GetSlotIndex(), 3);
+}
+
+void AShooterCharacter::FourKeyPressed()
+{
+	if(EquippedWeapon->GetSlotIndex()== 4) return;
+	ExchangeInventoryItems(EquippedWeapon->GetSlotIndex(), 4);
+}
+
+void AShooterCharacter::FiveKeyPressed()
+{
+	if(EquippedWeapon->GetSlotIndex()== 5) return;
+	ExchangeInventoryItems(EquippedWeapon->GetSlotIndex(), 5);
+}
+
+
 
 void AShooterCharacter::ExchangeInventoryItems(int32 CurrentItemIndex, int32 NewItemIndex)
 {
-	if((CurrentItemIndex == NewItemIndex) && (NewItemIndex >= Inventory.Num())) return;
-	auto OldEquippedWeapon = EquippedWeapon;
+	if((CurrentItemIndex == NewItemIndex) || (NewItemIndex >= Inventory.Num())) return;
+	const auto OldEquippedWeapon = EquippedWeapon;
 	auto NewWeapon = Cast<AWeapon>(Inventory[NewItemIndex]);
 	EquipWeapon(NewWeapon);
 

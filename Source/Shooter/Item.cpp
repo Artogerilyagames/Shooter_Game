@@ -161,12 +161,14 @@ void AItem::SetItemProperties(EItemState State)
 	
 		ItemMesh->SetSimulatePhysics(true);
 		ItemMesh->SetEnableGravity(true);
-		ItemMesh->SetVisibility(true),
+		ItemMesh->SetVisibility(true);
 		ItemMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 		ItemMesh->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
 		ItemMesh->SetCollisionResponseToChannel(ECollisionChannel::ECC_WorldStatic, ECollisionResponse::ECR_Block);
 		AreaSphere->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
 		AreaSphere->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		CollisionBox->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
+		CollisionBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 		break;
 	case EItemState::EIS_EquipInterping:
 		PickupWidget->SetVisibility(false);
@@ -177,6 +179,8 @@ void AItem::SetItemProperties(EItemState State)
 		ItemMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 		AreaSphere->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
 		AreaSphere->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		CollisionBox->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
+		CollisionBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 		
 		break;
 	case EItemState::EIS_PickUp:
@@ -188,9 +192,8 @@ void AItem::SetItemProperties(EItemState State)
 		ItemMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 		AreaSphere->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
 		AreaSphere->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-		
-		
-	
+		CollisionBox->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
+		CollisionBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	default: ;
 	}
 }
@@ -200,6 +203,7 @@ void AItem::FinishInterping()
 	bInterping = false;
 	if(Character)
 	{
+		/*Character->IncrementInterpLocItemCount(InterpLocIndex, -1);*/
 		Character->GetPickupItem(this);
 		
 	}
