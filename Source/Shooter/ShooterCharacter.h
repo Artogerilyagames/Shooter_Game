@@ -63,7 +63,7 @@ public:
 	void UnreloadingIcon();
 
 	AWeapon* SpawnDefaultWeapon();
-	void EquipWeapon(AWeapon* WeaponToEquip);
+	void EquipWeapon(AWeapon* WeaponToEquip, bool bSwapping = false);
 
 	
 	void FinishCrosshairBulletFire();
