@@ -123,6 +123,8 @@ private:
 	UTexture2D* AmmoItem;
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Inventory, meta = (AllowPrivateAccess = "true"))
 	int32 SlotIndex;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Inventory, meta = (AllowPrivateAccess = "true"))
+	bool bCharacterInventoryFull;
 
 
 	
@@ -144,6 +146,7 @@ public:
 	FORCEINLINE int32 GetSlotIndex() const {return SlotIndex;}
 	FORCEINLINE void SetSlotIndex(int32 Index) {SlotIndex = Index;}
 	FORCEINLINE void SetCharacter(AShooterCharacter* Char) {Character = Char;}
+	FORCEINLINE void SetCharacterInventoryFull(bool bFull){bCharacterInventoryFull = bFull;}
 
 	virtual void EnableCustomDepth();
 	virtual void DisableCustomDepth();

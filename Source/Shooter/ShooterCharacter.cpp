@@ -479,6 +479,15 @@ void AShooterCharacter::TraceForItems()
 			{
 				TraceHitItem->GetPickupWidget()->SetVisibility(true);
 				TraceHitItem->EnableCustomDepth();
+				if(Inventory.Num() >= INVENTORY_CAPACITY)
+				{
+					TraceHitItem->SetCharacterInventoryFull(true);
+				}
+				else
+				{
+					TraceHitItem->SetCharacterInventoryFull(false);
+				}
+					
 			}
 			if(TraceHitItemLastFrame)
 			{
