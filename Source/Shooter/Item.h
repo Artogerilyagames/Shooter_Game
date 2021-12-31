@@ -61,7 +61,7 @@ protected:
 	void FinishInterping();
 
 	void ItemInterp(float DeltaTime);
-	void PlayPickupSound();
+	void PlayPickupSound(bool bForcePlaySound = false);
 	virtual void InitializeCustomDepth();
 
 
@@ -72,7 +72,7 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	void PlayEquipSound();
+	void PlayEquipSound(bool bForcePlaySound = false);
 
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Item Properties", meta = (AllowPrivateAccess = "true"))
@@ -134,7 +134,7 @@ public:
 	FORCEINLINE EItemState GetItemState() const { return ItemState;}
 	FORCEINLINE void SetItemState(EItemState State);
 	FORCEINLINE USkeletalMeshComponent* GetItemMesh() const {return ItemMesh;}
-	void StartItemCurve(AShooterCharacter* Char);
+	void StartItemCurve(AShooterCharacter* Char, bool bForcePlaySound = false);
 	
 
 	
@@ -143,6 +143,7 @@ public:
 	FORCEINLINE int32 GetItemCount() const {return ItemCount;}
 	FORCEINLINE int32 GetSlotIndex() const {return SlotIndex;}
 	FORCEINLINE void SetSlotIndex(int32 Index) {SlotIndex = Index;}
+	FORCEINLINE void SetCharacter(AShooterCharacter* Char) {Character = Char;}
 
 	virtual void EnableCustomDepth();
 	virtual void DisableCustomDepth();
