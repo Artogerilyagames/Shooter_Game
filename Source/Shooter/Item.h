@@ -81,6 +81,8 @@ protected:
 	void ItemInterp(float DeltaTime);
 	void PlayPickupSound(bool bForcePlaySound = false);
 	virtual void InitializeCustomDepth();
+	virtual void OnConstruction(const FTransform& Transform) override;
+	
 
 
 	
@@ -145,6 +147,12 @@ private:
 	bool bCharacterInventoryFull;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category= DataTable, meta = (AllowPrivateAccess = "true"))
 	class UDataTable* ItemRarityDataTable;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category= "Item Properties", meta = (AllowPrivateAccess = "true"))
+	int32 MaterialIndex;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= "Item Properties", meta = (AllowPrivateAccess = "true"))
+	UMaterialInstanceDynamic*  DynamicMaterialInstance;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Item Properties", meta = (AllowPrivateAccess = "true"))
+	UMaterialInstance* MaterialInstance;
 
 
 	

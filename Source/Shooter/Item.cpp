@@ -22,7 +22,7 @@ CameraTargetLocation(FVector(0.f)),
 bInterping(false),
 ZCurveTime(0.7f),
 SlotIndex(0),
-bCharacterInventoryFull(false)
+MaterialIndex(0)
 
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
@@ -206,8 +206,8 @@ void AItem::FinishInterping()
 	{
 		/*Character->IncrementInterpLocItemCount(InterpLocIndex, -1);*/
 		Character->GetPickupItem(this);
-		
 	}
+	DisableCustomDepth();
 }
 
 void AItem::ItemInterp(float DeltaTime)
@@ -262,6 +262,16 @@ void AItem::DisableCustomDepth()
 void AItem::InitializeCustomDepth()
 {
 	DisableCustomDepth();
+}
+
+void AItem::OnConstruction(const FTransform& Transform)
+{
+   if(MaterialInstance)
+   {
+	   DynamicMaterialInstance = UMaterialInstanceDynamic::Create(MaterialInstance, this);
+   	   ItemMesh->SetMaterial(MaterialIndex, DynamicMaterialInstance);
+   }
+	// EnableGlowMaterial();
 }
 
 

@@ -58,6 +58,7 @@ public:
 protected:
 	
 	void StopFalling();
+	/*virtual void Onconstruction(const FTransform& Transform) override;*/
 	
 private:
 	FTimerHandle ThroWeaponTimer;
