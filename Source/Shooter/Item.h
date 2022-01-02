@@ -82,6 +82,8 @@ protected:
 	void PlayPickupSound(bool bForcePlaySound = false);
 	virtual void InitializeCustomDepth();
 	virtual void OnConstruction(const FTransform& Transform) override;
+
+
 	
 
 
@@ -110,7 +112,7 @@ private:
 	FString ItemName;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category= "Item Properties", meta = (AllowPrivateAccess = "true"))
 	int32 ItemCount;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category= "Item Properties", meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category= "Rarity", meta = (AllowPrivateAccess = "true"))
 	EItemRarity ItemRarity;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= "Item Properties", meta = (AllowPrivateAccess = "true"))
 	TArray<bool> ActiveStars;
@@ -136,8 +138,6 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Item Properties", meta = (AllowPrivateAccess = "true"))
 	USoundCue* EquipSound;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category= Inventory, meta = (AllowPrivateAccess = "true"))
-	UTexture2D* IconBackground;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category= Inventory, meta = (AllowPrivateAccess = "true"))
 	UTexture2D* IconItem;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category= Inventory, meta = (AllowPrivateAccess = "true"))
 	UTexture2D* AmmoItem;
@@ -147,16 +147,31 @@ private:
 	bool bCharacterInventoryFull;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category= DataTable, meta = (AllowPrivateAccess = "true"))
 	class UDataTable* ItemRarityDataTable;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= Rarity, meta = (AllowPrivateAccess = "true"))
+	FLinearColor GlowColor;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= Rarity, meta = (AllowPrivateAccess = "true"))
+	FLinearColor LightColor;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= Rarity, meta = (AllowPrivateAccess = "true"))
+	FLinearColor DarkColor;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= Rarity, meta = (AllowPrivateAccess = "true"))
+	int32 NumberOfStars;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= Rarity, meta = (AllowPrivateAccess = "true"))
+	UTexture2D* IconBackground;
+
+
+	
+
+	
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category= "Item Properties", meta = (AllowPrivateAccess = "true"))
 	int32 MaterialIndex;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= "Item Properties", meta = (AllowPrivateAccess = "true"))
 	UMaterialInstanceDynamic*  DynamicMaterialInstance;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Item Properties", meta = (AllowPrivateAccess = "true"))
 	UMaterialInstance* MaterialInstance;
+	bool bCanChangeCustomDepth;
+	
 
 
-	
-	
 public:
 	FORCEINLINE UWidgetComponent* GetPickupWidget() const {return PickupWidget;}
 	FORCEINLINE USphereComponent* GetAreaSphere() const {return  AreaSphere;}
@@ -169,12 +184,18 @@ public:
 
 	
 	FORCEINLINE USoundCue* GetPickupSound() const {return PickupSound;}
+	FORCEINLINE void SetPickupSound(USoundCue* Sound) {PickupSound = Sound;}
 	FORCEINLINE USoundCue* GetEquipSound() const {return EquipSound;}
+	FORCEINLINE void SetEquipSound(USoundCue* Sound) {EquipSound = Sound;}
 	FORCEINLINE int32 GetItemCount() const {return ItemCount;}
 	FORCEINLINE int32 GetSlotIndex() const {return SlotIndex;}
 	FORCEINLINE void SetSlotIndex(int32 Index) {SlotIndex = Index;}
 	FORCEINLINE void SetCharacter(AShooterCharacter* Char) {Character = Char;}
 	FORCEINLINE void SetCharacterInventoryFull(bool bFull){bCharacterInventoryFull = bFull;}
+	
+	FORCEINLINE void SetItemName(FString Name) {ItemName = Name;}
+	FORCEINLINE void SetIconItem(UTexture2D* Icon){IconItem = Icon;}
+	FORCEINLINE void SetAmmoIcon(UTexture2D* Icon) { AmmoItem = Icon;}
 
 	virtual void EnableCustomDepth();
 	virtual void DisableCustomDepth();

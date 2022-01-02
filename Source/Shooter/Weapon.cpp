@@ -47,6 +47,44 @@ void AWeapon::ThrowWeapon()
 		ThrowWeaponTime);
 	
 }
+void AWeapon::OnConstruction(const FTransform& Transform)
+{
+	Super::OnConstruction(Transform);
+	const FString WeaponTablePath{TEXT("DataTable'/Game/Game/DataTable/WeaponDataTable.WeaponDataTable'")};
+	UDataTable* WeaponTableObject = Cast<UDataTable>(StaticLoadObject(UDataTable::StaticClass(), nullptr, *WeaponTablePath));
+	if(WeaponTableObject)
+	{
+		// ReSharper disable once CppDeclaratorNeverUsed
+		FWeaponDataTable* WeaponDataRow = nullptr;
+		switch (WeaponType)
+		{
+		case EWeaponType::EWT_SubmachineGun:
+			WeaponDataRow = WeaponTableObject->FindRow<FWeaponDataTable>(FName("SubMachineGun"), TEXT(""));
+			break;
+			case EWeaponType::EWT_AssultRiffle:
+				WeaponDataRow = WeaponTableObject->FindRow<FWeaponDataTable>(FName("AssaultRifle"), TEXT(""));
+        			break;
+        	default: ;
+		}
+		if(WeaponDataRow)
+		{
+			AmmoType = WeaponDataRow->AmmoType;
+			Ammo = WeaponDataRow->WeaponAmmo;
+			MagazineCapacity = WeaponDataRow->MagazineCapacity;
+			SetPickupSound(WeaponDataRow->PickupSound);
+			SetEquipSound(WeaponDataRow->EquipSound);
+			GetItemMesh()->SetSkeletalMesh(WeaponDataRow->ItemMesh);
+			SetItemName(WeaponDataRow->ItemName);
+			SetIconItem(WeaponDataRow->InventoryIcon);
+			SetAmmoIcon(WeaponDataRow->AmmoIcon);
+			
+			
+		}
+	}
+	
+}
+
+
 
 void AWeapon::DecrementAmmo()
 {
@@ -76,3 +114,4 @@ void AWeapon::StopFalling()
 	bFalling = true;
 	SetItemState(EItemState::EIS_Pickup);
 }
+

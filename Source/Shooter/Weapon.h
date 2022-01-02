@@ -25,13 +25,11 @@ struct FWeaponDataTable : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int32 WeaponAmmo;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	int32 MagazingCapacity;
+	int32 MagazineCapacity;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class USoundCue* PickupSound;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	class USoundcue* EquipSound;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	class UWidgetComponent* PickupWidget;
+	USoundCue* EquipSound;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	USkeletalMesh* ItemMesh;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -40,7 +38,6 @@ struct FWeaponDataTable : public FTableRowBase
 	UTexture2D* InventoryIcon;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UTexture2D* AmmoIcon;
-
 	
 };
 
@@ -55,11 +52,12 @@ public:
 	AWeapon();
 	virtual void Tick(float DeltaTime) override;
 	
+	
 protected:
 	
 	void StopFalling();
-	/*virtual void Onconstruction(const FTransform& Transform) override;*/
-	
+	virtual void OnConstruction(const FTransform& Transform) override;
+    	
 private:
 	FTimerHandle ThroWeaponTimer;
 	float ThrowWeaponTime;

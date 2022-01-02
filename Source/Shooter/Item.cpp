@@ -22,7 +22,11 @@ CameraTargetLocation(FVector(0.f)),
 bInterping(false),
 ZCurveTime(0.7f),
 SlotIndex(0),
-MaterialIndex(0)
+MaterialIndex(0),
+bCanChangeCustomDepth(true)
+
+
+
 
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
@@ -207,7 +211,9 @@ void AItem::FinishInterping()
 		/*Character->IncrementInterpLocItemCount(InterpLocIndex, -1);*/
 		Character->GetPickupItem(this);
 	}
+	bCanChangeCustomDepth = true;
 	DisableCustomDepth();
+	
 }
 
 void AItem::ItemInterp(float DeltaTime)
@@ -251,12 +257,20 @@ void AItem::PlayPickupSound(bool bForcePlaySound)
 
 void AItem::EnableCustomDepth()
 {
-	ItemMesh->SetRenderCustomDepth(true);
+	if(bCanChangeCustomDepth)
+	{
+		ItemMesh->SetRenderCustomDepth(true);
+	}
+	
 }
 
 void AItem::DisableCustomDepth()
 {
-	ItemMesh->SetRenderCustomDepth(false);
+	if(bCanChangeCustomDepth)
+	{
+		ItemMesh->SetRenderCustomDepth(false);
+	}
+	
 }
 
 void AItem::InitializeCustomDepth()
@@ -266,13 +280,57 @@ void AItem::InitializeCustomDepth()
 
 void AItem::OnConstruction(const FTransform& Transform)
 {
-   if(MaterialInstance)
-   {
-	   DynamicMaterialInstance = UMaterialInstanceDynamic::Create(MaterialInstance, this);
-   	   ItemMesh->SetMaterial(MaterialIndex, DynamicMaterialInstance);
-   }
-	// EnableGlowMaterial();
+  
+	
+	// Path to the Item Rarity Data table
+   const FString RarityTablePath(TEXT("DataTable'/Game/Game/DataTable/ItemRarityDataTable.ItemRarityDataTable'"));
+	UDataTable* RarityTableObject = Cast<UDataTable>(StaticLoadObject(UDataTable::StaticClass(), nullptr, *RarityTablePath));
+	if(RarityTableObject)
+	{
+		
+		// ReSharper disable once CppDeclaratorNeverUsed
+		FItemRarityTable* RarityRow = nullptr;
+		switch (ItemRarity)
+		{
+		case EItemRarity::EIR_Damaged:
+		    RarityTableObject->FindRow<FItemRarityTable>(FName("Damaged"), TEXT(""));
+			break;
+		case EItemRarity::EIR_Common:
+		    RarityTableObject->FindRow<FItemRarityTable>(FName("Common"), TEXT(""));
+			break;
+		case EItemRarity::EIR_Uncommon:
+			RarityTableObject->FindRow<FItemRarityTable>(FName("Uncommon"), TEXT(""));
+			break;
+		case EItemRarity::EIR_Rare:
+			RarityTableObject->FindRow<FItemRarityTable>(FName("Rare"), TEXT(""));
+			break;
+		case EItemRarity::EIR_Legendary:
+			RarityTableObject->FindRow<FItemRarityTable>(FName("Legendary"), TEXT(""));
+			break;
+		    // ReSharper disable once CppUnreachableCode
+		    if(RarityRow)
+			{
+				GlowColor = RarityRow->GlowColor;
+				LightColor = RarityRow->LightColor;
+				DarkColor = RarityRow->DarkColor;
+				NumberOfStars = RarityRow->NumberOfStars;
+				IconBackground = RarityRow->IconBackground;
+		    	
+			}
+
+		default: ;
+		}
+	}
+	if(MaterialInstance)
+	{
+		DynamicMaterialInstance = UMaterialInstanceDynamic::Create(MaterialInstance, this);
+		DynamicMaterialInstance->SetVectorParameterValue(TEXT("FresnelColor"), GlowColor);
+		ItemMesh->SetMaterial(MaterialIndex, DynamicMaterialInstance);
+		/*// EnableGlowMaterial();*/
+	}
+	
 }
+
 
 
 void AItem::PlayEquipSound(bool bForcePlaySound)
@@ -317,7 +375,10 @@ void AItem::StartItemCurve(AShooterCharacter* Char, bool bForcePlaySound)
 	bInterping = true;
 	SetItemState(EItemState::EIS_EquipInterping);
 
-	GetWorldTimerManager().SetTimer(ItemInterpTimer, this, &AItem::FinishInterping, ZCurveTime);
+	GetWorldTimerManager().SetTimer(ItemInterpTimer, this,
+		&AItem::FinishInterping,
+		ZCurveTime);
+	bCanChangeCustomDepth = false;
 }
 
 
