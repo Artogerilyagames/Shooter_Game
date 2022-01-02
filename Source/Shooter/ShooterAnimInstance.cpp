@@ -29,7 +29,9 @@ CharacterRotation(FRotator(0.f)),
 CharacterRotationLastFrame(FRotator(0.f)),
 YawDelta(0.f),
 RecoilWeight(1.0),
-bTurningInPlace(false)
+bTurningInPlace(false),
+EquippedWeaponType(EWeaponType::EWT_MAX),
+bShouldUseFABRIK(false)
 {
 	
 }
@@ -46,6 +48,10 @@ void UShooterAnimInstance::UpdateAnimationProperties(float DeltaTime)
 		bCrouching = ShooterCharacter->GetCrouching();
 		bReloading = ShooterCharacter->GetCombatState() == ECombatState::ECS_Reloading;
 		bEquipping = ShooterCharacter->GetCombatState() == ECombatState::ECS_Equipping;
+		bShouldUseFABRIK = ShooterCharacter->GetCombatState() ==
+			ECombatState::ECS_Unoccupied|| ShooterCharacter->GetCombatState() ==
+			ECombatState::ECS_FireTimerInProgress;
+		
 		FVector Velocity{ShooterCharacter->GetVelocity()};
 		Velocity.Z = 0;
 		Speed = Velocity.Size();
