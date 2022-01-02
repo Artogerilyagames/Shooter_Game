@@ -317,6 +317,8 @@ public:
 	void StartEquipSoundTimer();
 	
 	void GetPickupItem(AItem* Item);
+
+	FORCEINLINE AWeapon* GetEquippedWeapon() const {return EquippedWeapon; }
 	
 	
 };

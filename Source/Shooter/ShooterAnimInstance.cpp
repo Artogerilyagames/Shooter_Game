@@ -5,6 +5,8 @@
 #include "ShooterCharacter.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Weapon.h"
+/*#include "WeaponType.h"*/
 
 UShooterAnimInstance::UShooterAnimInstance() :
 Speed(0.f),
@@ -84,6 +86,10 @@ void UShooterAnimInstance::UpdateAnimationProperties(float DeltaTime)
 		else
 		{
 			OffsetState = EOffsetState::EOS_Hip;
+		}
+		if(ShooterCharacter->GetEquippedWeapon())
+		{
+			EquippedWeaponType = ShooterCharacter->GetEquippedWeapon()->GetWeaponType();
 		}
 			
 	}
