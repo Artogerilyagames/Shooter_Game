@@ -50,7 +50,7 @@ void AWeapon::ThrowWeapon()
 void AWeapon::OnConstruction(const FTransform& Transform)
 {
 	Super::OnConstruction(Transform);
-	const FString WeaponTablePath{TEXT("DataTable'/Game/Game/DataTable/WeaponDataTable.WeaponDataTable'")};
+	const FString WeaponTablePath{TEXT("DataTable'/Game/Game/DataTable/MyWeaponDataTable.MyWeaponDataTable'")};
 	UDataTable* WeaponTableObject = Cast<UDataTable>(StaticLoadObject(UDataTable::StaticClass(), nullptr, *WeaponTablePath));
 	if(WeaponTableObject)
 	{
@@ -77,6 +77,9 @@ void AWeapon::OnConstruction(const FTransform& Transform)
 			SetItemName(WeaponDataRow->ItemName);
 			SetIconItem(WeaponDataRow->InventoryIcon);
 			SetAmmoIcon(WeaponDataRow->AmmoIcon);
+			SetClipBoneName(WeaponDataRow->ClipBoneName);
+			SetReloadMontageSection(WeaponDataRow->ReloadMontageSection);
+		
 			
 			
 		}

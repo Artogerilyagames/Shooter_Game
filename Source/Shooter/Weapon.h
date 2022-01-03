@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#pragma once
 
+#pragma once
 #include "CoreMinimal.h"
 #include "Item.h"
 #include "AmmoType.h"
@@ -32,6 +32,10 @@ struct FWeaponDataTable : public FTableRowBase
 	UTexture2D* InventoryIcon;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UTexture2D* AmmoIcon;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FName ClipBoneName;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FName ReloadMontageSection;
 	
 };
 
@@ -81,7 +85,9 @@ public:
 	FORCEINLINE EWeaponType GetWeaponType() const {return WeaponType;}
 	FORCEINLINE EAmmoType GetAmmoType() const {return AmmoType;}
 	FORCEINLINE FName GetReloadMontageSection() const {return ReloadMontageSection;}
+	FORCEINLINE void SetReloadMontageSection(FName Name){ReloadMontageSection = Name;}
 	FORCEINLINE FName GetClipBoneName() const {return ClipBoneName;}
+	FORCEINLINE void SetClipBoneName(FName Name) {ClipBoneName = Name;}
 
 	void ReloadAmmo(int32 Amount);
 	FORCEINLINE void SetMovingClip(const bool Move){bMovingClip = Move;}

@@ -2,7 +2,7 @@
 
 
 #pragma once
-#include "WeaponType.h"
+
 
 UENUM(BlueprintType)
 enum class EWeaponType : uint8
