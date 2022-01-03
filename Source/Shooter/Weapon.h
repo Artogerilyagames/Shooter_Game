@@ -36,6 +36,8 @@ struct FWeaponDataTable : public FTableRowBase
 	FName ClipBoneName;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FName ReloadMontageSection;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TSubclassOf<UAnimInstance> AnimBP;
 	
 };
 
@@ -76,6 +78,8 @@ private:
 	FName ClipBoneName;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category= DataTable, meta = (AllowPrivateAccess = "true"));
 	UDataTable* WeaponDataTable;
+
+	
 	
 public:
 	void ThrowWeapon();
