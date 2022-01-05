@@ -153,10 +153,6 @@ private:
 	
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= Combat,meta =(AllowPrivateAccess = "true"))
-	class USoundCue* FireSound;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= Combat,meta =(AllowPrivateAccess = "true"))
-	class UParticleSystem* MuzzleFlash;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= Combat,meta =(AllowPrivateAccess = "true"))
 	class UAnimMontage* HipFireMontage;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= Combat,meta =(AllowPrivateAccess = "true"))
 	class UAnimMontage* PunchMontage;
@@ -199,7 +195,7 @@ private:
 
 	bool bFireButtonPressed;
 	bool bShouldFire;
-	float AutomaticFireRate;
+
 	FTimerHandle AutoFireTimer;
 	bool bShouldTraceForItems;
 	int8 OverlappedItemCount;

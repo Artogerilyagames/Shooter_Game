@@ -51,7 +51,7 @@ bFiringBullet(false),
 
 bFireButtonPressed(false),
 bShouldFire(true),
-AutomaticFireRate(0.1),
+
 bShouldTraceForItems(false),
 Starting9mmAmmo(85),
 
@@ -375,6 +375,7 @@ void AShooterCharacter::FireButtonPressed()
 	bFireButtonPressed = true;
 	FireWeapon();
 	ShowCrosshairs();
+	
 
 	
 	
@@ -397,13 +398,14 @@ void AShooterCharacter::FireButtonReleased()
 
 void AShooterCharacter::StartFireTimer()
 {
+	if(EquippedWeapon == nullptr) return;
 	CombatState = ECombatState::ECS_FireTimerInProgress;
 	
 		GetWorldTimerManager().SetTimer
 		(AutoFireTimer,
 			this,
 			&AShooterCharacter::AutoFireReset,
-			AutomaticFireRate);
+			EquippedWeapon->GetAutoFireRate());
 	
 }
 
@@ -719,9 +721,9 @@ bool AShooterCharacter::WeaponHasAmmo()
 void AShooterCharacter::PlayFireSound()
 {
 	//Play Fire Sound
-	if(FireSound)
+	if(EquippedWeapon->GetFireSound())
 	{
-		UGameplayStatics::PlaySound2D(this, FireSound);
+		UGameplayStatics::PlaySound2D(this, EquippedWeapon->GetFireSound());
 	}
 }
 
@@ -734,9 +736,9 @@ void AShooterCharacter::SendBullet()
 	{
 		const FTransform SocketTransform = BarrelSocket->GetSocketTransform
 		(EquippedWeapon->GetItemMesh());
-		if(MuzzleFlash)
+		if(EquippedWeapon->GetMuzzleFlash())
 		{
-			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), MuzzleFlash, SocketTransform);
+			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), EquippedWeapon->GetMuzzleFlash(), SocketTransform);
 		}
 		FVector BeamEnd;
 		bool bBeamEnd = GetBeamEndLocation(SocketTransform.GetLocation(), BeamEnd);
