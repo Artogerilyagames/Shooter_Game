@@ -155,7 +155,7 @@ private:
 	FLinearColor DarkColor;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= Rarity, meta = (AllowPrivateAccess = "true"))
 	int32 NumberOfStars;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= Rarity, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category= Inventory, meta = (AllowPrivateAccess = "true"))
 	UTexture2D* IconBackground;
 
 

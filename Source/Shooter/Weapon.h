@@ -48,6 +48,12 @@ struct FWeaponDataTable : public FTableRowBase
 	UTexture2D* CrosshairsButtom;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UTexture2D* CrosshairsTop;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float AutoFireRate;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class UParticleSystem* MuzzleFlash;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	USoundCue* FireSound;
 
 	
 
@@ -102,6 +108,13 @@ private:
 	UTexture2D* CrosshairsButtom;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category= DataTable, meta = (AllowPrivateAccess = "true"));
 	UTexture2D* CrosshairsTop;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= DataTable, meta = (AllowPrivateAccess = "true"));
+	float AutoFireRate;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= DataTable, meta = (AllowPrivateAccess = "true"));
+	class UParticleSystem* MuzzleFlash;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= DataTable, meta = (AllowPrivateAccess = "true"));
+	USoundCue* FireSound;
+
 
 	
 	
