@@ -92,15 +92,15 @@ private:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category= DataTable, meta = (AllowPrivateAccess = "true"));
 	UDataTable* WeaponDataTable;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= DataTable, meta = (AllowPrivateAccess = "true"));
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category= DataTable, meta = (AllowPrivateAccess = "true"));
 	UTexture2D* CrosshairsMiddle;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= DataTable, meta = (AllowPrivateAccess = "true"));
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category= DataTable, meta = (AllowPrivateAccess = "true"));
 	UTexture2D* CrosshairsLeft;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= DataTable, meta = (AllowPrivateAccess = "true"));
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category= DataTable, meta = (AllowPrivateAccess = "true"));
 	UTexture2D* CrosshairsRight;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= DataTable, meta = (AllowPrivateAccess = "true"));
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category= DataTable, meta = (AllowPrivateAccess = "true"));
 	UTexture2D* CrosshairsButtom;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= DataTable, meta = (AllowPrivateAccess = "true"));
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category= DataTable, meta = (AllowPrivateAccess = "true"));
 	UTexture2D* CrosshairsTop;
 
 	
