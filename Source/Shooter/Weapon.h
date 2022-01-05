@@ -38,6 +38,19 @@ struct FWeaponDataTable : public FTableRowBase
 	FName ReloadMontageSection;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TSubclassOf<UAnimInstance> AnimBP;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UTexture2D* CrosshairsMiddle;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UTexture2D* CrosshairsLeft;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UTexture2D* CrosshairsRight;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UTexture2D* CrosshairsButtom;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UTexture2D* CrosshairsTop;
+
+	
+
 	
 };
 
@@ -79,6 +92,17 @@ private:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category= DataTable, meta = (AllowPrivateAccess = "true"));
 	UDataTable* WeaponDataTable;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= DataTable, meta = (AllowPrivateAccess = "true"));
+	UTexture2D* CrosshairsMiddle;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= DataTable, meta = (AllowPrivateAccess = "true"));
+	UTexture2D* CrosshairsLeft;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= DataTable, meta = (AllowPrivateAccess = "true"));
+	UTexture2D* CrosshairsRight;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= DataTable, meta = (AllowPrivateAccess = "true"));
+	UTexture2D* CrosshairsButtom;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= DataTable, meta = (AllowPrivateAccess = "true"));
+	UTexture2D* CrosshairsTop;
+
 	
 	
 public:
@@ -92,6 +116,9 @@ public:
 	FORCEINLINE void SetReloadMontageSection(FName Name){ReloadMontageSection = Name;}
 	FORCEINLINE FName GetClipBoneName() const {return ClipBoneName;}
 	FORCEINLINE void SetClipBoneName(FName Name) {ClipBoneName = Name;}
+
+	
+
 
 	void ReloadAmmo(int32 Amount);
 	FORCEINLINE void SetMovingClip(const bool Move){bMovingClip = Move;}
