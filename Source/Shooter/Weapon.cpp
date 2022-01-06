@@ -64,6 +64,9 @@ void AWeapon::OnConstruction(const FTransform& Transform)
 			case EWeaponType::EWT_AssultRiffle:
 				WeaponDataRow = WeaponTableObject->FindRow<FWeaponDataTable>(FName("AssaultRifle"), TEXT(""));
         			break;
+		case EWeaponType::EWT_Pistol:
+			WeaponDataRow = WeaponTableObject->FindRow<FWeaponDataTable>(FName("Pistol"), TEXT(""));
+			break;
         	default: ;
 		}
 		if(WeaponDataRow)
@@ -88,6 +91,7 @@ void AWeapon::OnConstruction(const FTransform& Transform)
 			AutoFireRate = WeaponDataRow->AutoFireRate;
 			MuzzleFlash = WeaponDataRow->MuzzleFlash;
 			FireSound = WeaponDataRow->FireSound;
+			
 		
 			
 			
