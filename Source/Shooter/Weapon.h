@@ -54,6 +54,8 @@ struct FWeaponDataTable : public FTableRowBase
 	class UParticleSystem* MuzzleFlash;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	USoundCue* FireSound;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool bAutomatic;
 
 
 	
@@ -133,6 +135,8 @@ private:
 	float MaxRecoilRotation;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= Pistol, meta = (AllowPrivateAccess = "true"));
 	float RecoilRotation;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Pistol, meta = (AllowPrivateAccess = "true"));
+	bool bAutomatic;
 
 
 
@@ -153,6 +157,7 @@ public:
 	FORCEINLINE UParticleSystem* GetMuzzleFlash() const {return MuzzleFlash;}
 	FORCEINLINE USoundCue* GetFireSound() const {return FireSound;}
 	void StartSlideTimer();
+	FORCEINLINE bool GetAutomatic() const {return bAutomatic;}
 
 	
 

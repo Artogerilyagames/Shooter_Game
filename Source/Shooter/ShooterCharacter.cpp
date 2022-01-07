@@ -89,9 +89,9 @@ EquipSoundResetTime(0.2f)
 
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
 	CameraBoom->SetupAttachment(RootComponent);
-	CameraBoom->TargetArmLength = 180.f;
+	CameraBoom->TargetArmLength = 300.f;
 	CameraBoom->bUsePawnControlRotation = true;
-	CameraBoom->SocketOffset = FVector(0.f, 50.f, 70.f);
+	CameraBoom->SocketOffset = FVector(0.f, 80.f, 90.f);
 	PickupWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("PickupWidget"));
 	PickupWidget->SetupAttachment(GetRootComponent());
 
@@ -415,10 +415,12 @@ void AShooterCharacter::StartFireTimer()
 
 void AShooterCharacter::AutoFireReset()
 {
+	
 	CombatState = ECombatState::ECS_Unoccupied;
+	if(EquippedWeapon == nullptr) return;
 	if(WeaponHasAmmo())
 	{
-		if(bFireButtonPressed)
+		if(bFireButtonPressed && EquippedWeapon->GetAutomatic())
 		{
 			FireWeapon();
 		}
@@ -438,7 +440,7 @@ bool AShooterCharacter::TraceUnderCrosshairs(FHitResult& OutHitResult, FVector& 
 	{
 		GEngine->GameViewport->GetViewportSize(ViewportSize);
 	}
-	FVector2D CrosshairLocation(ViewportSize.X / 2.f, ViewportSize.Y / 2.f);
+	FVector2D CrosshairLocation(ViewportSize.X / 2.f, ViewportSize.Y / 1.6f);
 	FVector CrosshairWorldPosition;
 	FVector CrosshairWorldDirection;
 

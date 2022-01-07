@@ -17,7 +17,8 @@ SlideDisplacement(0.f),
 SlideDisplacementTime(0.1f),
 bMovingSlide(false),
 MaxSlideDisplacement(4.f),
-MaxRecoilRotation(20.f)
+MaxRecoilRotation(20.f),
+bAutomatic(true)
 {
 	/*PrimaryActorTick.bCanEverTick = true;*/
 }
@@ -97,6 +98,7 @@ void AWeapon::OnConstruction(const FTransform& Transform)
 			AutoFireRate = WeaponDataRow->AutoFireRate;
 			MuzzleFlash = WeaponDataRow->MuzzleFlash;
 			FireSound = WeaponDataRow->FireSound;
+			bAutomatic = WeaponDataRow->bAutomatic;
 			
 		
 			
