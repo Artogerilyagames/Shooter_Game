@@ -55,6 +55,7 @@ struct FWeaponDataTable : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	USoundCue* FireSound;
 
+
 	
 
 	
@@ -114,6 +115,10 @@ private:
 	class UParticleSystem* MuzzleFlash;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category= DataTable, meta = (AllowPrivateAccess = "true"));
 	USoundCue* FireSound;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= Pistol, meta = (AllowPrivateAccess = "true"));
+	float SlideDisplacement;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= Pistol, meta = (AllowPrivateAccess = "true"));
+	UCurveFloat* SlideDisplacementCurve;
 
 
 	

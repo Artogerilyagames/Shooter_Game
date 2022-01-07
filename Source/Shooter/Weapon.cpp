@@ -12,7 +12,8 @@ MagazineCapacity(30),
 WeaponType(EWeaponType::EWT_SubmachineGun),
 AmmoType(EAmmoType::EAT_9mm),
 ReloadMontageSection(FName(TEXT("Reload SMG"))),
-ClipBoneName(TEXT("b_gun_mag"))
+ClipBoneName(TEXT("b_gun_mag")),
+SlideDisplacement(0.f)
 {
 	/*PrimaryActorTick.bCanEverTick = true;*/
 }

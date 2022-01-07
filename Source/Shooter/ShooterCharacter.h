@@ -78,7 +78,7 @@ public:
 	void InitializeAmmoMap();
 	bool WeaponHasAmmo();
 	/**FireWeapon function*/
-	void PlayFireSound();
+	void PlayFireSound() const;
 	void SendBullet();
 	void PlayGunfireMontage();
 	void ReloadButtonPressed();

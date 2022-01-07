@@ -718,7 +718,7 @@ bool AShooterCharacter::WeaponHasAmmo()
 	
 }
 
-void AShooterCharacter::PlayFireSound()
+void AShooterCharacter::PlayFireSound() const
 {
 	//Play Fire Sound
 	if(EquippedWeapon->GetFireSound())
@@ -1131,9 +1131,9 @@ void AShooterCharacter::GetPickupItem(AItem* Item)
 			Weapon->SetItemState(EItemState::EIS_PickUp);
 		}
 		else // Inventory is full! Swap with Equipped Weapon
-		{
+			{
 			SwapWeapon(Weapon);
-		}
+			}
 	}
 	
 	auto Ammo = Cast<AAmmo>(Item);
@@ -1143,4 +1143,3 @@ void AShooterCharacter::GetPickupItem(AItem* Item)
 		
 	}
 }
-
