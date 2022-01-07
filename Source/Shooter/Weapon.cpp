@@ -16,7 +16,8 @@ ClipBoneName(TEXT("b_gun_mag")),
 SlideDisplacement(0.f),
 SlideDisplacementTime(0.1f),
 bMovingSlide(false),
-MaxSlideDisplacement(4.f)
+MaxSlideDisplacement(4.f),
+MaxRecoilRotation(20.f)
 {
 	/*PrimaryActorTick.bCanEverTick = true;*/
 }
@@ -119,6 +120,7 @@ void AWeapon::UpdateSlideDisplacement()
 		// ReSharper disable once CppDeclaratorNeverUsed
 		const float CurveValue{SlideDisplacementCurve->GetFloatValue(ElapsedTime)};
 		SlideDisplacement = CurveValue * MaxSlideDisplacement;
+		RecoilRotation = CurveValue * MaxRecoilRotation;
 	}
 }
 
