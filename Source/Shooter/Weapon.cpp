@@ -13,7 +13,10 @@ WeaponType(EWeaponType::EWT_SubmachineGun),
 AmmoType(EAmmoType::EAT_9mm),
 ReloadMontageSection(FName(TEXT("Reload SMG"))),
 ClipBoneName(TEXT("b_gun_mag")),
-SlideDisplacement(0.f)
+SlideDisplacement(0.f),
+SlideDisplacementTime(0.1f),
+bMovingSlide(false),
+MaxSlideDisplacement(4.f)
 {
 	/*PrimaryActorTick.bCanEverTick = true;*/
 }
@@ -101,6 +104,10 @@ void AWeapon::OnConstruction(const FTransform& Transform)
 	
 }
 
+void AWeapon::FinishMovingSlide()
+{
+	bMovingSlide = false;
+}
 
 
 void AWeapon::DecrementAmmo()
@@ -113,6 +120,13 @@ void AWeapon::DecrementAmmo()
 	{
 		 --Ammo;
 	}
+}
+
+void AWeapon::StartSlideTimer()
+{
+	bMovingSlide = true;
+	GetWorldTimerManager().SetTimer
+	(SliderTimer, this, &AWeapon::FinishMovingSlide,SlideDisplacementTime);
 }
 
 void AWeapon::ReloadAmmo(int32 Amount)

@@ -77,6 +77,7 @@ protected:
 	
 	void StopFalling();
 	virtual void OnConstruction(const FTransform& Transform) override;
+	void FinishMovingSlide();
     	
 private:
 	FTimerHandle ThroWeaponTimer;
@@ -115,10 +116,17 @@ private:
 	class UParticleSystem* MuzzleFlash;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category= DataTable, meta = (AllowPrivateAccess = "true"));
 	USoundCue* FireSound;
+	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= Pistol, meta = (AllowPrivateAccess = "true"));
 	float SlideDisplacement;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= Pistol, meta = (AllowPrivateAccess = "true"));
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category= Pistol, meta = (AllowPrivateAccess = "true"));
 	UCurveFloat* SlideDisplacementCurve;
+	FTimerHandle SliderTimer;
+	float SlideDisplacementTime;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly,Category= Pistol, meta = (AllowPrivateAccess = "true"));
+	bool bMovingSlide;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Pistol, meta = (AllowPrivateAccess = "true"));
+	float MaxSlideDisplacement;
 
 
 	
@@ -137,6 +145,7 @@ public:
 	FORCEINLINE float GetAutoFireRate() const {return AutoFireRate;}
 	FORCEINLINE UParticleSystem* GetMuzzleFlash() const {return MuzzleFlash;}
 	FORCEINLINE USoundCue* GetFireSound() const {return FireSound;}
+	void StartSlideTimer();
 
 	
 
