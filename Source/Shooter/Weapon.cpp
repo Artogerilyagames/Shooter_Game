@@ -29,6 +29,7 @@ void AWeapon::Tick(float DeltaTime)
 		const FRotator MeshRotation{0.f, GetItemMesh()->GetComponentRotation().Yaw, 0.f};
 		GetItemMesh()->SetWorldRotation(MeshRotation, false, nullptr, ETeleportType::TeleportPhysics);
 	}
+	UpdateSlideDisplacement();
 }
 
 void AWeapon::ThrowWeapon()
@@ -107,6 +108,18 @@ void AWeapon::OnConstruction(const FTransform& Transform)
 void AWeapon::FinishMovingSlide()
 {
 	bMovingSlide = false;
+}
+
+void AWeapon::UpdateSlideDisplacement()
+{
+	if(SlideDisplacementCurve && bMovingSlide)
+	{
+		// ReSharper disable once CppDeclaratorNeverUsed
+		const float ElapsedTime{GetWorldTimerManager().GetTimerElapsed(SliderTimer)};
+		// ReSharper disable once CppDeclaratorNeverUsed
+		const float CurveValue{SlideDisplacementCurve->GetFloatValue(ElapsedTime)};
+		SlideDisplacement = CurveValue * MaxSlideDisplacement;
+	}
 }
 
 

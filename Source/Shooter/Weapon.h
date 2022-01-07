@@ -78,6 +78,7 @@ protected:
 	void StopFalling();
 	virtual void OnConstruction(const FTransform& Transform) override;
 	void FinishMovingSlide();
+	void UpdateSlideDisplacement();
     	
 private:
 	FTimerHandle ThroWeaponTimer;
