@@ -16,6 +16,8 @@
 #include "Particles/ParticleSystemComponent.h"
 #include "Sound/SoundCue.h"
 #include "Ammo.h"
+#include "PhysicalMaterials/PhysicalMaterial.h"
+#include "Shooter.h"
 
 
 // Sets default values
@@ -1021,7 +1023,12 @@ void AShooterCharacter::FootStep()
 		End,
 		ECollisionChannel::ECC_Visibility,
 		QueryParams);
-	UE_LOG(LogTemp, Warning, TEXT("Hit Actor: %s"), *HitResult.Actor->GetName());
+	// ReSharper disable once CppDeclaratorNeverUsed
+	auto HitSurface =  HitResult.PhysMaterial->SurfaceType;
+	if(HitSurface == EPS_Grass)
+	{
+		UE_LOG(LogTemp,Warning, TEXT("Hit Grass surface Type!"));
+	}
 }
 
 
