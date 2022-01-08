@@ -17,7 +17,7 @@
 #include "Sound/SoundCue.h"
 #include "Ammo.h"
 #include "PhysicalMaterials/PhysicalMaterial.h"
-#include "Shooter.h"
+/*#include "Shooter.h"*/
 
 
 // Sets default values
@@ -1010,7 +1010,9 @@ void AShooterCharacter::FiveKeyPressed()
 	ExchangeInventoryItems(EquippedWeapon->GetSlotIndex(), 5);
 }
 
-void AShooterCharacter::FootStep()
+
+
+EPhysicalSurface AShooterCharacter::GetSurfaceType()
 {
 	FHitResult HitResult;
 	const FVector Start{GetActorLocation()};
@@ -1023,12 +1025,11 @@ void AShooterCharacter::FootStep()
 		End,
 		ECollisionChannel::ECC_Visibility,
 		QueryParams);
-	// ReSharper disable once CppDeclaratorNeverUsed
-	auto HitSurface =  HitResult.PhysMaterial->SurfaceType;
-	if(HitSurface == EPS_Grass)
-	{
-		UE_LOG(LogTemp,Warning, TEXT("Hit Grass surface Type!"));
-	}
+	return UPhysicalMaterial::DetermineSurfaceType(HitResult.PhysMaterial.Get());
+	
+	
+
+
 }
 
 
