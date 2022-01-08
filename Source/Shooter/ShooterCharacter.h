@@ -111,6 +111,8 @@ public:
 	void ThreeKetPressed();
 	void FourKeyPressed();
 	void FiveKeyPressed();
+	UFUNCTION(BlueprintCallable)
+	void FootStep();
 
 	void ExchangeInventoryItems(int32 CurrentItemIndex, int32 NewItemIndex );
 	
