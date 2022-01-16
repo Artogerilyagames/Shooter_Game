@@ -2,12 +2,14 @@
 
 using UnrealBuildTool;
 
+// ReSharper disable once InconsistentNaming
 public class Shooter : ModuleRules
 {
 	public Shooter(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
+		// ReSharper disable once RedundantExplicitArrayCreation
 		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "UMG", "PhysicsCore"});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });

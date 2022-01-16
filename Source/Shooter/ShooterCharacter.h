@@ -44,7 +44,7 @@ public:
 	void LookUp(float Value);
 	void FireWeapon();
 	void Punch();
-	bool GetBeamEndLocation(const FVector& MuzzleSocketLocation, FVector& OutBeamLocation) const;
+	bool GetBeamEndLocation(const FVector& MuzzleSocketLocation, FHitResult& OutHitResult);
 	void AimingButtonPressed();
 	void AimingButtonReleased();
 	void CameraInterpZoom(float DeltaTime);
