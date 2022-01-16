@@ -112,7 +112,7 @@ public:
 	void FourKeyPressed();
 	void FiveKeyPressed();
 	UFUNCTION(BlueprintCallable)
-	void FootStep();
+	EPhysicalSurface GetSurfaceType();
 
 	void ExchangeInventoryItems(int32 CurrentItemIndex, int32 NewItemIndex );
 	

@@ -112,6 +112,7 @@ EquipSoundResetTime(0.2f)
 	GetCharacterMovement()->AirControl = 0.2f;
 	//Create Hand Scene Component
 	HandSceneComponent = CreateDefaultSubobject<USceneComponent>(TEXT("HandSceneComp"));
+	
 
 	
 }
@@ -120,6 +121,14 @@ EquipSoundResetTime(0.2f)
 void AShooterCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+	
+	GetMesh()->HideBoneByName(TEXT("weapon_l"), EPhysBodyOp::PBO_None);
+	GetMesh()->HideBoneByName(TEXT("weapon_r"), EPhysBodyOp::PBO_None);
+	GetMesh()->HideBoneByName(TEXT("ult_weapon_l"), EPhysBodyOp::PBO_None);
+	GetMesh()->HideBoneByName(TEXT("ult_weapon_r"), EPhysBodyOp::PBO_None);
+	GetMesh()->HideBoneByName(TEXT("ik_hand_gun"), EPhysBodyOp::PBO_None);
+	GetMesh()->HideBoneByName(TEXT("grenade"), EPhysBodyOp::PBO_None);
+
 
 	if(FollowCamera)
 	{
@@ -605,9 +614,6 @@ void AShooterCharacter::FinishCrosshairBulletFire()
 {
 	bFiringBullet =false;
 }
-
-
-
 
 // Called every frame
 void AShooterCharacter::Tick(float DeltaTime)
