@@ -38,6 +38,11 @@ void AEnemy::ShowHealthBar_Implementation()
 		HealthBarDisplayTime);
 }
 
+void AEnemy::Die()
+{
+	HideHealthBar();
+}
+
 void AEnemy::HideHealthBar_Implementation()
 {
 }
@@ -75,6 +80,7 @@ float AEnemy::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AC
 	if(Health - DamageAmount <= 0.f)
 	{
 		Health = 0.f;
+		Die();
 	}
 	else
 	{

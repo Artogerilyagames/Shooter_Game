@@ -28,6 +28,7 @@ protected:
 	
 	UFUNCTION(BlueprintNativeEvent)
 	void HideHealthBar();
+	void Die();
 
 
 	
