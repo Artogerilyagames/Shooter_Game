@@ -63,10 +63,12 @@ void AWeapon::OnConstruction(const FTransform& Transform)
 	{
 		// ReSharper disable once CppDeclaratorNeverUsed
 		FWeaponDataTable* WeaponDataRow = nullptr;
+
 		switch (WeaponType)
 		{
 		case EWeaponType::EWT_SubmachineGun:
 			WeaponDataRow = WeaponTableObject->FindRow<FWeaponDataTable>(FName("SubMachineGun"), TEXT(""));
+
 			break;
 			case EWeaponType::EWT_AssultRiffle:
 				WeaponDataRow = WeaponTableObject->FindRow<FWeaponDataTable>(FName("AssaultRifle"), TEXT(""));
@@ -99,6 +101,8 @@ void AWeapon::OnConstruction(const FTransform& Transform)
 			MuzzleFlash = WeaponDataRow->MuzzleFlash;
 			FireSound = WeaponDataRow->FireSound;
 			bAutomatic = WeaponDataRow->bAutomatic;
+			Damage = WeaponDataRow->Damage;
+			HeadShotDamage = WeaponDataRow->HeadShotDamage;
 			
 		
 			

@@ -17,6 +17,7 @@
 #include "Sound/SoundCue.h"
 #include "Ammo.h"
 #include "BulletHitInterface.h"
+#include "Enemy.h"
 #include "PhysicalMaterials/PhysicalMaterial.h"
 /*#include "Shooter.h"*/
 
@@ -768,6 +769,16 @@ void AShooterCharacter::SendBullet()
 				if (BulletHitInterface)
 				{
 					BulletHitInterface->BulletHit_Implementation(BeamHitResult);
+				}
+				AEnemy* HitEmemy = Cast<AEnemy>(BeamHitResult.Actor.Get());
+				if(HitEmemy)
+				{
+					UGameplayStatics::ApplyDamage
+					(BeamHitResult.Actor.Get(),
+						EquippedWeapon->GetDamage(),
+						GetController(),
+						this,
+						UDamageType::StaticClass());
 				}
 			}
 			else

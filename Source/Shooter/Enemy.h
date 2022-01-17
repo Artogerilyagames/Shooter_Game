@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "BulletHitInterface.h"
+#include "Editor/PropertyEditorTestObject.h"
 #include "GameFramework/Character.h"
 #include "Sound/SoundCue.h"
 #include "Enemy.generated.h"
@@ -25,6 +26,11 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= Combat, meta = (AllowPrivateAccess = "true"))
 	class USoundCue* ImpactSound;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= Combat, meta = (AllowPrivateAccess = "true"))
+	float Health;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= Combat, meta = (AllowPrivateAccess = "true"))
+	float MaxHealth;
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -33,5 +39,7 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	virtual void BulletHit_Implementation(FHitResult HitResult) override;
+
+	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const & DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 
 };

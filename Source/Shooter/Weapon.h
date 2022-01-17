@@ -56,6 +56,10 @@ struct FWeaponDataTable : public FTableRowBase
 	USoundCue* FireSound;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bAutomatic;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float Damage;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float HeadShotDamage;
 
 
 	
@@ -78,6 +82,7 @@ public:
 protected:
 	
 	void StopFalling();
+
 	virtual void OnConstruction(const FTransform& Transform) override;
 	void FinishMovingSlide();
 	void UpdateSlideDisplacement();
@@ -135,8 +140,13 @@ private:
 	float MaxRecoilRotation;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= Pistol, meta = (AllowPrivateAccess = "true"));
 	float RecoilRotation;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Pistol, meta = (AllowPrivateAccess = "true"));
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= Pistol, meta = (AllowPrivateAccess = "true"))
 	bool bAutomatic;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite,Category= "Weapon Properties", meta = (AllowPrivateAccess = "true"));
+	float Damage;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite,Category= "Weapon Properties", meta = (AllowPrivateAccess = "true"));
+	float HeadShotDamage;
+
 
 
 
@@ -158,6 +168,8 @@ public:
 	FORCEINLINE USoundCue* GetFireSound() const {return FireSound;}
 	void StartSlideTimer();
 	FORCEINLINE bool GetAutomatic() const {return bAutomatic;}
+	FORCEINLINE float GetDamage() const {return Damage;}
+	FORCEINLINE float GetHeadShotDamage() const {return HeadShotDamage;}
 
 	
 
