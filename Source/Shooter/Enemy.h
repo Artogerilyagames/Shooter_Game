@@ -62,6 +62,9 @@ private:
 	float HitReactTimeMax;
 	
 	bool bCanHitReact;
+	
+	UPROPERTY(EditAnywhere, Category= "BehaviorTree",meta = (AllowPrivateAccess = "true"))
+	class UBehaviorTree* BehaviorTree;
 
 public:	
 	// Called every frame
@@ -75,4 +78,5 @@ public:
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const & DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 
 	FORCEINLINE FString GetHeadBone() const {return HeadBone;}
+	FORCEINLINE UBehaviorTree* GetBehaviorTree() const {return BehaviorTree;}
 };
