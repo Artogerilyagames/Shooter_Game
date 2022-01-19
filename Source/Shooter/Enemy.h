@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "BulletHitInterface.h"
+#include "Components/SphereComponent.h"
 #include "Editor/PropertyEditorTestObject.h"
 #include "GameFramework/Character.h"
 #include "Sound/SoundCue.h"
@@ -32,6 +33,14 @@ protected:
 	void PlayHitMontage(FName Section, float PlayRate = 1.0f);
 	
 	void ResetHitReactTimer();
+	
+	UFUNCTION()
+	void AgroSphereOverlap(UPrimitiveComponent* OverlappedComponent,
+		AActor* OtherActor,
+		UPrimitiveComponent* OtherComponent,
+		int32 OtherBodyIndex,
+		bool bFromSweep,
+		const FHitResult& SweepResult);
 
 
 	
@@ -72,6 +81,11 @@ private:
 	FVector PatrolPoint2;
 
 	class AEnemyController* EnemyController;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= Combat, meta = (AllowPrivateAccess = "true"))
+	class USphereComponent* AgroSphere;
+
+	
 
 public:	
 	// Called every frame
