@@ -84,6 +84,10 @@ private:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= Combat, meta = (AllowPrivateAccess = "true"))
 	class USphereComponent* AgroSphere;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= Combat, meta= (AllowPrivateAccess = "true"))
+	bool bStunned;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= Combat, meta= (AllowPrivateAccess = "true"))
+	float StunChance;
 
 	
 

@@ -19,7 +19,9 @@ MaxHealth(100.f),
 HealthBarDisplayTime(4.f),
 HitReactTimeMin(.5f),
 HitReactTimeMax(3.f),
-bCanHitReact(true)
+bCanHitReact(true),
+bStunned(false),
+StunChance(0.5f)
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -126,7 +128,13 @@ void AEnemy::BulletHit_Implementation(FHitResult HitResult)
 		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactParticles, HitResult.Location, FRotator(0.f), true);
 	}
 	ShowHealthBar();
-	PlayHitMontage(FName("HitReactFront"));
+	const float Stunned = FMath::FRandRange(0.f, 1.f);
+	if(Stunned <= StunChance)
+	{
+		PlayHitMontage(FName("HitReactFront"));
+		bStunned = true;
+	}
+	
 }
 
 float AEnemy::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator,
