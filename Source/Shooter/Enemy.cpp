@@ -4,8 +4,11 @@
 #include "Enemy.h"
 
 #include "DrawDebugHelpers.h"
+#include "EnemyController.h"
+#include "BehaviorTree/BlackboardComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
+
 
 // Sets default values
 AEnemy::AEnemy() :
@@ -28,11 +31,19 @@ void AEnemy::BeginPlay()
 	Super::BeginPlay();
 	
 	GetMesh()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Visibility, ECollisionResponse::ECR_Block);
+	// Get AI Controller
+	EnemyController = Cast<AEnemyController>(GetController());
 
-	FVector WorldPatrolPoint = UKismetMathLibrary::TransformLocation
+	const FVector WorldPatrolPoint = UKismetMathLibrary::TransformLocation
 	(GetActorTransform(),
 		PatrolPoint);
 	DrawDebugSphere(GetWorld(),WorldPatrolPoint, 25.f, 12, FColor::Red, true);
+	if(EnemyController)
+	{
+		EnemyController->GetBlackBoardComponent()->SetValueAsVector
+		(TEXT("PatrolPoint"),
+			WorldPatrolPoint);
+	}
 }
 
 
