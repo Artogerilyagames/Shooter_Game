@@ -43,6 +43,7 @@ void AEnemy::BeginPlay()
 		EnemyController->GetBlackBoardComponent()->SetValueAsVector
 		(TEXT("PatrolPoint"),
 			WorldPatrolPoint);
+		EnemyController->RunBehaviorTree(BehaviorTree);
 	}
 }
 
