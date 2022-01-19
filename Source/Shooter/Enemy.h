@@ -30,6 +30,8 @@ protected:
 	void HideHealthBar();
 	void Die();
 	void PlayHitMontage(FName Section, float PlayRate = 1.0f);
+	
+	void ResetHitReactTimer();
 
 
 	
@@ -52,6 +54,14 @@ private:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= Combat, meta = (AllowPrivateAccess = "true"))
 	UAnimMontage* HitMontage;
+
+	FTimerHandle HitReactTimer;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= Combat, meta = (AllowPrivateAccess = "true"))
+	float HitReactTimeMin;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= Combat, meta = (AllowPrivateAccess = "true"))
+	float HitReactTimeMax;
+	
+	bool bCanHitReact;
 
 public:	
 	// Called every frame
