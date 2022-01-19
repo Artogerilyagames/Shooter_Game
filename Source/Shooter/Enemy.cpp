@@ -3,7 +3,9 @@
 
 #include "Enemy.h"
 
+#include "DrawDebugHelpers.h"
 #include "Kismet/GameplayStatics.h"
+#include "Kismet/KismetMathLibrary.h"
 
 // Sets default values
 AEnemy::AEnemy() :
@@ -26,7 +28,11 @@ void AEnemy::BeginPlay()
 	Super::BeginPlay();
 	
 	GetMesh()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Visibility, ECollisionResponse::ECR_Block);
-	
+
+	FVector WorldPatrolPoint = UKismetMathLibrary::TransformLocation
+	(GetActorTransform(),
+		PatrolPoint);
+	DrawDebugSphere(GetWorld(),WorldPatrolPoint, 25.f, 12, FColor::Red, true);
 }
 
 

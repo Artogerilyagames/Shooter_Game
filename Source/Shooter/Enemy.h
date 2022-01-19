@@ -65,6 +65,8 @@ private:
 	
 	UPROPERTY(EditAnywhere, Category= "BehaviorTree",meta = (AllowPrivateAccess = "true"))
 	class UBehaviorTree* BehaviorTree;
+	UPROPERTY(EditAnywhere, Category= "BehaviorTree", meta = (AllowPrivateAccess = "true", MakeEditWidget = "true"))
+	FVector PatrolPoint;
 
 public:	
 	// Called every frame
