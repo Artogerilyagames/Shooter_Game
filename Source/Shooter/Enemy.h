@@ -55,6 +55,11 @@ UFUNCTION()
 		AActor* OtherActor,
 		UPrimitiveComponent* OtherComponent,
 		int32 OtherBodyIndex);
+UFUNCTION(BlueprintCallable)
+	void PlayAttackMontage(FName Section, float PlayRate);
+	
+UFUNCTION(BlueprintPure)
+	FName GetAttackSectionName();
 
 
 	
@@ -106,6 +111,15 @@ private:
 	bool  bInAttackRange;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= Combat, meta = (AllowPrivateAccess = "true"))
 	USphereComponent* CombatRangeSphere;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= Combat, meta = (AllowPrivateAccess = "true"))
+	UAnimMontage* AttackMontage;
+	
+	//Attack Montage
+	FName AttackFast;
+	FName AttackChase;
+	FName AttackIdle;
+
 
 
 
