@@ -7,6 +7,7 @@
 #include "EnemyController.h"
 #include "ShooterCharacter.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "Components/CapsuleComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 
@@ -50,6 +51,9 @@ void AEnemy::BeginPlay()
 	CombatRangeSphere->OnComponentEndOverlap.AddDynamic(this, &AEnemy::CombatRangeEndOverlap);
 	
 	GetMesh()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Visibility, ECollisionResponse::ECR_Block);
+	GetMesh()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECollisionResponse::ECR_Ignore);
+	GetCapsuleComponent()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera,ECollisionResponse::ECR_Ignore);
+	
 	// Get AI Controller
 	EnemyController = Cast<AEnemyController>(GetController());
 
@@ -236,7 +240,7 @@ void AEnemy::PlayAttackMontage(FName Section, float PlayRate)
 FName AEnemy::GetAttackSectionName()
 {
 	FName SectionName;
-	const int32 Section{FMath::RandRange(1, 4)};
+	const int32 Section{FMath::RandRange(1, 3)};
 	switch (Section)
 	{
 	case 1:
