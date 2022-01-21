@@ -29,6 +29,9 @@ StunChance(0.5f)
 	AgroSphere = CreateDefaultSubobject<USphereComponent>(TEXT("AgroSphere"));
 	AgroSphere->SetupAttachment(GetRootComponent());
 
+	CombatRangeSphere = CreateDefaultSubobject<USphereComponent>(TEXT("CombatRange"));
+	CombatRangeSphere->SetupAttachment(GetRootComponent());
+
 }
 
 // Called when the game starts or when spawned
@@ -39,6 +42,8 @@ void AEnemy::BeginPlay()
 	AgroSphere->OnComponentBeginOverlap.AddDynamic
 	(this,
 		&AEnemy::AgroSphereOverlap);
+	CombatRangeSphere->OnComponentBeginOverlap.AddDynamic(this, &AEnemy::CombatRangeOverlap);
+	CombatRangeSphere->OnComponentEndOverlap.AddDynamic(this, &AEnemy::CombatRangeEndOverlap);
 	
 	GetMesh()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Visibility, ECollisionResponse::ECR_Block);
 	// Get AI Controller
@@ -162,12 +167,12 @@ void AEnemy::AgroSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor*
 	UPrimitiveComponent* OtherComponent, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	if(OtherActor == nullptr) return;
-	auto Character = Cast<AShooterCharacter>(OtherActor);
-	if(Character)
+	auto ShooterCharacter = Cast<AShooterCharacter>(OtherActor);
+	if(ShooterCharacter)
 	{
 		EnemyController->GetBlackBoardComponent()->SetValueAsObject
 		(TEXT("Target"),
-			Character);
+			ShooterCharacter);
 	}
 }
 
@@ -180,5 +185,37 @@ void AEnemy::SetStunned(bool Stunned)
 		(TEXT("Stunned"),
 			Stunned);
 	}
+}
+
+void AEnemy::CombatRangeOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	UPrimitiveComponent* OtherComponent, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	if(OtherActor == nullptr) return;
+	auto ShooterCharacter = Cast<AShooterCharacter>(OtherActor);
+	if(ShooterCharacter)
+	{
+		bInAttackRange = true;
+		if(EnemyController)
+		{
+			EnemyController->GetBlackBoardComponent()->SetValueAsBool(TEXT("InAttackrange"), true);
+		}
+	}
+	
+}
+
+void AEnemy::CombatRangeEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	UPrimitiveComponent* OtherComponent, int32 OtherBodyIndex)
+{
+	if(OtherActor == nullptr) return;
+	auto ShooterCharacter = Cast<AShooterCharacter>(OtherActor);
+	if(ShooterCharacter)
+	{
+		bInAttackRange = false;
+		if(EnemyController)
+		{
+			EnemyController->GetBlackBoardComponent()->SetValueAsBool(TEXT("InAttackrange"), false);
+		}
+	}
+	
 }
 

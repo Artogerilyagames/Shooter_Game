@@ -43,6 +43,18 @@ protected:
 		const FHitResult& SweepResult);
 	UFUNCTION(BlueprintCallable)
 	void SetStunned(bool Stunned);
+UFUNCTION()
+	void CombatRangeOverlap(UPrimitiveComponent* OverlappedComponent,
+		AActor* OtherActor,
+		UPrimitiveComponent* OtherComponent,
+		int32 OtherBodyIndex,
+		bool bFromSweep,
+		const FHitResult& SweepResult);
+UFUNCTION()
+	void CombatRangeEndOverlap(UPrimitiveComponent* OverlappedComponent,
+		AActor* OtherActor,
+		UPrimitiveComponent* OtherComponent,
+		int32 OtherBodyIndex);
 
 
 	
@@ -90,6 +102,10 @@ private:
 	bool bStunned;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= Combat, meta= (AllowPrivateAccess = "true"))
 	float StunChance;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category= Combat, meta= (AllowPrivateAccess = "true"))
+	bool  bInAttackRange;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= Combat, meta = (AllowPrivateAccess = "true"))
+	USphereComponent* CombatRangeSphere;
 
 
 
