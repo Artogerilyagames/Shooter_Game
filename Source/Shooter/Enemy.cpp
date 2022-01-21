@@ -132,7 +132,7 @@ void AEnemy::BulletHit_Implementation(FHitResult HitResult)
 	if(Stunned <= StunChance)
 	{
 		PlayHitMontage(FName("HitReactFront"));
-		bStunned = true;
+	SetStunned(true);
 	}
 	
 }
@@ -168,6 +168,17 @@ void AEnemy::AgroSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor*
 		EnemyController->GetBlackBoardComponent()->SetValueAsObject
 		(TEXT("Target"),
 			Character);
+	}
+}
+
+void AEnemy::SetStunned(bool Stunned)
+{
+	bStunned = Stunned;
+	if(EnemyController)
+	{
+		EnemyController->GetBlackBoardComponent()->SetValueAsBool
+		(TEXT("Stunned"),
+			Stunned);
 	}
 }
 
