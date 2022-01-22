@@ -205,7 +205,7 @@ void AEnemy::CombatRangeOverlap(UPrimitiveComponent* OverlappedComponent, AActor
 		bInAttackRange = true;
 		if(EnemyController)
 		{
-			EnemyController->GetBlackBoardComponent()->SetValueAsBool(TEXT("InAttackrange"), true);
+			EnemyController->GetBlackBoardComponent()->SetValueAsBool(TEXT("InAttackRange"), true);
 		}
 	}
 	
@@ -221,7 +221,7 @@ void AEnemy::CombatRangeEndOverlap(UPrimitiveComponent* OverlappedComponent, AAc
 		bInAttackRange = false;
 		if(EnemyController)
 		{
-			EnemyController->GetBlackBoardComponent()->SetValueAsBool(TEXT("InAttackrange"), false);
+			EnemyController->GetBlackBoardComponent()->SetValueAsBool(TEXT("InAttackRange"), false);
 		}
 	}
 	
