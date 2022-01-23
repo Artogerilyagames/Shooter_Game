@@ -7,6 +7,7 @@
 #include "EnemyController.h"
 #include "ShooterCharacter.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "Components/BoxComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
@@ -37,6 +38,12 @@ AttackIdle(TEXT("AttackIdle"))
 	CombatRangeSphere = CreateDefaultSubobject<USphereComponent>(TEXT("CombatRange"));
 	CombatRangeSphere->SetupAttachment(GetRootComponent());
 
+	LeftHandCollision = CreateDefaultSubobject<UBoxComponent>(TEXT("Left Hand Collision"));
+	LeftHandCollision->SetupAttachment(GetMesh(), FName("LeftHandCollisionSocket"));
+
+	RightHandCollision = CreateDefaultSubobject<UBoxComponent>(TEXT("Right Hand Collision"));
+	RightHandCollision->SetupAttachment(GetMesh(), FName("RightHandCollisionSocket"));
+
 }
 
 // Called when the game starts or when spawned
@@ -49,6 +56,31 @@ void AEnemy::BeginPlay()
 		&AEnemy::AgroSphereOverlap);
 	CombatRangeSphere->OnComponentBeginOverlap.AddDynamic(this, &AEnemy::CombatRangeOverlap);
 	CombatRangeSphere->OnComponentEndOverlap.AddDynamic(this, &AEnemy::CombatRangeEndOverlap);
+	
+	// Bind function overlap events for weapon boxes
+	LeftHandCollision->OnComponentBeginOverlap.AddDynamic
+	(this, &AEnemy::OnLeftHandCollisionOverlap);
+	
+	RightHandCollision->OnComponentBeginOverlap.AddDynamic
+	(this, &AEnemy::OnRightHandCollisionOverlap);
+	// Set Collision presets for weapon boxes
+	LeftHandCollision->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	LeftHandCollision->SetCollisionObjectType(ECollisionChannel::ECC_WorldDynamic);
+	LeftHandCollision->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
+	LeftHandCollision->SetCollisionResponseToChannel
+	(ECollisionChannel::ECC_Pawn,
+		ECollisionResponse::ECR_Overlap);
+
+	RightHandCollision->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	RightHandCollision->SetCollisionObjectType(ECollisionChannel::ECC_WorldDynamic);
+	RightHandCollision->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
+	RightHandCollision->SetCollisionResponseToChannel
+	(ECollisionChannel::ECC_Pawn,
+		ECollisionResponse::ECR_Overlap);
+
+	
+	
+
 	
 	GetMesh()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Visibility, ECollisionResponse::ECR_Block);
 	GetMesh()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECollisionResponse::ECR_Ignore);
@@ -256,5 +288,39 @@ FName AEnemy::GetAttackSectionName()
 	default: ;
 	}
 	return SectionName;
+}
+
+void AEnemy::OnLeftHandCollisionOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	UPrimitiveComponent* OtherComponent, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	
+}
+
+void AEnemy::OnRightHandCollisionOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	UPrimitiveComponent* OtherComponent, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	
+}
+
+void AEnemy::ActivateLeftWeapon()
+{
+	LeftHandCollision->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+}
+
+void AEnemy::DeactivateLeftWeapon()
+{
+	LeftHandCollision->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+}
+
+void AEnemy::ActivateRightWeapon()
+{
+	RightHandCollision->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+
+}
+
+void AEnemy::DeactivateRightWeapon()
+{
+	RightHandCollision->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 

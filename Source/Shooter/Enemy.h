@@ -60,6 +60,22 @@ UFUNCTION(BlueprintCallable)
 	
 UFUNCTION(BlueprintPure)
 	FName GetAttackSectionName();
+	UFUNCTION()
+	void OnLeftHandCollisionOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	UPrimitiveComponent* OtherComponent, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+	UFUNCTION()
+	void OnRightHandCollisionOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+    UPrimitiveComponent* OtherComponent, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+	// Activate /Deactivate Collision for weapon boxes
+    UFUNCTION(BlueprintCallable)
+	void ActivateLeftWeapon();
+	UFUNCTION(BlueprintCallable)
+	void DeactivateLeftWeapon();
+	UFUNCTION(BlueprintCallable)
+	void ActivateRightWeapon();
+	UFUNCTION(BlueprintCallable)
+	void DeactivateRightWeapon();
+
 
 
 	
@@ -119,6 +135,11 @@ private:
 	FName AttackFast;
 	FName AttackChase;
 	FName AttackIdle;
+	
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category= Combat, meta = (AllowPrivateAccess = "true"))
+	class UBoxComponent*  LeftHandCollision;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category= Combat, meta = (AllowPrivateAccess = "true"))
+    UBoxComponent*  RightHandCollision;
 
 
 
