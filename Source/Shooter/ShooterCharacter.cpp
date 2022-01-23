@@ -80,7 +80,9 @@ bReloadingIcon(false),
 bShouldPlayPickupSound(true),
 bShouldPlayEquipSound(true),
 PickupSoundResetTime(0.2f),
-EquipSoundResetTime(0.2f)
+EquipSoundResetTime(0.2f),
+Health(100.f),
+MaxHealth(100.f)
 
 
 
@@ -117,6 +119,20 @@ EquipSoundResetTime(0.2f)
 	
 
 	
+}
+
+float AShooterCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator,
+	AActor* DamageCauser)
+{
+	if(Health - DamageAmount <= 0.f)
+	{
+		 Health = 0.f;
+	}
+	else
+	{
+		Health -= DamageAmount;
+	}
+	return DamageAmount;
 }
 
 // Called when the game starts or when spawned

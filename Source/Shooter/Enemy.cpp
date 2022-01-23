@@ -8,7 +8,8 @@
 #include "ShooterCharacter.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Components/BoxComponent.h"
-#include "Components/CapsuleComponent.h"
+
+
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 
@@ -27,7 +28,8 @@ StunChance(0.5f),
 
 AttackFast(TEXT("AttackFast")),
 AttackChase(TEXT("AttackChase")),
-AttackIdle(TEXT("AttackIdle"))
+AttackIdle(TEXT("AttackIdle")),
+BaseDamage(20.f)
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -37,7 +39,7 @@ AttackIdle(TEXT("AttackIdle"))
 
 	CombatRangeSphere = CreateDefaultSubobject<USphereComponent>(TEXT("CombatRange"));
 	CombatRangeSphere->SetupAttachment(GetRootComponent());
-
+// Construct left and right hand collision boxes
 	LeftHandCollision = CreateDefaultSubobject<UBoxComponent>(TEXT("Left Hand Collision"));
 	LeftHandCollision->SetupAttachment(GetMesh(), FName("LeftHandCollisionSocket"));
 
@@ -52,8 +54,8 @@ void AEnemy::BeginPlay()
 	Super::BeginPlay();
 
 	AgroSphere->OnComponentBeginOverlap.AddDynamic
-	(this,
-		&AEnemy::AgroSphereOverlap);
+	(this, &AEnemy::AgroSphereOverlap);
+	
 	CombatRangeSphere->OnComponentBeginOverlap.AddDynamic(this, &AEnemy::CombatRangeOverlap);
 	CombatRangeSphere->OnComponentEndOverlap.AddDynamic(this, &AEnemy::CombatRangeEndOverlap);
 	
@@ -63,6 +65,7 @@ void AEnemy::BeginPlay()
 	
 	RightHandCollision->OnComponentBeginOverlap.AddDynamic
 	(this, &AEnemy::OnRightHandCollisionOverlap);
+	
 	// Set Collision presets for weapon boxes
 	LeftHandCollision->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	LeftHandCollision->SetCollisionObjectType(ECollisionChannel::ECC_WorldDynamic);
@@ -77,14 +80,12 @@ void AEnemy::BeginPlay()
 	RightHandCollision->SetCollisionResponseToChannel
 	(ECollisionChannel::ECC_Pawn,
 		ECollisionResponse::ECR_Overlap);
-
-	
-	
-
-	
+	// Hit montage animation & Particles effects
 	GetMesh()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Visibility, ECollisionResponse::ECR_Block);
+
+	
 	GetMesh()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECollisionResponse::ECR_Ignore);
-	GetCapsuleComponent()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera,ECollisionResponse::ECR_Ignore);
+	GetMesh()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera,ECollisionResponse::ECR_Ignore);
 	
 	// Get AI Controller
 	EnemyController = Cast<AEnemyController>(GetController());
@@ -122,9 +123,7 @@ void AEnemy::ShowHealthBar_Implementation()
 		HealthBarDisplayTime);
 }
 
-void AEnemy::HideHealthBar_Implementation()
-{
-}
+
 
 void AEnemy::Die()
 {
@@ -136,7 +135,7 @@ void AEnemy::PlayHitMontage(FName Section, float PlayRate)
 	if(bCanHitReact)
 	{
 		UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
-		if(AnimInstance)
+		if(AnimInstance == nullptr) return;
 		{
 			AnimInstance->Montage_Play(HitMontage, PlayRate);
 			AnimInstance->Montage_JumpToSection(Section, HitMontage);
@@ -204,17 +203,20 @@ void AEnemy::ResetHitReactTimer()
 }
 
 void AEnemy::AgroSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-	UPrimitiveComponent* OtherComponent, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) 
 {
 	if(OtherActor == nullptr) return;
-	auto ShooterCharacter = Cast<AShooterCharacter>(OtherActor);
-	if(ShooterCharacter)
+	auto Character = Cast<AShooterCharacter>(OtherActor);
+	if(Character) 
 	{
+	
 		EnemyController->GetBlackBoardComponent()->SetValueAsObject
 		(TEXT("Target"),
-			ShooterCharacter);
+			Character);
 	}
 }
+
+
 
 void AEnemy::SetStunned(bool Stunned)
 {
@@ -291,15 +293,15 @@ FName AEnemy::GetAttackSectionName()
 }
 
 void AEnemy::OnLeftHandCollisionOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-	UPrimitiveComponent* OtherComponent, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	
+	DoDamage(OtherActor);
 }
 
 void AEnemy::OnRightHandCollisionOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-	UPrimitiveComponent* OtherComponent, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	
+	DoDamage(OtherActor);
 }
 
 void AEnemy::ActivateLeftWeapon()
@@ -322,5 +324,20 @@ void AEnemy::ActivateRightWeapon()
 void AEnemy::DeactivateRightWeapon()
 {
 	RightHandCollision->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+}
+
+void AEnemy::DoDamage(AActor* Victim)
+{
+	if(Victim ==  nullptr) return;
+	auto Character = Cast<AShooterCharacter>(Victim);
+	if(Character)
+	{
+		UGameplayStatics::ApplyDamage
+		(Character,
+			BaseDamage,
+			EnemyController,
+			this,
+			UDamageType::StaticClass());
+	}
 }
 

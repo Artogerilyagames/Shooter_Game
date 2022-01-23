@@ -27,45 +27,49 @@ protected:
 	void ShowHealthBar();
 	void ShowHealthBar_Implementation();
 	
-	UFUNCTION(BlueprintNativeEvent)
+	UFUNCTION(BlueprintImplementableEvent)
 	void HideHealthBar();
 	void Die();
 	void PlayHitMontage(FName Section, float PlayRate = 1.0f);
 	
 	void ResetHitReactTimer();
-	
+
 	UFUNCTION()
 	void AgroSphereOverlap(UPrimitiveComponent* OverlappedComponent,
 		AActor* OtherActor,
-		UPrimitiveComponent* OtherComponent,
+		UPrimitiveComponent* OtherComp,
 		int32 OtherBodyIndex,
 		bool bFromSweep,
 		const FHitResult& SweepResult);
+	
 	UFUNCTION(BlueprintCallable)
 	void SetStunned(bool Stunned);
-UFUNCTION()
+	
+    UFUNCTION()
 	void CombatRangeOverlap(UPrimitiveComponent* OverlappedComponent,
 		AActor* OtherActor,
 		UPrimitiveComponent* OtherComponent,
 		int32 OtherBodyIndex,
 		bool bFromSweep,
 		const FHitResult& SweepResult);
-UFUNCTION()
+    UFUNCTION()
 	void CombatRangeEndOverlap(UPrimitiveComponent* OverlappedComponent,
 		AActor* OtherActor,
 		UPrimitiveComponent* OtherComponent,
 		int32 OtherBodyIndex);
-UFUNCTION(BlueprintCallable)
+    UFUNCTION(BlueprintCallable)
 	void PlayAttackMontage(FName Section, float PlayRate);
 	
-UFUNCTION(BlueprintPure)
+    UFUNCTION(BlueprintPure)
 	FName GetAttackSectionName();
+	
 	UFUNCTION()
 	void OnLeftHandCollisionOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-	UPrimitiveComponent* OtherComponent, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 	UFUNCTION()
 	void OnRightHandCollisionOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-    UPrimitiveComponent* OtherComponent, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+    UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+	
 	// Activate /Deactivate Collision for weapon boxes
     UFUNCTION(BlueprintCallable)
 	void ActivateLeftWeapon();
@@ -75,6 +79,7 @@ UFUNCTION(BlueprintPure)
 	void ActivateRightWeapon();
 	UFUNCTION(BlueprintCallable)
 	void DeactivateRightWeapon();
+	void DoDamage(AActor* Victim);
 
 
 
@@ -140,6 +145,9 @@ private:
 	class UBoxComponent*  LeftHandCollision;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category= Combat, meta = (AllowPrivateAccess = "true"))
     UBoxComponent*  RightHandCollision;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= Combat, meta = (AllowPrivateAccess = "true"))
+	float BaseDamage;
 
 
 
