@@ -82,7 +82,8 @@ bShouldPlayEquipSound(true),
 PickupSoundResetTime(0.2f),
 EquipSoundResetTime(0.2f),
 Health(100.f),
-MaxHealth(100.f)
+MaxHealth(100.f),
+StunChance(2.5f)
 
 
 
@@ -1257,6 +1258,16 @@ void AShooterCharacter::GetPickupItem(AItem* Item)
 	{
 		PickupAmmo(Ammo);
 		
+	}
+}
+
+void AShooterCharacter::Stun()
+{
+   CombatState = ECombatState::ECS_Stunned;
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+	if(AnimInstance && HitReactMontage)
+	{
+		AnimInstance->Montage_Play(HitReactMontage);
 	}
 }
 

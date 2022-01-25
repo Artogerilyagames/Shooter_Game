@@ -305,6 +305,7 @@ void AEnemy::OnLeftHandCollisionOverlap(UPrimitiveComponent* OverlappedComponent
 	{
 		DoDamage(Character);
 		SpawnBlood(Character, LeftHandSocket);
+		StunCharacter(Character);
 		
 	}
 	
@@ -318,6 +319,7 @@ void AEnemy::OnRightHandCollisionOverlap(UPrimitiveComponent* OverlappedComponen
 	{
 		DoDamage(Character);
 		SpawnBlood(Character, RightHandSocket);
+		StunCharacter(Character);
 		
 	}
 }
@@ -376,6 +378,18 @@ void AEnemy::SpawnBlood(AShooterCharacter* Victim, FName SocketName)
 			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), Victim->GetBloodParticles(),SocketTransform);
 		}
 			
+	}
+}
+
+void AEnemy::StunCharacter(AShooterCharacter* Victim)
+{
+	if(Victim)
+	{
+		const float Stun{FMath::FRandRange(0.f, 1.f)};
+		if(Stun <= Victim->GetStunChance())
+		{
+			Victim->Stun();
+		}
 	}
 }
 

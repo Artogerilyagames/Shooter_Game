@@ -80,6 +80,7 @@ protected:
 	void DeactivateRightWeapon();
 	void DoDamage(class AShooterCharacter* Victim);
 	void SpawnBlood(AShooterCharacter* Victim, FName SocketName);
+	void StunCharacter(AShooterCharacter* Victim);
 
 
 
