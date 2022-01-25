@@ -1247,3 +1247,4 @@ void AShooterCharacter::GetPickupItem(AItem* Item)
 		
 	}
 }
+

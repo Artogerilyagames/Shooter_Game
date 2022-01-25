@@ -310,6 +310,12 @@ private:
 	float Health;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= Combat,meta =(AllowPrivateAccess = "true"))
 	float MaxHealth;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= Combat,meta =(AllowPrivateAccess = "true"))
+	class USoundCue* MeleeImpactSound;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= Combat,meta =(AllowPrivateAccess = "true"))
+	UParticleSystem* BloodParticles;
+
+	
 
 
 
@@ -334,6 +340,6 @@ public:
 	void GetPickupItem(AItem* Item);
 
 	FORCEINLINE AWeapon* GetEquippedWeapon() const {return EquippedWeapon; }
-	
-	
+	FORCEINLINE USoundCue* GetMeleeImpactSound() const {return MeleeImpactSound;}
+	FORCEINLINE UParticleSystem* GetBloodParticles() const {return BloodParticles;}
 };

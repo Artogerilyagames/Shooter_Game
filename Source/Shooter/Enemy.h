@@ -4,10 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "BulletHitInterface.h"
-#include "Components/SphereComponent.h"
+#include "ShooterCharacter.h"
 #include "Editor/PropertyEditorTestObject.h"
 #include "GameFramework/Character.h"
-#include "Sound/SoundCue.h"
 #include "Enemy.generated.h"
 
 UCLASS()
@@ -79,7 +78,8 @@ protected:
 	void ActivateRightWeapon();
 	UFUNCTION(BlueprintCallable)
 	void DeactivateRightWeapon();
-	void DoDamage(AActor* Victim);
+	void DoDamage(class AShooterCharacter* Victim);
+	void SpawnBlood(AShooterCharacter* Victim, FName SocketName);
 
 
 
@@ -148,6 +148,12 @@ private:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= Combat, meta = (AllowPrivateAccess = "true"))
 	float BaseDamage;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= Combat,meta =(AllowPrivateAccess = "true"))
+	FName LeftHandSocket;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= Combat,meta =(AllowPrivateAccess = "true"))
+	FName RightHandSocket;
+
 
 
 
