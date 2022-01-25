@@ -283,7 +283,7 @@ void AShooterCharacter::AimingButtonPressed()
 {
 	bAimingButtonPressed = true;
 
-	if(CombatState != ECombatState::ECS_Reloading && CombatState != ECombatState::ECS_Equipping)
+	if(CombatState != ECombatState::ECS_Reloading && CombatState != ECombatState::ECS_Equipping && CombatState !=ECombatState::ECS_Stunned)
 	{
 		ShowCrosshairs();
 		Aim();
@@ -446,6 +446,7 @@ void AShooterCharacter::StartFireTimer()
 
 void AShooterCharacter::AutoFireReset()
 {
+	if(CombatState == ECombatState::ECS_Stunned) return;
 	
 	CombatState = ECombatState::ECS_Unoccupied;
 	if(EquippedWeapon == nullptr) return;
@@ -1099,6 +1100,15 @@ EPhysicalSurface AShooterCharacter::GetSurfaceType()
 
 }
 
+void AShooterCharacter::EndStun()
+{
+	CombatState = ECombatState::ECS_Unoccupied;
+	if(bAimingButtonPressed)
+	{
+		Aim();
+	}
+}
+
 
 void AShooterCharacter::ExchangeInventoryItems(int32 CurrentItemIndex, int32 NewItemIndex)
 {
@@ -1136,6 +1146,7 @@ void AShooterCharacter::ExchangeInventoryItems(int32 CurrentItemIndex, int32 New
 
 void AShooterCharacter::FinishReloading()
 {
+	if(CombatState == ECombatState::ECS_Stunned) return;
 	
 	CombatState = ECombatState::ECS_Unoccupied;
 	if(bAimingButtonPressed)
@@ -1167,6 +1178,7 @@ void AShooterCharacter::FinishReloading()
 
 void AShooterCharacter::FinishEquipping()
 {
+	if(CombatState == ECombatState::ECS_Stunned) return;
 	CombatState = ECombatState::ECS_Unoccupied;
 	if(bAimingButtonPressed)
 	{
