@@ -193,9 +193,13 @@ void AEnemy::BulletHit_Implementation(FHitResult HitResult)
 	
 }
 
-float AEnemy::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator,
-	AActor* DamageCauser)
+float AEnemy::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
+	
+	if(EnemyController)
+	{
+		EnemyController->GetBlackBoardComponent()->SetValueAsObject(FName("Target"),DamageCauser);
+	}
 	if(Health - DamageAmount <= 0.f)
 	{
 		Health = 0.f;
