@@ -172,6 +172,8 @@ private:
 	FTimerHandle AttackWaitTimer;
 	UPROPERTY(EditAnywhere, Category= Combat, meta = (AllowPrivateAccess = "true"))
 	float AttackWaitTime;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= Combat,meta =(AllowPrivateAccess = "true"))
+	UAnimMontage* DeathMontage;
 
 
 

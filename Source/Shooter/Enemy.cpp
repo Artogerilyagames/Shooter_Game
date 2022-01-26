@@ -141,6 +141,16 @@ void AEnemy::ShowHealthBar_Implementation()
 void AEnemy::Die()
 {
 	HideHealthBar();
+	UAnimInstance* AnimIntance = GetMesh()->GetAnimInstance();
+	if(AnimIntance && DeathMontage)
+	{
+		AnimIntance->Montage_Play(DeathMontage);
+	}
+	if(EnemyController)
+	{
+		EnemyController->GetBlackBoardComponent()->SetValueAsBool(FName("Dead"), true);
+		EnemyController->StopMovement();
+	}
 }
 
 void AEnemy::PlayHitMontage(FName Section, float PlayRate)
