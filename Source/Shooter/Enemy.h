@@ -32,6 +32,8 @@ protected:
 	void PlayHitMontage(FName Section, float PlayRate = 1.0f);
 	
 	void ResetHitReactTimer();
+    UFUNCTION(BlueprintCallable)
+	void StoreHitNumber(UUserWidget* HitNumber, FVector Location);
 
 	UFUNCTION()
 	void AgroSphereOverlap(UPrimitiveComponent* OverlappedComponent,
@@ -86,6 +88,7 @@ protected:
 
 
 
+
 	
 private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= Combat, meta = (AllowPrivateAccess = "true"))
@@ -114,6 +117,9 @@ private:
 	float HitReactTimeMax;
 	
 	bool bCanHitReact;
+	
+	UPROPERTY(VisibleAnywhere, Category= Combat,meta = (AllowPrivateAccess = "true"))
+	TMap<UUserWidget*, FVector> HitNumbers;
 	
 	UPROPERTY(EditAnywhere, Category= "BehaviorTree",meta = (AllowPrivateAccess = "true"))
 	class UBehaviorTree* BehaviorTree;
