@@ -36,7 +36,8 @@ BaseDamage(20.f),
 LeftHandSocket(TEXT("hand_lSocket")),
 RightHandSocket(TEXT("hand_rSocket")),
 bCanAttack(true),
-AttackWaitTime(1.f)
+AttackWaitTime(1.f),
+HitNumberDestroyTime(1.f)
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -222,6 +223,20 @@ void AEnemy::ResetHitReactTimer()
 void AEnemy::StoreHitNumber(UUserWidget* HitNumber, FVector Location)
 {
 	HitNumbers.Add(HitNumber, Location);
+	FTimerHandle HitNumberTimer;
+	FTimerDelegate HitNumberDelegate;
+	HitNumberDelegate.BindUFunction(this, FName("DestroyHitNumber"), HitNumber);
+	GetWorld()->GetTimerManager().SetTimer
+	(HitNumberTimer,
+		HitNumberDelegate,
+		HitNumberDestroyTime,
+		false);
+}
+
+void AEnemy::DestroyHitNumber(UUserWidget* HitNumber)
+{
+	HitNumbers.Remove(HitNumber);
+	HitNumber->RemoveFromParent();
 }
 
 void AEnemy::AgroSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
