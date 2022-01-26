@@ -87,6 +87,8 @@ protected:
 	void StunCharacter(AShooterCharacter* Victim);
 
 	void ResetCanAttack();
+	UFUNCTION(BlueprintCallable)
+	void FinishDeath();
 
 
 
@@ -174,6 +176,8 @@ private:
 	float AttackWaitTime;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= Combat,meta =(AllowPrivateAccess = "true"))
 	UAnimMontage* DeathMontage;
+	
+	bool bDying;
 
 
 

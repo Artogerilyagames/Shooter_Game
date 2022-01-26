@@ -37,7 +37,8 @@ BaseDamage(20.f),
 LeftHandSocket(TEXT("hand_lSocket")),
 RightHandSocket(TEXT("hand_rSocket")),
 bCanAttack(true),
-AttackWaitTime(1.f)
+AttackWaitTime(1.f),
+bDying(false)
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -140,6 +141,8 @@ void AEnemy::ShowHealthBar_Implementation()
 
 void AEnemy::Die()
 {
+	if(bDying) return;
+	bDying = true;
 	HideHealthBar();
 	UAnimInstance* AnimIntance = GetMesh()->GetAnimInstance();
 	if(AnimIntance && DeathMontage)
@@ -452,4 +455,9 @@ void AEnemy::ResetCanAttack()
 	{
 		EnemyController->GetBlackBoardComponent()->SetValueAsBool(FName("CanAttack"),true);
 	}
+}
+
+void AEnemy::FinishDeath()
+{
+	Destroy();
 }
