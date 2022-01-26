@@ -182,4 +182,7 @@ public:
 
 	FORCEINLINE FString GetHeadBone() const {return HeadBone;}
 	FORCEINLINE UBehaviorTree* GetBehaviorTree() const {return BehaviorTree;}
+	
+    UFUNCTION(BlueprintImplementableEvent)
+	void ShowHitNumber(int32 Damage, FVector HitLocation);
 };

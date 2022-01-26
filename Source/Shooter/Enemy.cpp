@@ -195,7 +195,7 @@ void AEnemy::BulletHit_Implementation(FHitResult HitResult)
 
 float AEnemy::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
-	
+	// Set the target blackboard key to agro the character
 	if(EnemyController)
 	{
 		EnemyController->GetBlackBoardComponent()->SetValueAsObject(FName("Target"),DamageCauser);
@@ -420,8 +420,6 @@ void AEnemy::ResetCanAttack()
 	bCanAttack = true;
 	if(EnemyController)
 	{
-		EnemyController->GetBlackBoardComponent()->SetValueAsBool(FName("CanAttack"), true);
+		EnemyController->GetBlackBoardComponent()->SetValueAsBool(FName("CanAttack"),true);
 	}
-
 }
-
