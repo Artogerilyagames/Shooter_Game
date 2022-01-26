@@ -128,6 +128,7 @@ float AShooterCharacter::TakeDamage(float DamageAmount, FDamageEvent const& Dama
 	if(Health - DamageAmount <= 0.f)
 	{
 		 Health = 0.f;
+		Die();
 	}
 	else
 	{
@@ -792,7 +793,7 @@ void AShooterCharacter::SendBullet()
 				
 				if(HitEnemy)
 				{
-					int32 Damage{};
+					int32 Damage;
 					if(BeamHitResult.BoneName.ToString() == HitEnemy->GetHeadBone())
 					{
 						// Head shot
@@ -1115,6 +1116,25 @@ void AShooterCharacter::EndStun()
 	}
 }
 
+void AShooterCharacter::Die()
+{
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+	if(AnimInstance && DeathMontage)
+	{
+		AnimInstance->Montage_Play(DeathMontage);
+	}
+}
+
+void AShooterCharacter::FinishDeath()
+{
+	GetMesh()->bPauseAnims = true;
+	APlayerController* PC = UGameplayStatics::GetPlayerController(this, 0);
+	if(PC)
+	{
+		DisableInput(PC);
+	}
+}
+
 
 void AShooterCharacter::ExchangeInventoryItems(int32 CurrentItemIndex, int32 NewItemIndex)
 {
@@ -1268,6 +1288,7 @@ void AShooterCharacter::GetPickupItem(AItem* Item)
 
 void AShooterCharacter::Stun()
 {
+	if(Health <= 0.f) return;
    CombatState = ECombatState::ECS_Stunned;
 	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
 	if(AnimInstance && HitReactMontage)

@@ -123,6 +123,9 @@ public:
 	EPhysicalSurface GetSurfaceType();
 	UFUNCTION(BlueprintCallable)
 	void EndStun();
+	void Die();
+	UFUNCTION(BlueprintCallable)
+	void FinishDeath();
 
 	void ExchangeInventoryItems(int32 CurrentItemIndex, int32 NewItemIndex );
 	
@@ -321,6 +324,9 @@ private:
 	UAnimMontage* HitReactMontage;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= Combat,meta =(AllowPrivateAccess = "true"))
 	float StunChance;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= Combat,meta =(AllowPrivateAccess = "true"))
+	UAnimMontage* DeathMontage;
+
 
 	
 
