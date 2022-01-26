@@ -34,7 +34,9 @@ AttackChase(TEXT("AttackChase")),
 AttackIdle(TEXT("AttackIdle")),
 BaseDamage(20.f),
 LeftHandSocket(TEXT("hand_lSocket")),
-RightHandSocket(TEXT("hand_rSocket"))
+RightHandSocket(TEXT("hand_rSocket")),
+bCanAttack(true),
+AttackWaitTime(1.f)
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -94,6 +96,11 @@ void AEnemy::BeginPlay()
 	
 	// Get AI Controller
 	EnemyController = Cast<AEnemyController>(GetController());
+	if(EnemyController)
+	{
+		EnemyController->GetBlackBoardComponent()->SetValueAsBool(FName("CanAttack"), true);
+	}
+
 
 	const FVector WorldPatrolPoint = UKismetMathLibrary::TransformLocation
 	(GetActorTransform(),
@@ -205,6 +212,7 @@ float AEnemy::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AC
 void AEnemy::ResetHitReactTimer()
 {
 	bCanHitReact =  true;
+
 }
 
 void AEnemy::AgroSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
@@ -273,6 +281,16 @@ void AEnemy::PlayAttackMontage(FName Section, float PlayRate)
 	{
 		AnimInstance->Montage_Play(AttackMontage);
 		AnimInstance->Montage_JumpToSection(Section, AttackMontage);
+	}
+	bCanAttack = false;
+	GetWorldTimerManager().SetTimer
+	(AttackWaitTimer,
+		this,
+		&AEnemy::ResetCanAttack,
+		AttackWaitTime);
+	if(EnemyController)
+	{
+		EnemyController->GetBlackBoardComponent()->SetValueAsBool(FName("CanAttack"), false);
 	}
 }
 
@@ -391,5 +409,15 @@ void AEnemy::StunCharacter(AShooterCharacter* Victim)
 			Victim->Stun();
 		}
 	}
+}
+
+void AEnemy::ResetCanAttack()
+{
+	bCanAttack = true;
+	if(EnemyController)
+	{
+		EnemyController->GetBlackBoardComponent()->SetValueAsBool(FName("CanAttack"), true);
+	}
+
 }
 

@@ -82,6 +82,8 @@ protected:
 	void SpawnBlood(AShooterCharacter* Victim, FName SocketName);
 	void StunCharacter(AShooterCharacter* Victim);
 
+	void ResetCanAttack();
+
 
 
 	
@@ -154,6 +156,12 @@ private:
 	FName LeftHandSocket;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= Combat,meta =(AllowPrivateAccess = "true"))
 	FName RightHandSocket;
+	UPROPERTY(VisibleAnywhere, Category= Combat,meta =(AllowPrivateAccess = "true"))
+	bool bCanAttack;
+
+	FTimerHandle AttackWaitTimer;
+	UPROPERTY(EditAnywhere, Category= Combat, meta = (AllowPrivateAccess = "true"))
+	float AttackWaitTime;
 
 
 
