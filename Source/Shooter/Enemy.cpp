@@ -26,9 +26,10 @@ HealthBarDisplayTime(4.f),
 HitReactTimeMin(.5f),
 HitReactTimeMax(3.f),
 bCanHitReact(true),
+HitNumberDestroyTime(1.f),
 bStunned(false),
-StunChance(0.5f),
 
+StunChance(0.5f),
 AttackFast(TEXT("AttackFast")),
 AttackChase(TEXT("AttackChase")),
 AttackIdle(TEXT("AttackIdle")),
@@ -36,8 +37,7 @@ BaseDamage(20.f),
 LeftHandSocket(TEXT("hand_lSocket")),
 RightHandSocket(TEXT("hand_rSocket")),
 bCanAttack(true),
-AttackWaitTime(1.f),
-HitNumberDestroyTime(1.f)
+AttackWaitTime(1.f)
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
