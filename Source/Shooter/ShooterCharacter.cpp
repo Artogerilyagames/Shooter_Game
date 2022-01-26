@@ -18,6 +18,8 @@
 #include "Ammo.h"
 #include "BulletHitInterface.h"
 #include "Enemy.h"
+#include "EnemyController.h"
+#include "BehaviorTree/BlackboardComponent.h"
 #include "PhysicalMaterials/PhysicalMaterial.h"
 /*#include "Shooter.h"*/
 
@@ -128,7 +130,13 @@ float AShooterCharacter::TakeDamage(float DamageAmount, FDamageEvent const& Dama
 	if(Health - DamageAmount <= 0.f)
 	{
 		 Health = 0.f;
-		Die();
+		 Die();
+		 auto EnemyController = Cast<AEnemyController>(EventInstigator);
+		if(EnemyController)
+		{
+			EnemyController->GetBlackBoardComponent()->SetValueAsBool(FName(TEXT("CharacterDead")), true);
+		}
+			
 	}
 	else
 	{
