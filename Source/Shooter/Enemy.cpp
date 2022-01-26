@@ -38,7 +38,8 @@ LeftHandSocket(TEXT("hand_lSocket")),
 RightHandSocket(TEXT("hand_rSocket")),
 bCanAttack(true),
 AttackWaitTime(1.f),
-bDying(false)
+bDying(false),
+DeathTime(4.f)
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -197,6 +198,8 @@ void AEnemy::BulletHit_Implementation(FHitResult HitResult)
 	{
 		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactParticles, HitResult.Location, FRotator(0.f), true);
 	}
+	if(bDying) return;
+	
 	ShowHealthBar();
 	const float Stunned = FMath::FRandRange(0.f, 1.f);
 	if(Stunned <= StunChance)
@@ -458,6 +461,13 @@ void AEnemy::ResetCanAttack()
 }
 
 void AEnemy::FinishDeath()
+{
+    GetMesh()->bPauseAnims = true;
+	GetWorldTimerManager().SetTimer(DeathTimer, this, &AEnemy::DestroyEnemy, DeathTime);
+
+}
+
+void AEnemy::DestroyEnemy()
 {
 	Destroy();
 }

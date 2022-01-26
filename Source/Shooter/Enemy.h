@@ -89,6 +89,8 @@ protected:
 	void ResetCanAttack();
 	UFUNCTION(BlueprintCallable)
 	void FinishDeath();
+	UFUNCTION()
+	void DestroyEnemy();
 
 
 
@@ -178,6 +180,9 @@ private:
 	UAnimMontage* DeathMontage;
 	
 	bool bDying;
+	FTimerHandle DeathTimer;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= Combat, meta = (AllowPrivateAccess = "true"))
+	float DeathTime;
 
 
 
