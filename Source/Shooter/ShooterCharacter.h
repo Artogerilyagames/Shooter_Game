@@ -128,7 +128,6 @@ public:
 	void FinishDeath();
 
 	void ExchangeInventoryItems(int32 CurrentItemIndex, int32 NewItemIndex );
-	
 
 
 public:	

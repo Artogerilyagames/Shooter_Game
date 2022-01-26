@@ -1135,7 +1135,6 @@ void AShooterCharacter::FinishDeath()
 	}
 }
 
-
 void AShooterCharacter::ExchangeInventoryItems(int32 CurrentItemIndex, int32 NewItemIndex)
 {
 	const bool bCanExchangeItems =
