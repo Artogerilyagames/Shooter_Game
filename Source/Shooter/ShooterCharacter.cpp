@@ -833,26 +833,25 @@ void AShooterCharacter::SendBullet()
 						//UE_LOG(LogTemp, Warning, TEXT("Hit Component: %s"), *BeamHitResult.BoneName.ToString());
 					}
 					HitEnemy->ShowHitNumber(Damage, BeamHitResult.Location);
-					
-					
 				}
-			}
-			else
-			{
-				//Spawn default particles
-				if(ImpactParticles)
+				else
 				{
-					UGameplayStatics::SpawnEmitterAtLocation(GetWorld(),
-					ImpactParticles,
-					BeamHitResult.Location);
+					//Spawn default particles
+					if(ImpactParticles)
+					{
+						UGameplayStatics::SpawnEmitterAtLocation(GetWorld(),
+						ImpactParticles,
+						BeamHitResult.Location);
+					}
+				}
+			
+				UParticleSystemComponent* Beam = UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), BeamParticles, SocketTransform);
+				if(Beam)
+				{
+					Beam->SetVectorParameter(FName("Target"), BeamHitResult.Location);
 				}
 			}
 			
-			UParticleSystemComponent* Beam = UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), BeamParticles, SocketTransform);
-			if(Beam)
-			{
-				Beam->SetVectorParameter(FName("Target"), BeamHitResult.Location);
-			}
 		}
 	}
 }
