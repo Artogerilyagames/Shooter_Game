@@ -40,6 +40,7 @@ MouseAimingTurnRate(0.2f),
 MouseAimingLookUpRate(0.2f),
 
 bAiming(false),
+bShiftCamera(false),
 //Camera spread factors
 CameraDefaultFOV(0.f),
 CameraZoomedFOV(35.f),
@@ -95,7 +96,7 @@ StunChance(2.5f)
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
+    // Right Camera
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
 	CameraBoom->SetupAttachment(RootComponent);
 	CameraBoom->TargetArmLength = 300.f;
@@ -108,7 +109,9 @@ StunChance(2.5f)
 	FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
 	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
 	FollowCamera->bUsePawnControlRotation = false;
+
 	
+	// Control Rotation
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = true;
 	bUseControllerRotationRoll = false;
@@ -689,6 +692,10 @@ void AShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 
 	PlayerInputComponent->BindAction("AimingButton", IE_Pressed, this, &AShooterCharacter::AimingButtonPressed);
 	PlayerInputComponent->BindAction("AimingButton", IE_Released, this, &AShooterCharacter::AimingButtonReleased);
+
+	PlayerInputComponent->BindAction("PressedShiftCamera", IE_Pressed, this, &AShooterCharacter::PressedShiftCamera);
+	PlayerInputComponent->BindAction("ReleasedShiftCamera", IE_Pressed, this, &AShooterCharacter::ReleasedShiftCamera);
+	
 	
 	PlayerInputComponent->BindAction("Select", IE_Pressed, this, &AShooterCharacter::SelectButtonPressed);
 	PlayerInputComponent->BindAction("Select", IE_Released, this, &AShooterCharacter::SelectButtonReleased);
@@ -1022,6 +1029,22 @@ void AShooterCharacter::StopAiming()
 		HideCrosshairs();
 	}
 	
+	
+}
+
+void AShooterCharacter::PressedShiftCamera()
+{
+
+	bShiftCamera = true;
+		CameraBoom->SocketOffset = FVector(0.f, -80.f, 90.f);
+	
+	
+}
+
+void AShooterCharacter::ReleasedShiftCamera()
+{
+	bShiftCamera =true;
+	CameraBoom->SocketOffset = FVector(0.f, 80.f, 90.f);
 	
 }
 

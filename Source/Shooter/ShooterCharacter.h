@@ -107,6 +107,9 @@ public:
 
 	void Aim();
 	void StopAiming();
+
+	void PressedShiftCamera();
+	void ReleasedShiftCamera();
 	
 	void PickupAmmo(class AAmmo* Ammo);
 
@@ -184,6 +187,9 @@ private:
 	UParticleSystem* BeamParticles;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= Combat,meta =(AllowPrivateAccess = "true"))
 	bool bAiming;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= Combat,meta =(AllowPrivateAccess = "true"))
+	bool bShiftCamera;
+
 	// Zoomed Field of View
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= Combat,meta =(AllowPrivateAccess = "true"))
 	float CameraDefaultFOV;
