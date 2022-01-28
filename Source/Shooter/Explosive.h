@@ -26,6 +26,11 @@ private:
 	class UParticleSystem* ExplodeParticles;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= Combat, meta = (AllowPrivateAccess = "true"))
 	class USoundCue* ImpactSound;
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= Combat, meta = (AllowPrivateAccess = "true"))
+	class UStaticMeshComponent* ExplosiveMesh;
+	/** Used to determine what Actors overlap during explosion */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= Combat, meta = (AllowPrivateAccess = "true"))
+	class USphereComponent* OverlapSphere;
 
 
 public:	
