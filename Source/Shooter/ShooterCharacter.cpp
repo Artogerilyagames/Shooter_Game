@@ -123,6 +123,7 @@ StunChance(2.5f)
 	//Create Hand Scene Component
 	HandSceneComponent = CreateDefaultSubobject<USceneComponent>(TEXT("HandSceneComp"));
 	
+	
 
 	
 }
@@ -819,6 +820,7 @@ void AShooterCharacter::SendBullet()
 						GetController(),
 						this,
 						UDamageType::StaticClass());
+						
 					}
 					else 
 					{

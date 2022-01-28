@@ -6,8 +6,13 @@
 #include "BehaviorTree/BehaviorTree.h"
 #include "BehaviorTree/BehaviorTreeComponent.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "Kismet/GameplayStatics.h"
 
-AEnemyController::AEnemyController()
+//Set Default Value
+AEnemyController::AEnemyController() :
+
+AcceptanceRadius(200.f)
+
 {
 	BlackBoardComponent = CreateDefaultSubobject<UBlackboardComponent>(TEXT("BlackBoardComponent"));
 	check(BlackBoardComponent);
@@ -15,6 +20,33 @@ AEnemyController::AEnemyController()
 	BehaviorTreeComponent = CreateDefaultSubobject<UBehaviorTreeComponent>(TEXT("BehaviorTreeComponent"));
 	check(BehaviorTreeComponent);
 }
+
+
+void AEnemyController::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+	
+	APawn* PlayerPawn =  UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
+	
+	if(LineOfSightTo(PlayerPawn))
+	{
+		SetFocus(PlayerPawn);
+		MoveToActor(PlayerPawn, AcceptanceRadius);
+	}
+
+	else
+	{
+		ClearFocus(EAIFocusPriority::Gameplay);
+		StopMovement();
+	}
+	
+}
+
+void AEnemyController::BeginPlay()
+{
+	Super::BeginPlay();
+}
+
 
 void AEnemyController::OnPossess(APawn* InPawn)
 {

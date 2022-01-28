@@ -14,6 +14,11 @@ class SHOOTER_API AEnemyController : public AAIController
 {
 	GENERATED_BODY()
 public:
+	virtual void Tick(float DeltaSeconds) override;
+	
+protected:
+	virtual void BeginPlay() override;
+public:
 	AEnemyController();
 	virtual void OnPossess(APawn* InPawn) override;
 	
@@ -24,6 +29,9 @@ private:
 	UBlackboardComponent* BlackBoardComponent;
 	UPROPERTY(BlueprintReadWrite, Category= "AI Behavior", meta = (AllowPrivateAccess = "true"))
 	class UBehaviorTreeComponent* BehaviorTreeComponent;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= Combat,meta = (AllowPrivateAccess = "true"))
+	float AcceptanceRadius;
 
 public:
 	
