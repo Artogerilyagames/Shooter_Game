@@ -9,7 +9,8 @@
 #include "Sound/SoundCue.h"
 
 // Sets default values
-AExplosive::AExplosive()
+AExplosive::AExplosive() :
+ Damage(100.f)
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -35,7 +36,8 @@ void AExplosive::Tick(float DeltaTime)
 
 }
 
-void AExplosive::BulletHit_Implementation(FHitResult HitResult)
+void AExplosive::BulletHit_Implementation(FHitResult HitResult,AActor* Shooter, AController* ShooterController)
+	
 {
 	if (ImpactSound)
 	{
@@ -52,6 +54,7 @@ void AExplosive::BulletHit_Implementation(FHitResult HitResult)
 	for (auto Actor : OverlappingActors)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Actor damage by explosive: %s"),*Actor->GetName())
+		UGameplayStatics::ApplyDamage(Actor, Damage, ShooterController, Shooter, UDamageType::StaticClass());
 	}
 	 
 	

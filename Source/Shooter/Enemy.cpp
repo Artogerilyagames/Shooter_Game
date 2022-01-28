@@ -188,7 +188,7 @@ void AEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 }
 
-void AEnemy::BulletHit_Implementation(FHitResult HitResult)
+void AEnemy::BulletHit_Implementation(FHitResult HitResult, AActor* Shooter,  AController* ShooterController)
 {
 	if (ImpactSound)
 	{
@@ -198,16 +198,7 @@ void AEnemy::BulletHit_Implementation(FHitResult HitResult)
 	{
 		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactParticles, HitResult.Location, FRotator(0.f), true);
 	}
-	if(bDying) return;
-	
-	ShowHealthBar();
-	const float Stunned = FMath::FRandRange(0.f, 1.f);
-	if(Stunned <= StunChance)
-	{
-		PlayHitMontage(FName("HitReactFront"));
-	SetStunned(true);
-	}
-	
+
 }
 
 float AEnemy::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
@@ -221,11 +212,24 @@ float AEnemy::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AC
 	{
 		Health = 0.f;
 		Die();
+		EnemyController->GetBlackBoardComponent()->SetValueAsObject(FName("StopMoving"),DamageCauser);
 	}
+	
 	else
 	{
 		Health -= DamageAmount;
 	}
+	
+	if(bDying) return DamageAmount;
+	
+	ShowHealthBar();
+	const float Stunned = FMath::FRandRange(0.f, 1.f);
+	if(Stunned <= StunChance)
+	{
+		PlayHitMontage(FName("HitReactFront"));
+		SetStunned(true);
+	}
+	
 	return  DamageAmount;
 		
 }
@@ -256,16 +260,22 @@ void AEnemy::DestroyHitNumber(UUserWidget* HitNumber)
 }
 
 void AEnemy::AgroSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-                               UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) 
+UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) 
 {
 	if(OtherActor == nullptr) return;
 	auto Character = Cast<AShooterCharacter>(OtherActor);
 	if(Character) 
 	{
-	
-		EnemyController->GetBlackBoardComponent()->SetValueAsObject
-		(TEXT("Target"),
-			Character);
+		if(EnemyController)
+		{
+			if(EnemyController->GetBlackBoardComponent())
+			{
+				EnemyController->GetBlackBoardComponent()->SetValueAsObject
+		          (TEXT("Target"),
+			 Character);
+			}
+		}
+		
 	}
 }
 
