@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "AIController.h"
+#include "GameFramework/PlayerState.h"
 #include "EnemyController.generated.h"
 
 /**
@@ -32,6 +33,11 @@ private:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= Combat,meta = (AllowPrivateAccess = "true"))
 	float AcceptanceRadius;
+	// Game Dev Course
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category= Combat,meta = (AllowPrivateAccess = "true"))
+	class UBehaviorTree* AIBehavior;
+	
+
 
 public:
 	

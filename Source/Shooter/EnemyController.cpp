@@ -6,6 +6,7 @@
 #include "BehaviorTree/BehaviorTree.h"
 #include "BehaviorTree/BehaviorTreeComponent.h"
 #include "BehaviorTree/BlackboardComponent.h"
+
 #include "Kismet/GameplayStatics.h"
 
 //Set Default Value
@@ -21,31 +22,30 @@ AcceptanceRadius(200.f)
 	check(BehaviorTreeComponent);
 }
 
+void AEnemyController::BeginPlay()
+{
+	Super::BeginPlay();
+	if (AIBehavior != nullptr)
+	{
+		RunBehaviorTree(AIBehavior);
+		const APawn* PlayerPawn =  UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
+		GetBlackBoardComponent()->SetValueAsVector(TEXT("PlayerLocation"), PlayerPawn->GetActorLocation());
+		GetBlackBoardComponent()->SetValueAsVector(TEXT("StartLocation"), GetPawn()->GetActorLocation());
+
+	}
+	
+}
+
 
 void AEnemyController::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 	
-	APawn* PlayerPawn =  UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
 	
-	if(LineOfSightTo(PlayerPawn))
-	{
-		SetFocus(PlayerPawn);
-		MoveToActor(PlayerPawn, AcceptanceRadius);
-	}
-
-	else
-	{
-		ClearFocus(EAIFocusPriority::Gameplay);
-		StopMovement();
-	}
 	
 }
 
-void AEnemyController::BeginPlay()
-{
-	Super::BeginPlay();
-}
+
 
 
 void AEnemyController::OnPossess(APawn* InPawn)
