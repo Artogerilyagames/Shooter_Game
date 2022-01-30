@@ -86,7 +86,9 @@ PickupSoundResetTime(0.2f),
 EquipSoundResetTime(0.2f),
 Health(100.f),
 MaxHealth(100.f),
-StunChance(2.5f)
+StunChance(2.5f),
+bDead(false)
+
 
 
 
@@ -135,6 +137,7 @@ float AShooterCharacter::TakeDamage(float DamageAmount, FDamageEvent const& Dama
 	{
 		 Health = 0.f;
 		 Die();
+		
 		 auto EnemyController = Cast<AEnemyController>(EventInstigator);
 		if(EnemyController)
 		{
@@ -821,6 +824,7 @@ void AShooterCharacter::SendBullet()
 						this,
 						UDamageType::StaticClass());
 						
+						
 					}
 					else 
 					{
@@ -851,6 +855,8 @@ void AShooterCharacter::SendBullet()
 				if(Beam)
 				{
 					Beam->SetVectorParameter(FName("Target"), BeamHitResult.Location);
+				
+
 				}
 			}
 			
@@ -1150,6 +1156,7 @@ void AShooterCharacter::EndStun()
 
 void AShooterCharacter::Die()
 {
+	bDead = true;
 	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
 	if(AnimInstance && DeathMontage)
 	{
@@ -1166,6 +1173,8 @@ void AShooterCharacter::FinishDeath()
 		DisableInput(PC);
 	}
 }
+
+
 
 void AShooterCharacter::ExchangeInventoryItems(int32 CurrentItemIndex, int32 NewItemIndex)
 {

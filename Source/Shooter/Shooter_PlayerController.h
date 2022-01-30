@@ -17,6 +17,7 @@ class SHOOTER_API AShooter_PlayerController : public APlayerController
 public:
 	AShooter_PlayerController();
 protected:
+	
 	virtual void BeginPlay() override;
 private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= Widgets, meta = (AllowPrivateAccess = "true"));

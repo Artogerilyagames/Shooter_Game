@@ -130,6 +130,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void FinishDeath();
 
+
 	void ExchangeInventoryItems(int32 CurrentItemIndex, int32 NewItemIndex );
 
 
@@ -331,6 +332,12 @@ private:
 	float StunChance;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= Combat,meta =(AllowPrivateAccess = "true"))
 	UAnimMontage* DeathMontage;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= Combat,meta =(AllowPrivateAccess = "true"))
+	bool bDead;
+
+
+
+	
 
 
 	

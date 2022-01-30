@@ -161,6 +161,7 @@ void AItem::SetItemProperties(EItemState State)
 		AreaSphere->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 		CollisionBox->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
 		CollisionBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		
 		break;
 	case EItemState::EIS_Falling:
 	
