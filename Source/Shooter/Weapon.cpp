@@ -72,7 +72,8 @@ void AWeapon::OnConstruction(const FTransform& Transform)
 			break;
 			case EWeaponType::EWT_AssultRiffle:
 				WeaponDataRow = WeaponTableObject->FindRow<FWeaponDataTable>(FName("AssaultRifle"), TEXT(""));
-        			break;
+			
+			break;
 		case EWeaponType::EWT_Pistol:
 			WeaponDataRow = WeaponTableObject->FindRow<FWeaponDataTable>(FName("Pistol"), TEXT(""));
 			break;
@@ -166,4 +167,6 @@ void AWeapon::StopFalling()
 	bFalling = true;
 	SetItemState(EItemState::EIS_Pickup);
 }
+
+
 
