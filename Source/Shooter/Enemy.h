@@ -92,6 +92,15 @@ protected:
 	UFUNCTION()
 	void DestroyEnemy();
 
+	FName HitBone();
+	void DisableAttacking();
+
+
+	
+	
+
+
+
 
 
 
@@ -184,6 +193,17 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= Combat, meta = (AllowPrivateAccess = "true"))
 	float DeathTime;
 
+	FName UpperArmr;
+	FName LowerArmr;
+	FName UpperArml;
+	FName LowerArml;
+	FName Handr;
+	FName Handl;
+	FName Calfr;
+	FName Calfl;
+	
+
+
 
 
 
@@ -204,6 +224,8 @@ public:
 	FORCEINLINE FString GetHeadBone() const {return HeadBone;}
 	FORCEINLINE UBehaviorTree* GetBehaviorTree() const {return BehaviorTree;}
 	
+	
     UFUNCTION(BlueprintImplementableEvent)
 	void ShowHitNumber(int32 Damage, FVector HitLocation);
+	
 };

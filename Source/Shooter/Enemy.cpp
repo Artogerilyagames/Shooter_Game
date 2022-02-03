@@ -40,6 +40,7 @@ bCanAttack(true),
 AttackWaitTime(1.f),
 bDying(false),
 DeathTime(4.f)
+
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -108,11 +109,14 @@ void AEnemy::BeginPlay()
 	const FVector WorldPatrolPoint = UKismetMathLibrary::TransformLocation
 	(GetActorTransform(),
 		PatrolPoint);
-	DrawDebugSphere(GetWorld(),WorldPatrolPoint, 25.f, 12, FColor::Red, true);
+	//DrawDebugSphere(GetWorld(),WorldPatrolPoint, 25.f, 12, FColor::Red, true);
 	const FVector WorldPatrolPoint2 = UKismetMathLibrary::TransformLocation
 	(GetActorTransform(),
 		PatrolPoint2);
-	DrawDebugSphere(GetWorld(),WorldPatrolPoint2, 25.f, 12, FColor::Red, true);
+	//DrawDebugSphere(GetWorld(),WorldPatrolPoint2, 25.f, 12, FColor::Red, true);
+	const FVector WorldPatrolPoint3 = UKismetMathLibrary::TransformLocation
+	(GetActorTransform(),
+		PatrolPoint2);
 	if(EnemyController)
 	{
 		EnemyController->GetBlackBoardComponent()->SetValueAsVector
@@ -122,6 +126,11 @@ void AEnemy::BeginPlay()
 		EnemyController->GetBlackBoardComponent()->SetValueAsVector
 		(TEXT("PatrolPoint2"),
 			WorldPatrolPoint2);
+		EnemyController->RunBehaviorTree(BehaviorTree);
+
+		EnemyController->GetBlackBoardComponent()->SetValueAsVector
+		(TEXT("PatrolPoint3"),
+			WorldPatrolPoint3);
 		EnemyController->RunBehaviorTree(BehaviorTree);
 	}
 }
@@ -149,12 +158,14 @@ void AEnemy::Die()
 	if(AnimIntance && DeathMontage)
 	{
 		AnimIntance->Montage_Play(DeathMontage);
+		GetMesh()->HideBoneByName(TEXT("head"), EPhysBodyOp::PBO_None);
 	}
 	if(EnemyController)
 	{
 		EnemyController->GetBlackBoardComponent()->SetValueAsBool(FName("Dead"), true);
 		EnemyController->StopMovement();
 	}
+	
 }
 
 void AEnemy::PlayHitMontage(FName Section, float PlayRate)
@@ -218,6 +229,8 @@ float AEnemy::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AC
 	else
 	{
 		Health -= DamageAmount;
+		HitBone();
+		
 	}
 	
 	if(bDying) return DamageAmount;
@@ -228,6 +241,8 @@ float AEnemy::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AC
 	{
 		PlayHitMontage(FName("HitReactFront"));
 		SetStunned(true);
+		HitBone();
+	
 	}
 	
 	return  DamageAmount;
@@ -331,8 +346,10 @@ void AEnemy::PlayAttackMontage(FName Section, float PlayRate)
 	{
 		AnimInstance->Montage_Play(AttackMontage);
 		AnimInstance->Montage_JumpToSection(Section, AttackMontage);
+		
 	}
-	bCanAttack = false;
+
+
 	GetWorldTimerManager().SetTimer
 	(AttackWaitTimer,
 		this,
@@ -342,6 +359,7 @@ void AEnemy::PlayAttackMontage(FName Section, float PlayRate)
 	{
 		EnemyController->GetBlackBoardComponent()->SetValueAsBool(FName("CanAttack"), false);
 	}
+	
 }
 
 FName AEnemy::GetAttackSectionName()
@@ -481,3 +499,85 @@ void AEnemy::DestroyEnemy()
 {
 	Destroy();
 }
+
+FName AEnemy::HitBone()
+{
+	FName SectionName;
+	const int32 Section{FMath::RandRange(1, 9)};
+	switch (Section)
+	{
+	case 1:
+		SectionName = UpperArml;
+		GetMesh()->HideBoneByName(TEXT("upperarm_l"), EPhysBodyOp::PBO_None);
+		DisableAttacking();
+	
+		
+		break;
+	case 2:
+		SectionName = LowerArml;
+		GetMesh()->HideBoneByName(TEXT("lowerarm_l"), EPhysBodyOp::PBO_None);
+		DisableAttacking();
+		
+		break;
+
+	case 3:
+		SectionName = Calfr;
+		//GetMesh()->HideBoneByName(TEXT("calf_r"), EPhysBodyOp::PBO_None);
+		break;
+		
+	case 4:
+		SectionName = Calfl;
+		//GetMesh()->HideBoneByName(TEXT("calf_l"), EPhysBodyOp::PBO_None);
+		break;
+		
+	case 5:
+		SectionName = Handr;
+		GetMesh()->HideBoneByName(TEXT("hand_r"), EPhysBodyOp::PBO_None);
+		DisableAttacking();
+		break;
+		
+	case 6:
+		SectionName = Handl;
+		GetMesh()->HideBoneByName(TEXT("hand_l"), EPhysBodyOp::PBO_None);
+		if(EnemyController)
+			DisableAttacking();
+		break;
+		
+	case 7:
+		SectionName = UpperArmr;
+		GetMesh()->HideBoneByName(TEXT("upperarm_r"), EPhysBodyOp::PBO_None);
+		DisableAttacking();
+		break;
+		
+	case 8:
+		SectionName = LowerArmr;
+		GetMesh()->HideBoneByName(TEXT("lowerarm_r"), EPhysBodyOp::PBO_None);
+		DisableAttacking();
+		break;
+		
+	default: ;
+	}
+	return SectionName;
+}
+
+void AEnemy::DisableAttacking()
+{
+	if(EnemyController)
+	{
+		EnemyController->GetBlackBoardComponent()->SetValueAsBool(FName("CanAttack"), false);
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+	
+
+

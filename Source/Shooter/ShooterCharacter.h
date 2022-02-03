@@ -71,6 +71,7 @@ public:
 	void UnreloadingIcon();
 
 	AWeapon* SpawnDefaultWeapon();
+	AWeapon* SpawnSlot1Weapon();
 	void EquipWeapon(AWeapon* WeaponToEquip, bool bSwapping = false);
 
 	
@@ -129,6 +130,9 @@ public:
 	void Die();
 	UFUNCTION(BlueprintCallable)
 	void FinishDeath();
+
+
+	
 
 
 	void ExchangeInventoryItems(int32 CurrentItemIndex, int32 NewItemIndex );
@@ -235,6 +239,11 @@ private:
 	AWeapon* EquippedWeapon;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category=Combat, meta =(AllowPrivateAccess = "true"));
 	TSubclassOf<AWeapon> DefaultWeaponClass;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category=Combat, meta =(AllowPrivateAccess = "true"));
+	TSubclassOf<AWeapon> Slot1WeaponClass;
+
+
+	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= Combat, meta =(AllowPrivateAccess = "true"));
 	// ReSharper disable once CppUE4ProbableMemoryIssuesWithUObject
 	AItem* TraceHitItem;
@@ -334,6 +343,8 @@ private:
 	UAnimMontage* DeathMontage;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= Combat,meta =(AllowPrivateAccess = "true"))
 	bool bDead;
+
+	
 
 
 

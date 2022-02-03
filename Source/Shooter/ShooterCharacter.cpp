@@ -585,16 +585,28 @@ AWeapon* AShooterCharacter::SpawnDefaultWeapon()
 	return nullptr;
 }
 
+AWeapon* AShooterCharacter::SpawnSlot1Weapon()
+{
+	if(Slot1WeaponClass)
+	{
+		return  GetWorld()->SpawnActor<AWeapon>(Slot1WeaponClass);
+	}
+	return nullptr;
+} 
+
 void AShooterCharacter::EquipWeapon(AWeapon* WeaponToEquip, bool bSwapping)
 {
 	if(WeaponToEquip)
 	{
 		const USkeletalMeshSocket* HandSocket = GetMesh()->GetSocketByName
 		(FName("RightHandSocket"));
+		
 		if(HandSocket)
 		{
 			HandSocket->AttachActor(WeaponToEquip, GetMesh());
+			
 		}
+	
 		if(EquippedWeapon == nullptr)
 		{
 			// -1 == no EquippedWeapon yet. no need to reverse the icon animation
@@ -823,6 +835,8 @@ void AShooterCharacter::SendBullet()
 						GetController(),
 						this,
 						UDamageType::StaticClass());
+					
+						
 						
 						
 					}
@@ -836,6 +850,8 @@ void AShooterCharacter::SendBullet()
 						GetController(),
 						this,
 						UDamageType::StaticClass());
+						
+						
 						//UE_LOG(LogTemp, Warning, TEXT("Hit Component: %s"), *BeamHitResult.BoneName.ToString());
 					}
 					HitEnemy->ShowHitNumber(Damage, BeamHitResult.Location);
@@ -848,6 +864,7 @@ void AShooterCharacter::SendBullet()
 						UGameplayStatics::SpawnEmitterAtLocation(GetWorld(),
 						ImpactParticles,
 						BeamHitResult.Location);
+						
 					}
 				}
 			
@@ -855,6 +872,7 @@ void AShooterCharacter::SendBullet()
 				if(Beam)
 				{
 					Beam->SetVectorParameter(FName("Target"), BeamHitResult.Location);
+					
 				
 
 				}
@@ -1097,6 +1115,7 @@ void AShooterCharacter::OneKeyPressed()
 {
 	if(EquippedWeapon->GetSlotIndex()== 1) return;
 	ExchangeInventoryItems(EquippedWeapon->GetSlotIndex(), 1);
+	
 }
 
 void AShooterCharacter::TwoKeyPressed()
@@ -1173,6 +1192,7 @@ void AShooterCharacter::FinishDeath()
 		DisableInput(PC);
 	}
 }
+
 
 
 
